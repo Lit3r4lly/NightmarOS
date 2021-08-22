@@ -1,0 +1,5 @@
+# Set ignoration of output files and unwanted files
+
+*.a
+*.d
+*.o

@@ -1,0 +1,3 @@
+/home/ori/Documents/Magshimim/NightmareOS/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/ori/Documents/Magshimim/NightmareOS/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/ori/Documents/Magshimim/NightmareOS/cmake-build-debug/CMakeFiles/NightmareOS.dir
