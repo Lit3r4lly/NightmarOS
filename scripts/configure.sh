@@ -4,11 +4,6 @@ export PROJECT_NAME="NightmareOS" # insert here base dir name (NightmareOS)
 export SUB_PROJECTS="libc kernel" # names of sub-projects directories
 export SYSTEM_HEADER_PROJECTS="libc kernel" # ^^^
 
-if [ ${PWD##*/} != $PROJECT_NAME ]; then # checks if the script run from the base directory
-    echo "[!] The project name doesn't fit the base directory name"
-    exit 1
-fi
-
 export ROOT_DIR=${PWD} # set up root directory path of the project
 export ARCH=$(./scripts/default-arch.sh) # set up desired arch name
 export TOOLS=$(./scripts/cross-toolchain.sh) # set up cross toolchain path
