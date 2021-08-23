@@ -9,6 +9,7 @@
 #include <arch/i386/GDT/descriptor_structure.h>
 
 namespace GDT {
+    // setup an memory flat model (32 bit registers can address all the address range)
     constexpr uint kNumOfEntries = 5; // number of segment entries (descriptors)
     constexpr u32int kLimit = 0xFFFFFFFF; // every segment limit
     constexpr u32int kBaseAddress = 0x0; // every segment base address
@@ -44,18 +45,3 @@ namespace GDT {
 
 /* -- Function imported from gdt_flush.s assembly file -- */
 extern "C" void gdt_flush(GDT::GDTPointer* gdt_ptr); // flush the GDT table and insert new address into the gdtr register
-
-
-/*
-            ############## SegmentDescriptor struct ##############
-                           (by the Intel's manual)
-    ╔═════════════════╪═╤═╤═╤═╤═════════╪═╤═════╤═╤═══════╪═════════════════╗
-    ║                 │ │ │ │A│         │ │     │ │       │                 ║
-    ║   BASE 31..24   │G│X│O│V│ LIMIT   │P│ DPL │0│ TYPE  │ BASE 23..16     ║ 4
-    ║                 │ │ │ │L│ 19..16  │ │     │ │       │                 ║
-    ╟─────────────────┴─┴─┴─┴─┴─────────┼─┴─────┴─┴───────┴─────────────────╢
-    ║                                   │                                   ║
-    ║       SEGMENT BASE 15..0          │      SEGMENT LIMIT 15..0          ║ 0
-    ║                                   │                                   ║
-    ╚═════════════════╪═════════════════╪═════════════════╪═════════════════╝
- */
