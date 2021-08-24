@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <arch/i386/TTY/tty.h>
+#include <arch/i386/tty/tty.h>
 #include <kernel/kdefines.h>
-#include <arch/i386/GDT/descriptor_structure.h>
+#include <arch/i386/gdt/descriptor_structure.h>
 
 namespace GDT {
     // setup an memory flat model (32 bit registers can address all the address range)

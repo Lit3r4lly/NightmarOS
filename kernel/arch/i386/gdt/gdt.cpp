@@ -2,9 +2,9 @@
 // Created by ori on 8/22/21.
 //
 
-#include <arch/i386/GDT/gdt.h>
+#include <arch/i386/gdt/gdt.h>
 
-GDT::SegmentDescriptor gdt_entries[GDT::kNumOfEntries] = { 0, 0, 0, 0, 0, 0, 0 }; // initialize an array of the GDT entries
+GDT::SegmentDescriptor gdt_entries[GDT::kNumOfEntries] = { 0 }; // initialize an array of the GDT entries
 GDT::GDTPointer gdt_ptr = {0, 0 }; // initialize the gdt_ptr struct
 
 /**

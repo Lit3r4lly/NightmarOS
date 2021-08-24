@@ -2,7 +2,7 @@
 // Created by ori on 8/3/21.
 //
 
-#include <arch/i386/TTY/tty.h>
+#include <arch/i386/tty/tty.h>
 
 /**
  * Initialize the TTY component by setting color and clearing the screen

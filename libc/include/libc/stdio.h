@@ -5,7 +5,7 @@
 #pragma once
 
 #if defined(__is_libk)
-#include <arch/i386/TTY/tty.h>
+#include <arch/i386/tty/tty.h>
 #endif
 
 #ifdef __cplusplus
