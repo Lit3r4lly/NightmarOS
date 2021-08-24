@@ -36,7 +36,7 @@ To clean the output files you need to use `make clean`
 To create iso file you need to use `make iso`  
 To debug the OS using GDB you need to use `make debug`
 
-(The make targets using `.sh` scripts which built as inherited scripts - if you use `make run`, it will build, create iso and run the OS)
+(The make targets using `.sh` scripts built as inherited scripts - if you use `make run`, it will build, create iso and run the OS)
 
 ## Author
 - **Ori Feldman** - [Github](https://github.com/Lit3r4lly)
