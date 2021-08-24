@@ -9,7 +9,7 @@ For now this project is mainly introduced as study, research and hobby project w
 
 ## Kernel features
 
-- i386 architectur (32-bit)
+- i386 architecture (32-bit)
 - Memory management (GDT, Paging, Heap allocator)
 - Interrupts (IDT, PIC)
 - PIT
@@ -22,10 +22,10 @@ For now this project is mainly introduced as study, research and hobby project w
 - libstdc++
 
 ## Userland features
-- May god will be with us and we will get this far
+- May god will be with us, and we will get this far
 
 ## How do I read the documentation?
-The documentation files availble at the ``documentation/`` directory
+The documentation files available at the ``documentation/`` directory
 
 ## How do I build and run this?
 You can build NightmareOS after you have the cross-compiler which build with ``scripts/build-gcc.sh``  
