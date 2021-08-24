@@ -23,7 +23,7 @@ namespace GDT {
     struct GDTPointer {
         u16int limit : 16; // the size of the table - 1
         u32int base_address : 32; // the base address of the GDT, in other words - the first descriptor of the array
-    } __attribute__((packed)); // packed - compiler should keep the types and not align them
+    } PACKED; // packed - compiler should keep the types and not align them
     using GDTPointer = struct GDTPointer;
 
     /* See in the end of the document, the SegmentDescriptor structure by the intel's manual */
@@ -36,7 +36,7 @@ namespace GDT {
         u8int limit_high : 4; // the highest 4 bits of the limit
         u8int granularity_flags : 4; // 4 bits of some granularity_flags
         u8int base_high : 8; // the highest byte of the base address
-    } __attribute__((packed)); // packed - compiler should keep the types and not align them
+    } PACKED; // packed - compiler should keep the types and not align them
     using SegmentDescriptor = struct SegmentDescriptor;
 
     void Initialize(); // initialize the GDT, by creating kNumOfEntries segment descriptors
@@ -44,4 +44,4 @@ namespace GDT {
 };
 
 /* -- Function imported from gdt_flush.s assembly file -- */
-extern "C" void gdt_flush(GDT::GDTPointer* gdt_ptr); // flush the GDT table and insert new address into the gdtr register
+ASM_SCOPE void gdt_flush(GDT::GDTPointer* gdt_ptr); // flush the GDT table and insert new address into the gdtr register

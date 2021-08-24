@@ -9,7 +9,7 @@
 #endif
 
 #ifdef __cplusplus
-extern "C"{
+C_SCOPE {
 #endif
 
     int putchar(int ich); // print char to the screen using the TTY

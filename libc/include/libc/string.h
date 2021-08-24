@@ -7,7 +7,7 @@
 #include <libc/ldefines.h>
 
 #ifdef __cplusplus
-extern "C"{
+C_SCOPE {
 #endif
 
     size_t strlen(const char* str); // calculate string length

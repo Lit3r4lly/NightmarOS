@@ -7,9 +7,9 @@
 #include <libc/ldefines.h>
 
 #ifdef __cplusplus
-extern "C"{
+C_SCOPE {
 #endif
-    __attribute__((__noreturn__)) void abort(); // abort the run and gets into infinite loop
+    NO_RETURN void abort(); // abort the run and gets into infinite loop
     int atoi(const char* str); // convert char array to int
 #ifdef __cplusplus
 };

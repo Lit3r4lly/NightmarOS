@@ -22,3 +22,13 @@ using s16int = int16_t;
 using s32int = int32_t;
 using u32int = uint32_t;
 using u64int =  uint64_t;
+
+#define C_SCOPE extern "C"
+#define ASM_SCOPE extern "C"
+
+#ifdef __GNUC__
+    #pragma GCC diagnostic ignored "-Wattributes"
+    #define IGNORE(warning) GCC diagnostic ignored "warning"
+    #define PACKED __attribute__((packed))
+    #define NO_RETURN __attribute__((__noreturn__))
+#endif
