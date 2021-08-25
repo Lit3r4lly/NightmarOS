@@ -1,6 +1,10 @@
-//
-// Created by ori on 8/22/21.
-//
+/**
+* @file gdt.cpp
+* @author Ori Feldman
+* @brief defines GDT flushing functions and descriptors
+* @date 8/22/21
+* @copyright Copyright (c) 2021
+*/
 
 #include <arch/i386/gdt/gdt.h>
 

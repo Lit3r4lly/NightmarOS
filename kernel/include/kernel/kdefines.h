@@ -1,6 +1,10 @@
-//
-// Created by ori on 8/3/21.
-//
+/**
+* @file kdefines.h
+* @author Ori Feldman
+* @brief kernel common definitions
+* @date 8/3/21
+* @copyright Copyright (c) 2021
+*/
 
 #pragma once
 

@@ -1,6 +1,10 @@
-//
-// Created by ori on 8/3/21.
-//
+/**
+* @file tty.cpp
+* @author Ori Feldman
+* @brief define tty functions for printing to the screen
+* @date 8/3/21
+* @copyright Copyright (c) 2021
+*/
 
 #include <arch/i386/tty/tty.h>
 

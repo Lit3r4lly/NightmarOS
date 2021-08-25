@@ -1,6 +1,10 @@
-//
-// Created by ori on 8/19/21.
-//
+/**
+* @file stdlib.h
+* @author Ori Feldman
+* @brief declare stdlib libc functions
+* @date 8/19/21
+* @copyright Copyright (c) 2021
+*/
 
 #pragma once
 

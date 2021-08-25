@@ -1,6 +1,10 @@
-//
-// Created by ori on 8/3/21.
-//
+/**
+* @file kernel.cpp
+* @author Ori Feldman
+* @brief define kernel entry point (main) file
+* @date 8/3/21
+* @copyright Copyright (c) 2021
+*/
 
 #include <kernel/kernel.h>
 

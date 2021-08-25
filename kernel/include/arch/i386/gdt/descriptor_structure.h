@@ -1,6 +1,10 @@
-//
-// Created by ori on 8/22/21.
-//
+/**
+* @file descriptor_structure.h
+* @author Ori Feldman
+* @brief declare descriptors access bytes and flags
+* @date 8/22/21
+* @copyright Copyright (c) 2021
+*/
 
 #pragma once
 

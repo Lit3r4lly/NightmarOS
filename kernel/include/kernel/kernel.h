@@ -1,6 +1,10 @@
-//
-// Created by ori on 8/25/21.
-//
+/**
+* @file kernel.h
+* @author Ori Feldman
+* @brief declare kernel entry point (main) header
+* @date 8/25/21
+* @copyright Copyright (c) 2021
+*/
 
 #pragma once
 

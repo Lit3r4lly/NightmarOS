@@ -1,6 +1,11 @@
-//
-// Created by ori on 8/3/21.
-//
+/**
+* @file tty.h
+* @author Ori Feldman
+* @brief declare tty methods, enums and variables
+* @date 8/3/21
+* @copyright Copyright (c) 2021
+*/
+
 #pragma once
 
 // Project headers

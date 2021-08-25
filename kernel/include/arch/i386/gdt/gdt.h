@@ -1,6 +1,10 @@
-//
-// Created by ori on 8/22/21.
-//
+/**
+* @file gdt.h
+* @author Ori Feldman
+* @brief declare GDT usable structures and functions
+* @date 8/22/21
+* @copyright Copyright (c) 2021
+*/
 
 #pragma once
 

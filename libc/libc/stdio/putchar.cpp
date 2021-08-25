@@ -1,6 +1,10 @@
-//
-// Created by ori on 8/23/21.
-//
+/**
+* @file putchar.cpp
+* @author Ori Feldman
+* @brief define libc putchar function
+* @date 8/23/21
+* @copyright Copyright (c) 2021
+*/
 
 #include <libc/stdio.h>
 

@@ -1,6 +1,10 @@
-//
-// Created by ori on 8/23/21.
-//
+/**
+* @file abort.cpp
+* @author Ori Feldman
+* @brief define abort libc function
+* @date 8/23/21
+* @copyright Copyright (c) 2021
+*/
 
 #include <libc/stdlib.h>
 

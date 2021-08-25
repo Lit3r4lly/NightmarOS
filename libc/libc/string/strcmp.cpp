@@ -1,6 +1,10 @@
-//
-// Created by ori on 8/23/21.
-//
+/**
+* @file strcmp.cpp
+* @author Ori Feldman
+* @brief define strcmp libc function
+* @date 8/23/21
+* @copyright Copyright (c) 2021
+*/
 
 #include <libc/string.h>
 

@@ -1,6 +1,10 @@
-//
-// Created by ori on 8/19/21.
-//
+/**
+* @file ldefines.h
+* @author Ori Feldman
+* @brief libc common definitions
+* @date 8/19/21
+* @copyright Copyright (c) 2021
+*/
 
 #pragma once
 
