@@ -2,9 +2,12 @@
 // Created by ori on 8/3/21.
 //
 
-#include <arch/i386/tty/tty.h>
-#include <arch/i386/gdt/gdt.h>
+#include <kernel/kernel.h>
 
+/**
+ * Entry point for the run of the kernel
+ * In this point there some initialization of the components that necessary for running the system.
+ */
 C_SCOPE void kernel_main() {
     TTY::Initialize();
     GDT::Initialize();
