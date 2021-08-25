@@ -23,8 +23,8 @@ void TTY::Clear() {
     terminal_row = 0;
     terminal_column = 0;
 
-    for (size_t y = 0; y < kVGA_HEIGHT; ++y) {
-        for (size_t x = 0; x < kVGA_WIDTH; ++x) {
+    for (size_t y = 0; y < kVgaHeight; ++y) {
+        for (size_t x = 0; x < kVgaWidth; ++x) {
             TTY::PutEntryAt(' ', terminal_color, x, y);
         }
     }
@@ -36,7 +36,7 @@ void TTY::Clear() {
  * @param bg - background color
  * @return entry of the colors usable for the buffer
  */
-inline uint8_t TTY::VgaEntryColor(enum VgaColor fg, enum VgaColor bg) {
+inline u8int TTY::VgaEntryColor(enum VgaColor fg, enum VgaColor bg) {
     return static_cast<uint>(fg) | static_cast<uint>(bg) << 4;
 }
 
@@ -46,7 +46,7 @@ inline uint8_t TTY::VgaEntryColor(enum VgaColor fg, enum VgaColor bg) {
  * @param color - desired color
  * @return entry of color and character usable for the buffer
  */
-inline uint16_t TTY::VgaEntry(uchar uc, uint8_t color) {
+inline u16int TTY::VgaEntry(uchar uc, u8int color) {
     return (uint16_t)uc | (uint16_t)color << 8;
 }
 
@@ -57,8 +57,8 @@ inline uint16_t TTY::VgaEntry(uchar uc, uint8_t color) {
  * @param x - x coordinate (row)
  * @param y - y coordinate (line)
  */
-void TTY::PutEntryAt(char c, uint8_t color, size_t x, size_t y) {
-    const size_t index = y * kVGA_WIDTH + x; // y * kVGA_WIDTH = goes to the start of the column
+void TTY::PutEntryAt(char c, u8int color, size_t x, size_t y) {
+    const size_t index = y * kVgaWidth + x; // y * kVGA_WIDTH = goes to the start of the column
                                             // and add the offset to this (x)
     kTerminalBuffer[index] = TTY::VgaEntry(c, color); // insert the entry to the required place
 }
@@ -69,8 +69,8 @@ void TTY::PutEntryAt(char c, uint8_t color, size_t x, size_t y) {
  * @param x - x coordinate (row)
  * @param y - y coordinate (line)
  */
-void TTY::PutEntryAt(uint16_t entry, size_t x, size_t y) {
-    const size_t index = y * kVGA_WIDTH + x; // y * kVGA_WIDTH = goes to the start of the column
+void TTY::PutEntryAt(u16int entry, size_t x, size_t y) {
+    const size_t index = y * kVgaWidth + x; // y * kVGA_WIDTH = goes to the start of the column
                                             // and add the offset to this (x)
     kTerminalBuffer[index] = entry; // insert the entry to the required place
 }
@@ -86,7 +86,7 @@ void TTY::PutChar(char c) {
     } else {
         TTY::PutEntryAt(c, terminal_color, terminal_column, terminal_row);
 
-        if (++terminal_column == kVGA_WIDTH) { // if column has reached the limit (end of line)
+        if (++terminal_column == kVgaWidth) { // if column has reached the limit (end of line)
             terminal_column = 0;
             IsOverflowed();
         }
@@ -98,8 +98,8 @@ void TTY::PutChar(char c) {
  * if yes, it's scroll down
  */
 void TTY::IsOverflowed() {
-    if (++terminal_row == kVGA_HEIGHT) { // if row has reached the limit (end of rows)
-        terminal_row = kVGA_HEIGHT - 1;
+    if (++terminal_row == kVgaHeight) { // if row has reached the limit (end of rows)
+        terminal_row = kVgaHeight - 1;
         Scroll();
     }
 }
@@ -126,13 +126,13 @@ void TTY::WriteString(const char* data) {
  * scroll down the terminal by clearing the first line and move all the others once upside
  */
 void TTY::Scroll() {
-    for (size_t x = 0; x < kVGA_WIDTH; ++x)
+    for (size_t x = 0; x < kVgaWidth; ++x)
         TTY::PutEntryAt(' ', terminal_color, x, 0); // clears the first row in the terminal
 
-    for (size_t y = 1; y < kVGA_HEIGHT; ++y) {
-        for (size_t x = 0; x < kVGA_WIDTH; ++x) {
+    for (size_t y = 1; y < kVgaHeight; ++y) {
+        for (size_t x = 0; x < kVgaWidth; ++x) {
             // set all the lines to one upper line
-            TTY::PutEntryAt(kTerminalBuffer[(y * kVGA_WIDTH) + x], x, y - 1);
+            TTY::PutEntryAt(kTerminalBuffer[(y * kVgaWidth) + x], x, y - 1);
         }
     }
 }

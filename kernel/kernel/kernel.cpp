@@ -12,4 +12,7 @@ C_SCOPE void kernel_main() {
     TTY::Initialize();
     GDT::Initialize();
     TTY::WriteString("Hello World!\nJust entered to NightmareOS kernel!\n");
+
+    // wait for interrupt
+    asm volatile ("hlt");
 }
