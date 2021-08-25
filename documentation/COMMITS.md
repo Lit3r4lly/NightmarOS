@@ -1,6 +1,13 @@
 #Commits
 
 commits should be like this:  
-``<sub-project-name>::<component-name> - <message>``  
+``<type>: <message>``  
 example:  
-``Kernel::Interrupts - created IDT and updated ISR's``
+``Kernel: created IDT and updated ISR's``
+
+## Types
+- Kernel
+- Libc
+- Scripts
+- Documentation
+- Makefiles
