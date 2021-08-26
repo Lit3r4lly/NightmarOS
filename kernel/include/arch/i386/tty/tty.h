@@ -10,6 +10,7 @@
 
 // Project headers
 #include <kernel/common/kdefines.h>
+#include <kernel/logs/log.h>
 #include <libc/string.h>
 
 // Hardware text mode color constants.

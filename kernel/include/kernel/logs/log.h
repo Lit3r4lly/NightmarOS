@@ -31,7 +31,8 @@ namespace Log {
         Log::Write(__FILE__ "::"); \
         Log::Write(STRINGIZE(__LINE__) "::"); \
         Log::Write(__FUNCTION__); \
-        Log::Write("] - " data);
+        Log::Write("] - " data);\
+        Log::Write("\n");
 #else // if not defined - log will not be created
     #define K_LOG(status, data)
 #endif
