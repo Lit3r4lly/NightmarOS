@@ -15,9 +15,7 @@ void TTY::Initialize() {
     terminal_color = VgaEntryColor(VgaColor::kVgaColorWhite, VgaColor::kVgaColorBlack);
     TTY::Clear();
 
-    // TODO: replace printing with TTY
-    TTY::WriteString("[*] Initializing TTY\n");
-    TTY::WriteString("[*] TTY Initialized\n\n");
+    K_LOG(SUCCESS, "TTY driver initialized");
 }
 
 /**

@@ -10,4 +10,5 @@
 
 #include <arch/i386/tty/tty.h>
 #include <arch/i386/gdt/gdt.h>
-#include <kernel/kdefines.h>
+#include <kernel/logs/log.h>
+#include <kernel/common/kdefines.h>

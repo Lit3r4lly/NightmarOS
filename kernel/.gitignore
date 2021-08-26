@@ -1,3 +1,5 @@
 *.d
 *.kernel
 *.o
+!kernel/logs
+!include/kernel/logs

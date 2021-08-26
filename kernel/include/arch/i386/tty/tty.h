@@ -9,7 +9,8 @@
 #pragma once
 
 // Project headers
-#include <kernel/kdefines.h>
+#include <kernel/common/kdefines.h>
+#include <kernel/logs/log.h>
 #include <libc/string.h>
 
 // Hardware text mode color constants.
