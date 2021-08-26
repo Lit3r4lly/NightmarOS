@@ -9,7 +9,7 @@
 #pragma once
 
 #include <arch/i386/tty/tty.h>
-#include <kernel/kdefines.h>
+#include <kernel/common/kdefines.h>
 #include <arch/i386/gdt/descriptor_structure.h>
 
 namespace GDT {

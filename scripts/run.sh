@@ -7,4 +7,4 @@ set -e # stops if there is error
 objcopy --strip-debug "sysroot/boot/$PROJECT_NAME.kernel" "$PROJECT_NAME.sym"
 
 # runs the iso file with qemu
-qemu-system-"$(./scripts/target-triplet-to-arch.sh "$HOST")" -cdrom "$PROJECT_NAME.iso"
+qemu-system-"$(./scripts/target-triplet-to-arch.sh "$HOST")" -cdrom "$PROJECT_NAME.iso" -debugcon file:info.log
