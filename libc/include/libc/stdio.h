@@ -17,6 +17,7 @@ C_SCOPE {
 #endif
 
     int putchar(int ich); // print char to the screen using the TTY
+    int printf(const char* format,...);
 
 #ifdef __cplusplus
 };

@@ -16,7 +16,7 @@
 int putchar(int ich) {
 #if defined(__is_libk)
     char c = (char)ich;
-    TTY::WriteString(&c);
+    TTY::PutChar(c);
 #else
     // TODO: implement user-mode stdio syscalls
 #endif

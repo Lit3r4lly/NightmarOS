@@ -38,6 +38,7 @@ LIBK_CPPFLAGS:=$(LIBK_CPPFLAGS) $(KERNEL_ARCH_CPPFLAGS)
 FREEOBJS=\
 $(ARCH_FREEOBJS) \
 libc/stdio/putchar.o \
+libc/stdio/printf.o \
 libc/stdlib/abort.o \
 libc/stdlib/atoi.o \
 libc/string/strlen.o \
