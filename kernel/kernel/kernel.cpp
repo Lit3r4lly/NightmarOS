@@ -1,7 +1,7 @@
 /**
 * @file kernel.cpp
 * @author Ori Feldman
-* @brief define kernel entry point (main) file
+* @brief define kernel entry point (main) file for initializations and so on
 * @date 8/3/21
 * @copyright Copyright (c) 2021
 */
