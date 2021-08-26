@@ -19,8 +19,8 @@ LDFLAGS?=
 LIBS?=
 
 CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra -fno-rtti -fno-exceptions # disable some standard features
-CPPFLAGS:=$(CPPFLAGS) -D__is_kernel -I$(INCLUDE_DIR) # I$(INCLUDE_DIR) - include the BASE_DIR/kernel/include/ dir as global lib
-LDFLAGS:=$(LDFLAGS)
+CPPFLAGS:=$(CPPFLAGS) -D_K_LOG -D__is_kernel -I$(INCLUDE_DIR) # I$(INCLUDE_DIR) - include the BASE_DIR/kernel/include/ dir as global lib
+LDFLAGS:=$(LDFLAGS)											  # -D_K_LOG - define for create log file
 LIBS:=$(LIBS) -nostdlib -lk -lgcc # lk - lib{lib_name}.a - libk.a - include from fake sysroot
 
 # architecture directory

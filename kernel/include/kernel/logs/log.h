@@ -10,6 +10,13 @@
 
 #include <arch/i386/ports/ports.h>
 
+#ifdef _K_LOG // if defined - log will be created
+    #define K_LOG(data) \
+        Log::Write(data)
+#else // if not defined - log will not be created
+    #define K_LOG(data)
+#endif
+
 namespace Log {
     constexpr u16int kHackPort = 0xE9; // special "hack port" used in qemu and bochs for debugging and logging
 
