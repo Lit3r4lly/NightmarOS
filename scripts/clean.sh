@@ -17,3 +17,4 @@ rm -rf "$PROJECT_NAME.iso"
 rm -rf "$PROJECT_NAME.sym"
 rm -rf .gdb_history
 rm -rf info.log
+rm -rf interrupts.txt

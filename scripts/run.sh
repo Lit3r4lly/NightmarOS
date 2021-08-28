@@ -22,4 +22,4 @@ QEMU_ARGS=(
 
 # runs the iso file with qemu
 echo "Executing: qemu-system-i386 " "${QEMU_ARGS[@]}"
-qemu-system-"$(./scripts/target-triplet-to-arch.sh "$HOST")" -cdrom "$PROJECT_NAME.iso" "${QEMU_ARGS[@]}"
+qemu-system-"$(./scripts/target-triplet-to-arch.sh "$HOST")" -cdrom "$PROJECT_NAME.iso" "${QEMU_ARGS[@]}" -d int 2> interrupts.txt
