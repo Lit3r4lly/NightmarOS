@@ -26,7 +26,7 @@ namespace GDT {
                                         GDT::DescriptorFLags::kPagesBit;
 
     struct GDTPointer {
-        u16int limit : 16;
+        u16int size : 16;
         u32int base_address : 32;
     } PACKED;
     using GDTPointer = struct GDTPointer;

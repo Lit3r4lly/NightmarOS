@@ -18,7 +18,7 @@ void GDT::Initialize() {
     K_LOG(INIT, "Initializing GDT");
 
     // set GDT pointer that need to be sent for flushing
-    gdt_ptr.limit = (u16int)(sizeof(GDT::SegmentDescriptor) * kNumOfEntries) - 1; // set 16 bit limit address of the table
+    gdt_ptr.size = (u16int)(sizeof(GDT::SegmentDescriptor) * kNumOfEntries) - 1; // set 16 bit limit address of the table
     gdt_ptr.base_address = (u32int)gdt_entries; // set 32 bit base address of the GDT
     K_LOG(INIT, "Created GDT pointer struct");
 
