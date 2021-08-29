@@ -35,3 +35,6 @@ namespace IDT {
     void Initialize();
     void InsertDescriptor(u32int index, u32int offset, u16int segment_selector, u8int attributes);
 };
+
+/* -- Function imported from idt_flush.s assembly file -- */
+ASM_SCOPE void idt_flush(IDT::IDTPointer* idt_ptr); // flush the IDT table and insert new address into the idtr register
