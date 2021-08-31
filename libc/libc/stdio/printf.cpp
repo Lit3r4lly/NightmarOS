@@ -66,8 +66,7 @@ int print_digits(int val) {
     if (val / 10 == 0) {
         putchar(val + 48);
         return 1;
-    }
-    else{
+    } else {
         int count = print_digits(val / 10);
         putchar((val % 10) + 48);
         return count + 1;
