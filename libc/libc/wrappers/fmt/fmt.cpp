@@ -52,8 +52,8 @@ u32int fmt(const char* format, va_list args, out_function_type out_fun) {
                     char_count += fmt_digits(va_arg(args, u32int), 2, out_fun);
 
                     break;
-                } case 'x': { //print the number in 16 base
-                    char_count += fmt_string("0x", out_fun);
+                } case 'x' : { //print the number in 16 base
+                    char_count += fmt_string("0x", out_fun); //TODO (add overflow check 0xffffffff)
                     char_count += fmt_digits(va_arg(args, u32int), 16, out_fun);
 
                     break;
@@ -62,8 +62,11 @@ u32int fmt(const char* format, va_list args, out_function_type out_fun) {
                     char_count += fmt_digits(va_arg(args, u32int), 8, out_fun);
 
                     break;
-                }
-                case '%': { //print %
+                } case 'p': {
+                    char_count += fmt_string("0x", out_fun);
+                    char_count += fmt_digits(va_arg(args, u32int), 16, out_fun);
+                    break;
+                }case '%': { //print %
                     out_fun((u8int)'%');
                     char_count++;
                 }
@@ -100,14 +103,14 @@ u32int fmt_string(const char* ch, out_function_type out_fun){
  * @param base - the base to print the number in
  * @return - how many chars have been printed
  * */
-u32int fmt_digits(int val, u8int base,out_function_type out_fun) {
-    const char ALPHABET[kMaxBase + 1] = "0123456789ABCDEF";
+u32int fmt_digits(u32int val, u8int base,out_function_type out_fun) {
+    const char kAlphabet[kMaxBase + 1] = "0123456789ABCDEF";
     char conv_buffer[kBufSize];
     u8int curr_pos = kBufSize - 1;
     u32int char_counter = 0;
 
     do {
-        conv_buffer[curr_pos--] = ALPHABET[val % base];
+        conv_buffer[curr_pos--] = kAlphabet[val % base];
         val /= base;
         char_counter++;
     } while(val);
