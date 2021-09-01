@@ -48,7 +48,7 @@ void GDT::InsertDescriptor(u32int index, u32int base_address, u32int limit, u8in
     if (index >= kNumOfEntries) {
         // kernel panic
         // TODO: add appropriate kernel panic
-        TTY::WriteString("[!!] kernel panic!\n");
+        printf("[!!] kernel panic!\n");
         return;
     }
 
