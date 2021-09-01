@@ -73,7 +73,7 @@ u32int fmt_digits(int val, out_function_type out_fun) {
         out_fun(val + 48);
         return 1;
     } else {
-        int count = fmt_digits(val / 10, out_fun);
+        u32int count = fmt_digits(val / 10, out_fun);
         out_fun((val % 10) + 48);
         return count + 1;
     }
