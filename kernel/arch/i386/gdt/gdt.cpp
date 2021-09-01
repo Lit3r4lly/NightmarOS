@@ -32,8 +32,7 @@ void GDT::Initialize() {
 
     // Flush the GDT and insert into the gdtr register the new GDT base address (asm func)
     gdt_flush(&gdt_ptr);
-    K_LOG("Flushed GDT");
-    K_LOG("GDT initialized");
+    K_LOG("Initialized and flushed GDT");
 }
 
 /**
@@ -51,6 +50,9 @@ void GDT::InsertDescriptor(u32int index, u32int base_address, u32int limit, u8in
         printf("[!!] kernel panic!\n");
         return;
     }
+
+    // TODO: change log to work with %x
+    K_LOG("Created segment [%d] - base address: %d, limit: %d", index, base_address, limit);
 
     // manipulate the base_address variable into the struct
     gdt_entries[index].base_low = (base_address & 0xFFFF); // pull only the 2 lowest bytes of the base address
