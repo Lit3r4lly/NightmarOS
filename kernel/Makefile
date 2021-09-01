@@ -49,7 +49,7 @@ $(ARCHDIR)/boot/crtn.o \
 KERNEL_OBJS=\
 $(KERNEL_ARCH_OBJS) \
 kernel/kernel.o \
-kernel/logs/log.o \
+kernel/logs/logs.o \
 #  ---- insert here all kernel objects ----
 
 # all of the objects for the build

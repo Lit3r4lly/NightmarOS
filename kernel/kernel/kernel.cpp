@@ -15,7 +15,7 @@
 C_SCOPE NO_RETURN void kernel_main() {
     TTY::Initialize();
     GDT::Initialize();
-    TTY::WriteString("Hello World!\nJust entered to NightmareOS kernel!\n");
+    printf("Hello! \nWelcome to NightmareOS kernel ;^)\n");
 
     // wait (halt) for interrupt
     asm volatile ("hlt;");

@@ -10,7 +10,8 @@
 
 #include <kernel/common/kdefines.h>
 #include <arch/i386/tty/tty.h>
-#include <kernel/logs/log.h>
+#include <kernel/logs/logs.h>
+#include <libc/stdio.h>
 #include <arch/i386/gdt/descriptor_structure.h>
 
 namespace GDT {
@@ -26,7 +27,7 @@ namespace GDT {
                                         GDT::DescriptorFLags::kPagesBit;
 
     struct GDTPointer {
-        u16int limit : 16;
+        u16int size : 16;
         u32int base_address : 32;
     } PACKED;
     using GDTPointer = struct GDTPointer;
