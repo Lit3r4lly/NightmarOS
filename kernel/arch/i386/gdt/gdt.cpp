@@ -28,7 +28,7 @@ void GDT::Initialize() {
     GDT::InsertDescriptor(2, GDT::kBaseAddress, GDT::kLimit, (u8int)GDT::SegmentAccessType::kKernelData, GDT::kGranularityFlags); // Kernel data segment descriptor
     GDT::InsertDescriptor(3, GDT::kBaseAddress, GDT::kLimit, (u8int)GDT::SegmentAccessType::kUserCode, GDT::kGranularityFlags); // User code segment descriptor
     GDT::InsertDescriptor(4, GDT::kBaseAddress, GDT::kLimit, (u8int)GDT::SegmentAccessType::kUserData, GDT::kGranularityFlags); // User data segment descriptor
-    K_LOG("Created 5 new descriptors");
+    K_LOG("Created %d new descriptors", GDT::kNumOfEntries);
 
     // Flush the GDT and insert into the gdtr register the new GDT base address (asm func)
     gdt_flush(&gdt_ptr);
@@ -51,8 +51,7 @@ void GDT::InsertDescriptor(u32int index, u32int base_address, u32int limit, u8in
         return;
     }
 
-    // TODO: change log to work with %x
-    K_LOG("Created segment [%d] - base address: %d, limit: %d", index, base_address, limit);
+    K_LOG("Created segment [%d] - base address: %x, limit: %x", index, base_address, limit);
 
     // manipulate the base_address variable into the struct
     gdt_entries[index].base_low = (base_address & 0xFFFF); // pull only the 2 lowest bytes of the base address
