@@ -17,7 +17,7 @@ constexpr u8int kBufSize = 64;
 C_SCOPE {
 #endif
 
-    u32int fmt_digits(int val, u8int base,out_function_type out_fun); //function to format number digits
+    u32int fmt_digits(u32int val, u8int base,out_function_type out_fun); //function to format number digits
     u32int fmt(const char* fmt, va_list args, out_function_type out_fun); //function to handle the formatting of arguments into the string
     u32int fmt_string(const char* ch, out_function_type out_fun); //function to format a string
 
