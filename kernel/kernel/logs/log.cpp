@@ -14,6 +14,9 @@
  * @return the written char
  */
 u8int Log::WriteChar(u8int ch) {
+    if (ch < 10 and ch > 0)
+        ch += '0';
+
     Ports::OutB(Log::kHackPort, ch);
     return ch;
 }
