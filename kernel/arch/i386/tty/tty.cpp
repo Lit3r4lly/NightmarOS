@@ -12,6 +12,9 @@
  * Initialize the TTY component by setting color and clearing the screen
  */
 void TTY::Initialize() {
+    K_LOG("Initializing TTY");
+    K_LOG("Frame buffer address: %d", TTY::kTerminalBuffer); // TODO: change printing to %x
+
     terminal_color = VgaEntryColor(VgaColor::kVgaColorWhite, VgaColor::kVgaColorBlack);
     TTY::Clear();
 
@@ -30,6 +33,8 @@ void TTY::Clear() {
             TTY::PutEntryAt(' ', terminal_color, x, y);
         }
     }
+
+    K_LOG("Cleared terminal screen");
 }
 
 /**
@@ -49,7 +54,7 @@ inline u8int TTY::VgaEntryColor(enum VgaColor fg, enum VgaColor bg) {
  * @return entry of color and character usable for the buffer
  */
 inline u16int TTY::VgaEntry(uchar uc, u8int color) {
-    return (uint16_t)uc | (uint16_t)color << 8;
+    return (u16int)uc | (u16int)color << 8;
 }
 
 /**
@@ -59,7 +64,7 @@ inline u16int TTY::VgaEntry(uchar uc, u8int color) {
  * @param x - x coordinate (row)
  * @param y - y coordinate (line)
  */
-void TTY::PutEntryAt(char c, u8int color, size_t x, size_t y) {
+void TTY::PutEntryAt(char c, u8int color, u8int x, u8int y) {
     const size_t index = y * kVgaWidth + x; // y * kVGA_WIDTH = goes to the start of the column
                                             // and add the offset to this (x)
     kTerminalBuffer[index] = TTY::VgaEntry(c, color); // insert the entry to the required place
@@ -71,7 +76,7 @@ void TTY::PutEntryAt(char c, u8int color, size_t x, size_t y) {
  * @param x - x coordinate (row)
  * @param y - y coordinate (line)
  */
-void TTY::PutEntryAt(u16int entry, size_t x, size_t y) {
+void TTY::PutEntryAt(u16int entry, u8int x, u8int y) {
     const size_t index = y * kVgaWidth + x; // y * kVGA_WIDTH = goes to the start of the column
                                             // and add the offset to this (x)
     kTerminalBuffer[index] = entry; // insert the entry to the required place
@@ -128,11 +133,11 @@ void TTY::WriteString(const char* data) {
  * scroll down the terminal by clearing the first line and move all the others once upside
  */
 void TTY::Scroll() {
-    for (size_t x = 0; x < kVgaWidth; ++x)
+    for (uint x = 0; x < kVgaWidth; ++x)
         TTY::PutEntryAt(' ', terminal_color, x, 0); // clears the first row in the terminal
 
-    for (size_t y = 1; y < kVgaHeight; ++y) {
-        for (size_t x = 0; x < kVgaWidth; ++x) {
+    for (uint y = 1; y < kVgaHeight; ++y) {
+        for (uint x = 0; x < kVgaWidth; ++x) {
             // set all the lines to one upper line
             TTY::PutEntryAt(kTerminalBuffer[(y * kVgaWidth) + x], x, y - 1);
         }
