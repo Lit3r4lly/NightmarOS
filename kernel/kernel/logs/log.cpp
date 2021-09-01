@@ -9,10 +9,26 @@
 #include <kernel/logs/log.h>
 
 /**
- * writes string to log output (stdout / file)
- * @param data - string to be written
+ * writes char to log output (stdout / file)
+ * @param ch - char to be written
+ * @return the written char
  */
-void Log::Write(const char *data) {
-    for (unsigned int i = 0; data[i] != '\0'; ++i)
-        Ports::OutB(Log::kHackPort, data[i]);
+u8int Log::WriteChar(u8int ch) {
+    Ports::OutB(Log::kHackPort, ch);
+    return ch;
+}
+
+/**
+ * writes string to log output (stdout / file)
+ * @param fmt - format string
+ * @param ... - variadic params
+ */
+void Log::Write(const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+
+    // format the string with formatting arguments (same as printf)
+    fmt(format, args, Log::WriteChar);
+
+    va_end(args);
 }
