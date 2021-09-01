@@ -12,6 +12,8 @@
 #include <arch/i386/tty/tty.h>
 #endif
 
+#include <libc/ldefines.h>
+
 #ifdef __cplusplus
 C_SCOPE {
 #endif
