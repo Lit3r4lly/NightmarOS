@@ -6,7 +6,7 @@
 * @copyright Copyright (c) 2021
 */
 
-#include <kernel/logs/log.h>
+#include <kernel/logs/logs.h>
 
 /**
  * writes char to log output (stdout / file)

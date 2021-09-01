@@ -10,7 +10,7 @@
 
 // Project headers
 #include <kernel/common/kdefines.h>
-#include <kernel/logs/log.h>
+#include <kernel/logs/logs.h>
 #include <libc/string.h>
 
 namespace TTY {

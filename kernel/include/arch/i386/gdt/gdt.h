@@ -10,7 +10,7 @@
 
 #include <kernel/common/kdefines.h>
 #include <arch/i386/tty/tty.h>
-#include <kernel/logs/log.h>
+#include <kernel/logs/logs.h>
 #include <libc/stdio.h>
 #include <arch/i386/gdt/descriptor_structure.h>
 
