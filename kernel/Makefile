@@ -50,6 +50,7 @@ KERNEL_OBJS=\
 $(KERNEL_ARCH_OBJS) \
 kernel/kernel.o \
 kernel/logs/logs.o \
+kernel/panic/panic.o \
 #  ---- insert here all kernel objects ----
 
 # all of the objects for the build
