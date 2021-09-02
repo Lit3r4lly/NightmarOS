@@ -8,13 +8,16 @@
 
 #include <libc/stdlib.h>
 
+#if defined(__is_libk)
+#include <kernel/common/kuseful.h>
+#endif
+
 /**
  * abort the run and gets inside infinite loop
  */
 __attribute__((__noreturn__)) void abort() {
 #if defined(__is_libk)
-    // TODO: Add proper kernel panic and printing
-    printf("[!!] kernel panic");
+    K_PANIC("Kernel aborted");
 #else
     // TODO: Abnormally terminate the process
 #endif
