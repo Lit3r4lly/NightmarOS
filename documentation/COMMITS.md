@@ -11,3 +11,4 @@ example:
 - Scripts
 - Documentation
 - Makefiles
+- Tests
