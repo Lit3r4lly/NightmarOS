@@ -11,3 +11,8 @@
 #include <kernel/panic/panic.h>
 
 #define K_PANIC(info) Panic::Panic(info, __FILE__, __FUNCTION__, __LINE__)
+
+#define assert(expr) \
+    (static_cast<bool>(expr) \
+    ? void (0) \
+    : K_PANIC(#expr))
