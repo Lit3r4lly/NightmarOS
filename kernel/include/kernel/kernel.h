@@ -13,3 +13,4 @@
 #include <kernel/logs/logs.h>
 #include <kernel/common/kdefines.h>
 #include <libc/stdio.h>
+#include <kernel/common/kuseful.h>
