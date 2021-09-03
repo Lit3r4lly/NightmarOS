@@ -21,7 +21,7 @@ namespace I386 {
     using StackState = struct StackState;
 
     // Cpu state before ISR is occurred
-    struct CpuState {
+    struct CPUState {
         u32int eax : 32;
         u32int ecx : 32;
         u32int edx : 32;
@@ -31,4 +31,5 @@ namespace I386 {
         u32int esi : 32;
         u32int edi : 32;
     } PACKED;
+    using CPUState = struct CPUState;
 };
