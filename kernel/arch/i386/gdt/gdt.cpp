@@ -44,12 +44,8 @@ void GDT::Initialize() {
  * @param granularity_flags - granularity flags (4 bits)
  */
 void GDT::InsertDescriptor(u32int index, u32int base_address, u32int limit, u8int access, u8int granularity_flags) {
-    if (index >= kNumOfEntries) {
-        // kernel panic
-        // TODO: add appropriate kernel panic
-        printf("[!!] kernel panic!\n");
-        return;
-    }
+    if (index >= kNumOfEntries)
+        K_PANIC("index of descriptor is overflowed");
 
     K_LOG("Created segment [%d] - base address: %x, limit: %x", index, base_address, limit);
 
