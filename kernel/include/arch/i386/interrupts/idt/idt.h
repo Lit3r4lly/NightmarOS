@@ -11,7 +11,6 @@
 #include <kernel/common/kdefines.h>
 #include <kernel/common/kuseful.h>
 #include <kernel/logs/logs.h>
-#include <arch/i386/i386.h>
 #include <arch/i386/interrupts/idt/descriptor_structure.h>
 
 /**

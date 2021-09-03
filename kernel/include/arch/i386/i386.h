@@ -28,23 +28,18 @@ namespace I386 {
      * contains all the registers values before the interrupt occur
     */
     struct CPUState {
-        // pushad registers
-        u32int eax : 32;
-        u32int ecx : 32;
-        u32int edx : 32;
-        u32int ebx : 32;
-        u32int esp : 32;
-        u32int ebp : 32;
-        u32int esi : 32;
-        u32int edi : 32;
-
-        // manually pushed segment selector
-        u16int cs : 16;
+        // manually pushed data segment selector
         u16int ds : 16;
-        u16int es : 16;
-        u16int fs : 16;
-        u16int gs : 16;
-        u16int ss : 16;
+
+        // pushad registers
+        u32int edi : 32;
+        u32int esi : 32;
+        u32int ebp : 32;
+        u32int esp : 32;
+        u32int ebx : 32;
+        u32int edx : 32;
+        u32int ecx : 32;
+        u32int eax : 32;
     } PACKED;
     using CPUState = struct CPUState;
 };
