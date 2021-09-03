@@ -9,6 +9,31 @@
 #pragma once
 
 #include <kernel/common/kdefines.h>
+#include <kernel/common/kuseful.h>
+#include <kernel/logs/logs.h>
+#include <arch/i386/i386.h>
+#include <arch/i386/interrupts/idt/descriptor_structure.h>
+
+/**
+    -- First 15 exceptions of intel i386 --
+    0 	Divide Error
+    1 	Debug Exceptions
+    2 	[ Intel reserved ]
+    3 	Breakpoint
+    4 	Overflow
+    5 	Bounds Check
+    6 	Invalid Opcode
+    7 	Coprocessor Not Available
+    8 	Double Fault
+    9 	Coprocessor Segment Overrun
+    10 	Invalid TSS
+    11 	Segment Not Present
+    12 	Stack Exception
+    13 	General Protection Exception(Triple Fault)
+    14 	Page Fault
+    15 	[ Intel reserved ]
+    16 	Coprocessor Error
+ */
 
 namespace IDT {
     constexpr u32int kNumOfEntries = 256;
