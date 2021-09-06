@@ -33,7 +33,7 @@ namespace ISR {
     } PACKED;
 
     // struct of intel declared exceptions in the sdm (volume 3)
-    struct IntelExceptions {
+    struct IntelException {
         char* mnemonic;
         char* description;
     };

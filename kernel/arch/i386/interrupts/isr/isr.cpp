@@ -9,7 +9,7 @@
 #include <arch/i386/interrupts/isr/isr.h>
 
 // Described intel exceptions
-ISR::IntelExceptions exceptions[ISR::kNumOfExceptions] = {
+ISR::IntelException exceptions[ISR::kNumOfExceptions] = {
         {"DE", "Divide-by-zero Error"},
         {"DB", "Debug"},
         {"-", "Non-maskable"},
