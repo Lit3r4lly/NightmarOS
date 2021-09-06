@@ -7,7 +7,7 @@ set -e # stops if there is error
 objcopy --only-keep-debug "sysroot/boot/$PROJECT_NAME.kernel" "$PROJECT_NAME.sym"
 
 # runs the iso file with qemu with debugging option
-qemu-system-"$(./scripts/target-triplet-to-arch.sh "$HOST")" -s -S "$PROJECT_NAME.iso"
+qemu-system-"$(./scripts/target-triplet-to-arch.sh "$HOST")" -s -S "$PROJECT_NAME.iso" -nodefaults -vga std -M q35,smm=off -no-reboot -debugcon file:info.log -d int 2> interrupts.txt
 
 ##########################################################################
 # .gdbinit - in the base directory in the project there is .gdbinit file

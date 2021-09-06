@@ -13,8 +13,20 @@
  * In this point there some initialization of the components that necessary for running the system.
  */
 C_SCOPE NO_RETURN void kernel_main() {
+    K_LOG("Entered to kernel_main");
+
+
+    /**
+     * Initialization process:
+     * 1. TTY
+     * 2. GDT
+     * 3. Interrupts (IDT, PIC, etc.)
+     * ...
+     */
     TTY::Initialize();
     GDT::Initialize();
+    Interrupts::Initialize();
+
     printf("Hello! \nWelcome to NightmareOS kernel ;^)\n");
 
     // wait (halt) for interrupt
