@@ -38,8 +38,9 @@ ISR::Handler interrrupts_handlers[ISR::kNumOfEntries] = { nullptr };
  * initialize interrupts ISRs
  */
 void ISR::Initialize() {
+    K_LOG("Initializing all unique handlers with nullptr");
     // initialize all interrupt handlers as nullptr
-    for (Handler& curr : interrrupts_handlers)
+    for (auto& curr : interrrupts_handlers)
         curr = nullptr;
 }
 
@@ -49,6 +50,7 @@ void ISR::Initialize() {
  * @param interrupt_handler - custom interrupt handler
  */
 void ISR::InsertUniqueHandler(u8int int_num, ISR::Handler handler) {
+    K_LOG("Inserted new unique handler - number: %d, address: %p", int_num, handler);
     interrrupts_handlers[int_num] = handler;
 }
 
@@ -56,9 +58,11 @@ void ISR::InsertUniqueHandler(u8int int_num, ISR::Handler handler) {
  * interrupts common handler - prints the information of the interrupt
  * If there is interrupt that should be handled uniqely, the common handler would call it
  */
-extern "C" void ISR::InterruptCommonStub(ISR::StackState stack_state) {
+extern "C" void ISR::InterruptCommonHandler(ISR::StackState stack_state) {
     auto int_num = stack_state.int_num;
     auto& handler = interrrupts_handlers[int_num];
+
+    K_LOG("Interrupt common handler occurred - interrupt number: %d, unique handler: %p", int_num, handler);
 
     // checks if the interrupt is exception and if there is unique handler for it
     // if not -> the exception is unhandled
@@ -74,11 +78,15 @@ extern "C" void ISR::InterruptCommonStub(ISR::StackState stack_state) {
         printf("    EBP: %x, ESP: %x\n", stack_state.ebp, stack_state.esp);
         printf("    CR0: %x, CR2: %x, CR3: %x\n", I386::ControlRegisters::cr0(), I386::ControlRegisters::cr2(), I386::ControlRegisters::cr3());
 
+        K_LOG("Unhandled Exception #%s %s has occurred\n", current_exception.mnemonic, current_exception.description)
+
         while(true)
             asm volatile ("cli; hlt;");
     }
 
-    if (handler != nullptr)
+    if (handler != nullptr) {
         // found unique handler for the interrupt (e.g. page-fault handler)
+        K_LOG("Unique handler called: %p", handler);
         handler(int_num, stack_state);
+    }
 }
