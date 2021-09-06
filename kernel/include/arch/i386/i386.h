@@ -30,4 +30,24 @@ namespace I386 {
         u32int ecx;
         u32int eax;
     };
+
+    struct ControlRegisters {
+        static u32int cr0() {
+            u32int cr0;
+            asm volatile ("mov %%cr0, %0" : "=r"(cr0));
+            return cr0;
+        }
+
+        static u32int cr2() {
+            u32int cr2;
+            asm volatile ("mov %%cr2, %0" : "=r"(cr2));
+            return cr2
+        }
+
+        static u32int cr3() {
+            u32int cr3;
+            asm volatile ("mov %%cr3, %0" : "=r"(cr3));
+            return cr3;
+        }
+    };
 };

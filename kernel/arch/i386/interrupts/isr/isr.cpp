@@ -56,18 +56,27 @@ void ISR::InsertUniqueHandler(u8int interrupt_id, ISR::Handler handler) {
  */
 extern "C" void ISR::InterruptCommonStub(ISR::StackState stack_state) {
     auto int_num = stack_state.int_num;
+    auto& handler = interrrupts_handlers[int_num];
 
     // checks if the interrupt is exception and if there is unique handler for it
     // if not -> the exception is unhandled
-    if (int_num < 17 && interrrupts_handlers[int_num] != nullptr) {
-        auto current_exception = exceptions[int_num];
+    if (int_num < 17 && handler == nullptr) {
+        // unhandled exception -> dump registers -> panic
+        auto& current_exception = exceptions[int_num];
 
         printf("[^] Unhandled Exception #%s %s has occurred\n", current_exception.mnemonic, current_exception.description);
         printf("    ERR: %x, NUM: %x \n", stack_state.err_code, int_num);
-        printf("    EIP: %x, DS: %x, CS: %x, EFLAGS: %x", stack_state.eip, stack_state.ds, stack_state.cs, stack_state.eflags);
-        printf("    EAX: %x, EBX: %x, ECX: %x", stack_state.eax, stack_state.ebx, stack_state.ecx);
-        printf("    EDX: %x, EDI: %x, ESI: %x", stack_state.edx, stack_state.edi, stack_state.esi);
-        printf("    EBP: %x, ESP: %x", stack_state.ebp, stack_state.esp);
+        printf("    EIP: %x, DS: %x, CS: %x, EFLAGS: %x\n", stack_state.eip, stack_state.ds, stack_state.cs, stack_state.eflags);
+        printf("    EAX: %x, EBX: %x, ECX: %x\n", stack_state.eax, stack_state.ebx, stack_state.ecx);
+        printf("    EDX: %x, EDI: %x, ESI: %x\n", stack_state.edx, stack_state.edi, stack_state.esi);
+        printf("    EBP: %x, ESP: %x\n", stack_state.ebp, stack_state.esp);
+        printf("    CR0: %x, CR2: %x, CR3: %x\n", I386::ControlRegisters::cr0(), I386::ControlRegisters::cr2(), I386::ControlRegisters::cr3());
 
+        while(true)
+            asm volatile ("cli; hlt;");
     }
+
+    if (handler != nullptr)
+        // found unique handler for the interrupt (e.g. page-fault handler)
+        handler(int_num, stack_state);
 }

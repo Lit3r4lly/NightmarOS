@@ -9,6 +9,7 @@
 #pragma once
 
 #include <kernel/common/kuseful.h>
+#include <arch/i386/i386.h>
 
 /**
  * Control flow:
@@ -36,7 +37,7 @@ namespace ISR {
         char* description;
     };
 
-    typedef void (*Handler)(u8int, StackState*);
+    typedef void (*Handler)(u8int, StackState);
 
     void Initialize();
     void InsertUniqueHandler(u8int interrupt_id, Handler handler);
