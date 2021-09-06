@@ -23,7 +23,7 @@
 
 namespace ISR {
     constexpr u32int kNumOfEntries = 256;
-    constexpr u8int kNumOfExceptions = 17;
+    constexpr u8int kNumOfExceptions = 32;
 
     struct StackState {
         u32int ds; // saved data segment
