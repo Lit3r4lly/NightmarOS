@@ -14,4 +14,6 @@
 void Interrupts::Initialize() {
     IDT::Initialize();
     ISR::Initialize();
+
+    asm volatile ("sti;");
 }
