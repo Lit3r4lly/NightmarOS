@@ -18,7 +18,7 @@ namespace I386 {
         u16int es;
         u16int fs;
         u16int gs;
-    } PACKED
+    } PACKED;
 
     struct Registers {
         u32int edi;
@@ -29,7 +29,7 @@ namespace I386 {
         u32int edx;
         u32int ecx;
         u32int eax;
-    };
+    } PACKED;
 
     struct ControlRegisters {
         static u32int cr0() {
@@ -41,7 +41,7 @@ namespace I386 {
         static u32int cr2() {
             u32int cr2;
             asm volatile ("mov %%cr2, %0" : "=r"(cr2));
-            return cr2
+            return cr2;
         }
 
         static u32int cr3() {
