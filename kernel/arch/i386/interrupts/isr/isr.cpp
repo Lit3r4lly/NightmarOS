@@ -8,6 +8,7 @@
 
 #include <arch/i386/interrupts/isr/isr.h>
 
+// Described intel exceptions
 ISR::IntelExceptions exceptions[ISR::kNumOfExceptions] = {
         {"DE", "Divide-by-zero Error"},
         {"DB", "Debug"},
@@ -28,12 +29,13 @@ ISR::IntelExceptions exceptions[ISR::kNumOfExceptions] = {
         {"MF", "x87 Floating-Point Exception"}
 };
 
+// unique handlers array (used for searching if needed custom handling)
 ISR::Handler interrrupts_handlers[ISR::kNumOfEntries] = { nullptr };
 
 /* Control flow described in the header file */
 
 /**
- * Initialize interrupts handlers array with nullptr
+ * initialize interrupts ISRs
  */
 void ISR::Initialize() {
     // initialize all interrupt handlers as nullptr
@@ -43,11 +45,11 @@ void ISR::Initialize() {
 
 /**
  * install custom handler for interrupt (e.g. page-fault for restoring new page)
- * @param interrupt_id - interrupt number
+ * @param int_num - interrupt number
  * @param interrupt_handler - custom interrupt handler
  */
-void ISR::InsertUniqueHandler(u8int interrupt_id, ISR::Handler handler) {
-    interrrupts_handlers[interrupt_id] = handler;
+void ISR::InsertUniqueHandler(u8int int_num, ISR::Handler handler) {
+    interrrupts_handlers[int_num] = handler;
 }
 
 /**
