@@ -1,15 +1,22 @@
 .intel_syntax noprefix
 
-.section .text
-.global isr_common_handler
-isr_common_handler:
+.macro isr_err num
+    .global isr_\num
+    .type isr_\num, @function
+    isr_\num:
+        cli
+        ;...
+.endm
+
+.global isr_common
+.type isr_common, @function
+isr_common:
     pushad ; save general registers
 
     mov eax, ds
     push eax ; push current data segment selector
 
-    mov ebx, cs
-    push ebx ; push current code segment selector
+
 
     ; call to isr handler
 

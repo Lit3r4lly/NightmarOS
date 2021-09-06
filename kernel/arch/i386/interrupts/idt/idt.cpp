@@ -35,7 +35,7 @@ void IDT::InsertDescriptor(u32int index, u32int offset, u16int segment_selector,
     if (index >= kNumOfEntries)
         K_PANIC("index of descriptor is overflowed");
 
-    K_LOG("Created isr descriptor [%d] - segment selector: %x, offset: %x", index, segment_selector, offset);
+    K_LOG("Created interrupt descriptor [%d] - segment selector: %x, offset: %x", index, segment_selector, offset);
 
     // insert the offset into the interrupt descriptor struct (offset beyond the segment base address)
     idt_entries[index].offset_low = (u16int)(offset & 0xFFFF);
