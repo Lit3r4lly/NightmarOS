@@ -13,7 +13,7 @@
  */
 void TTY::Initialize() {
     K_LOG("Initializing TTY");
-    K_LOG("Frame buffer address: %x", TTY::kTerminalBuffer);
+    K_LOG("Framebuffer address: %x", TTY::kTerminalBuffer);
 
     terminal_color = VgaEntryColor(VgaColor::kVgaColorWhite, VgaColor::kVgaColorBlack);
     TTY::Clear();
