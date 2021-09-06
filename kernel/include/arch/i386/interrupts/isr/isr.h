@@ -21,15 +21,24 @@
 
 namespace ISR {
     constexpr u32int kNumOfEntries = 256;
-    typedef void (*Handler)(void*); // declare handler function types (returns void, takes pointer as argument)
+    constexpr u8int kNumOfExceptions = 17;
+
+    struct StackState {
+        u32int ds; // saved data segment
+        u32int edi, esi, ebp, esp, ebx, edx, ecx, eax; // pushad registers
+        u32int int_num, err_code; // interrupt number and error code
+        u32int eip, cs, eflags; // all pushed-by-processor
+    } PACKED;
 
     // struct of intel declared exceptions in the sdm (volume 3)
     struct IntelExceptions {
-        u32int exception_id;
+        char* mnemonic;
         char* description;
     };
 
+    typedef void (*Handler)(u8int, StackState*);
+
     void Initialize();
     void InsertUniqueHandler(u8int interrupt_id, Handler handler);
-    extern "C" void InterruptCommonStub();
+    extern "C" void InterruptCommonStub(StackState stack_state);
 };
