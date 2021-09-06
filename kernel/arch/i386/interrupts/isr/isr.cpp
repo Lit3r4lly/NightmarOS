@@ -26,7 +26,22 @@ ISR::IntelException exceptions[ISR::kNumOfExceptions] = {
         {"GP", "General Protection Fault"},
         {"PF", "Page Fault"},
         {"-", "[Intel Reserved]"},
-        {"MF", "x87 Floating-Point Exception"}
+        {"MF", "x87 Floating-Point Exception"},
+        {"AC", "Alignment Check"},
+        {"MC", "Machine Check"},
+        {"XF", "SIMD Floating-Point Exception"},
+        {"VE", "Virtualization Exception"},
+        {"-", "[Intel Reserved]"},
+        {"-", "[Intel Reserved]"},
+        {"-", "[Intel Reserved]"},
+        {"-", "[Intel Reserved]"},
+        {"-", "[Intel Reserved]"},
+        {"-", "[Intel Reserved]"},
+        {"-", "[Intel Reserved]"},
+        {"-", "[Intel Reserved]"},
+        {"-", "[Intel Reserved]"},
+        {"SX", "Security Exception"},
+        {"-", "[Intel Reserved]"},
 };
 
 // unique handlers array (used for searching if needed custom handling)
