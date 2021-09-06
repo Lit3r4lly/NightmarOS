@@ -1,10 +1,12 @@
 .intel_syntax noprefix
 
+.extern InterruptCommonHandler
+
 .macro isr_err num ; interrupt with error code (pushed to the stack)
     .global isr_\num
     .type isr_\num, @function
     isr_\num:
-        cli ; disable interrupts - considered as trap handler
+        cli
         push \num ; push interrupt number
         jmp common_stub
 .endm
@@ -13,7 +15,7 @@
     .global isr_\num
     .type isr_\num, @function
     isr_\num:
-        cli ; disable interrupts - considered as trap handler
+        cli
         push 0 ; push fake error code
         push \num ; push interrupt number
         jmp common_stub
@@ -41,6 +43,6 @@ common_stub:
 
     add esp, 8 ; clear interrupt number and error code from the stack
 
-    sti ; enable again interrupts (considered as trap handler)
+    sti ; enable again interrupts
     iret ; pops cs, eip eflags and error code
 

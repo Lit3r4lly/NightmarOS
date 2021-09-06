@@ -54,14 +54,14 @@ namespace IDT {
         kValidInterrupt = IDT::DescriptorFlags::k32InterruptType |
                           IDT::DescriptorFlags::kInterruptStorageSegmentBit |
                           IDT::DescriptorFlags::kKernelBit |
-                          IDT::DescriptorFlags::kNonPresent,
+                          IDT::DescriptorFlags::kPresent,
 
         kNonValidTrap = IDT::DescriptorFlags::k32TrapType |
                         IDT::DescriptorFlags::kTrapStorageSegmentBit |
                         IDT::DescriptorFlags::kKernelBit |
                         IDT::DescriptorFlags::kNonPresent,
 
-        kValidTRap = IDT::DescriptorFlags::k32TrapType |
+        kValidTrap = IDT::DescriptorFlags::k32TrapType |
                      IDT::DescriptorFlags::kTrapStorageSegmentBit |
                      IDT::DescriptorFlags::kKernelBit |
                      IDT::DescriptorFlags::kPresent
