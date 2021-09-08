@@ -7,4 +7,4 @@
 * @copyright Copyright (c) 2021
 */
 
-#include <arch/i386/ports/ports.h>
+#include <kernel/ports/ports.h>

@@ -9,7 +9,7 @@
 #pragma once
 
 #include <kernel/common/kdefines.h>
-#include <arch/i386/ports/ports.h>
+#include <kernel/ports/ports.h>
 #include <wrappers/fmt/fmt.h>
 
 // two macros defined for stringize some macros like __LINE__
