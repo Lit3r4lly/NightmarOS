@@ -89,7 +89,8 @@ extern "C" void ISR::InterruptCommonHandler(ISR::StackState stack_state) {
         printf("    EAX: %x, EBX: %x, ECX: %x\n", stack_state.eax, stack_state.ebx, stack_state.ecx);
         printf("    EDX: %x, EDI: %x, ESI: %x\n", stack_state.edx, stack_state.edi, stack_state.esi);
         printf("    EBP: %x, ESP: %x\n", stack_state.ebp, stack_state.esp);
-        printf("    CR0: %x, CR2: %x, CR3: %x\n", I386::ControlRegisters::cr0(), I386::ControlRegisters::cr2(), I386::ControlRegisters::cr3());
+        printf("    CR0: %x, CR2: %x, CR3: %x\n", I386::ControlRegisters::GetCr0(), I386::ControlRegisters::GetCr2(),
+               I386::ControlRegisters::GetCr3());
 
         K_LOG("Unhandled Exception (%x) `#%s - %s` has occurred", int_num, current_exception.mnemonic, current_exception.description)
 
