@@ -49,6 +49,7 @@ $(ARCHDIR)/boot/crtn.o \
 KERNEL_OBJS=\
 $(KERNEL_ARCH_OBJS) \
 kernel/kernel.o \
+kernel/ports/ports.o \
 kernel/logs/logs.o \
 kernel/panic/panic.o \
 #  ---- insert here all kernel objects ----
