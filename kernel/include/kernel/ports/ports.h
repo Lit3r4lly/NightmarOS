@@ -76,6 +76,6 @@ namespace Ports {
      * */
     inline void IoWait()
     {
-        Ports::OutB(0x80, 0);
+        OutB(0x80, 0);
     }
 };
