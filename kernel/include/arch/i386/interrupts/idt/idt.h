@@ -16,6 +16,10 @@
 /* List of intel exceptions can be found at isr.h */
 
 namespace IDT {
+    // IDT offsets for PIC interrupts
+    constexpr u8int kPICMasterOffset = 0x20;
+    constexpr u8int kPICSlaveOffset = 0x28;
+
     constexpr u32int kNumOfEntries = 256;
     constexpr u16int kKernelCodeSelector = 0x8;
 
@@ -46,7 +50,7 @@ namespace IDT {
 /* -- Function imported from idt_flush.s assembly file -- */
 ASM_SCOPE void idt_flush(IDT::IDTPointer* idt_ptr); // flush the IDT table and insert new address into the idtr register
 
-/* -- Function imported from isr/isr.s assembly file -- */
+/* -- Function imported from isr/isr_stubs.s assembly file -- */
 // these are all the macros for the first 32 isrs
 ASM_SCOPE void isr_0(), isr_1(), isr_2(), isr_3(),
                 isr_4(), isr_5(), isr_6(), isr_7(),
@@ -56,3 +60,9 @@ ASM_SCOPE void isr_0(), isr_1(), isr_2(), isr_3(),
                 isr_20(), isr_21(), isr_22(), isr_23(),
                 isr_24(), isr_25(), isr_26(), isr_27(),
                 isr_28(), isr_29(), isr_30(), isr_31();
+
+// these are all the 16 irq stubs
+ASM_SCOPE void irq_0(), irq_1(), irq_2(), irq_3(),
+                irq_4(), irq_5(), irq_6(), irq_7(),
+                irq_8(), irq_9(), irq_10(), irq_11(),
+                irq_12(), irq_13(), irq_14(), irq_15();

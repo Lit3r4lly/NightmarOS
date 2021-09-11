@@ -10,6 +10,7 @@
 
 #include <kernel/common/kuseful.h>
 #include <kernel/logs/logs.h>
+#include <arch/i386/interrupts/pic/pic.h>
 #include <arch/i386/i386.h>
 
 /**
@@ -38,9 +39,13 @@ namespace ISR {
         char* description;
     };
 
-    typedef void (*Handler)(u8int, StackState); // same as `void Handler(u8int int_num, StackState stack_state);`
+    struct Handler {
+        void (*f)(u8int, StackState); // same as `void f(u8int int_num, StackState stack_state);`
+        bool is_irq;
+        bool should_iret;
+    };
 
     void Initialize(); // initialize interrupts ISRs
     void InsertUniqueHandler(u8int int_num, Handler handler); // install custom handler for interrupt (e.g. page-fault for restoring new page)
-    extern "C" void InterruptCommonHandler(StackState stack_state); // interrupts common handler - prints the information of the interrupt or call the unique handler
+    C_SCOPE void InterruptCommonHandler(StackState stack_state); // interrupts common handler - prints the information of the interrupt or call the unique handler
 };

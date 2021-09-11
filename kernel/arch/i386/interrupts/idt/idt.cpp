@@ -57,6 +57,7 @@ void IDT::InsertDescriptor(u32int index, u32int offset, u16int segment_selector,
  * inserting to the idt the first 32 interrupts
  */
 void IDT::SetupInterrupts() {
+    // setup regular interrupts in the IDT
     IDT::InsertDescriptor(0, reinterpret_cast<u32int>(isr_0), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
     IDT::InsertDescriptor(1, reinterpret_cast<u32int>(isr_1), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
     IDT::InsertDescriptor(2, reinterpret_cast<u32int>(isr_2), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
@@ -89,4 +90,22 @@ void IDT::SetupInterrupts() {
     IDT::InsertDescriptor(29, reinterpret_cast<u32int>(isr_29), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
     IDT::InsertDescriptor(30, reinterpret_cast<u32int>(isr_30), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
     IDT::InsertDescriptor(31, reinterpret_cast<u32int>(isr_31), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+
+    // setup IRQs in the IDT
+    IDT::InsertDescriptor(32, reinterpret_cast<u32int>(irq_0), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(33, reinterpret_cast<u32int>(irq_1), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(34, reinterpret_cast<u32int>(irq_2), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(35, reinterpret_cast<u32int>(irq_3), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(36, reinterpret_cast<u32int>(irq_4), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(37, reinterpret_cast<u32int>(irq_5), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(38, reinterpret_cast<u32int>(irq_6), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(39, reinterpret_cast<u32int>(irq_7), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(40, reinterpret_cast<u32int>(irq_8), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(41, reinterpret_cast<u32int>(irq_9), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(42, reinterpret_cast<u32int>(irq_10), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(43, reinterpret_cast<u32int>(irq_11), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(44, reinterpret_cast<u32int>(irq_12), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(45, reinterpret_cast<u32int>(irq_13), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(46, reinterpret_cast<u32int>(irq_14), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
+    IDT::InsertDescriptor(47, reinterpret_cast<u32int>(irq_15), IDT::kKernelCodeSelector, IDT::DescriptorAttributes::kValidInterrupt);
 }

@@ -21,6 +21,18 @@
         jmp common_stub
 .endm
 
+.macro irq num # hardware interrupt without error code
+    .global irq_\num
+    .type irq_\num, @function
+    irq_\num:
+        cli
+        push 0 # push fake error code
+        mov eax, \num
+        add eax, 0x20
+        push eax # push interrupt number (added 32 because the irq is mapped from 32 to 48 in the IDT)
+        jmp common_stub
+.endm
+
 
 .global common_stub
 .type common_stub, @function
@@ -46,6 +58,7 @@ common_stub:
     sti # enable again interrupts
     iret # pops cs, eip eflags and error code
 
+# declare ISR macros
 isr 0
 isr 1
 isr 2
@@ -78,3 +91,21 @@ isr 28
 isr 29
 isr 30
 isr 31
+
+# declare IRQ macros
+irq 0
+irq 1
+irq 2
+irq 3
+irq 4
+irq 5
+irq 6
+irq 7
+irq 8
+irq 9
+irq 10
+irq 11
+irq 12
+irq 13
+irq 14
+irq 15
