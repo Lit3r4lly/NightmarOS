@@ -42,5 +42,5 @@ namespace ISR {
 
     void Initialize(); // initialize interrupts ISRs
     void InsertUniqueHandler(u8int int_num, Handler handler); // install custom handler for interrupt (e.g. page-fault for restoring new page)
-    extern "C" void InterruptCommonHandler(StackState stack_state); // interrupts common handler - prints the information of the interrupt or call the unique handler
+    C_SCOPE void InterruptCommonHandler(StackState stack_state); // interrupts common handler - prints the information of the interrupt or call the unique handler
 };

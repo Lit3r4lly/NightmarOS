@@ -73,7 +73,7 @@ void ISR::InsertUniqueHandler(u8int int_num, ISR::Handler handler) {
  * interrupts common handler - prints the information of the interrupt
  * If there is interrupt that should be handled uniqely, the common handler would call it
  */
-extern "C" void ISR::InterruptCommonHandler(ISR::StackState stack_state) {
+C_SCOPE void ISR::InterruptCommonHandler(ISR::StackState stack_state) {
     auto int_num = stack_state.int_num;
     auto& handler = interrrupts_handlers[int_num];
 
