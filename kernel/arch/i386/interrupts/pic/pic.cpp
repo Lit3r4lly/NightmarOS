@@ -38,7 +38,7 @@ void PIC::PicRemap(int offset1, int offset2)
 }
 
 void PIC::Initialize() {
-    PIC::PicRemap(0x8, 0x70);
+    PIC::PicRemap(0x20, 0x28);
     K_LOG("remapped the master and slave PICs");
 }
 
