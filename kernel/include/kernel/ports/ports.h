@@ -70,4 +70,11 @@ namespace Ports {
     inline void OutDw(const u16int port, const u32int data) {
         asm volatile ("out %%eax, %%dx;" : : "a"(data), "d"(port));
     }
+
+    /**
+     * wait a very small amount of time (1 to 4 microseconds, generally)
+     * */
+    inline void IoWait() {
+        OutB(0x80, 0);
+    }
 };
