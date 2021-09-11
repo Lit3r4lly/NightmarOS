@@ -14,4 +14,5 @@
 void Interrupts::Initialize() {
     IDT::Initialize();
     ISR::Initialize();
+    PIC::Initialize();
 }

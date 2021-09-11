@@ -10,6 +10,7 @@
 
 #include <arch/i386/interrupts/idt/idt.h>
 #include <arch/i386/interrupts/isr/isr.h>
+#include <arch/i386/interrupts/pic/pic.h>
 
 namespace Interrupts {
     void Initialize();
