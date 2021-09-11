@@ -74,8 +74,7 @@ namespace Ports {
     /**
      * wait a very small amount of time (1 to 4 microseconds, generally)
      * */
-    inline void IoWait()
-    {
+    inline void IoWait() {
         OutB(0x80, 0);
     }
 };

@@ -8,37 +8,56 @@
 
 #include <arch/i386/interrupts/pic/pic.h>
 
-void PIC::PicRemap(int offset1, int offset2)
-{
-    u8int a1, a2;
+/**
+ * function to remap the master and slave PICs to new offsets
+ * @param master_offset - the new master IDT offset
+ * @param slave_offset  - the new slave IDT offset
+ */
+void PIC::PICRemap(int master_offset, int slave_offset) {
+    u8int master_masks, slave_masks = 0;
 
-    a1 = Ports::InB(PIC::kPic1Data);                        // save masks
-    a2 = Ports::InB(PIC::kPic2Data);
+    K_LOG("Remapping PICs");
+    K_LOG("New master offset: %x", master_offset);
+    K_LOG("New slave offset: %x", slave_offset);
 
-    Ports::OutB(PIC::kPic1Command, PIC::kIcw1Init | PIC::kIcw1Icw4);  // starts the initialization sequence (in cascade mode)
-    Ports::IoWait();
-    Ports::OutB(PIC::kPic2Command, PIC::kIcw1Init | PIC::kIcw1Icw4);
-    Ports::IoWait();
-    Ports::OutB(PIC::kPic1Data, offset1);                 // ICW2: Master PIC vector offset
-    Ports::IoWait();
-    Ports::OutB(PIC::kPic2Data, offset2);                 // ICW2: Slave PIC vector offset
-    Ports::IoWait();
-    Ports::OutB(PIC::kPic1Data, 4);                       // ICW3: tell Master PIC that there is a slave PIC at IRQ2 (0000 0100)
-    Ports::IoWait();
-    Ports::OutB(PIC::kPic2Data, 2);                       // ICW3: tell Slave PIC its cascade identity (0000 0010)
-    Ports::IoWait();
+    // save masks
+    master_masks = Ports::InB(PIC::kPICMasterData);
+    slave_masks = Ports::InB(PIC::kPICSlaveData);
 
-    Ports::OutB(PIC::kPic1Data, PIC::kIcw48086);
+    // starts the initialization sequence (in cascade mode)
+    Ports::OutB(PIC::kPICMasterCommand, PIC::kICW1Init | PIC::kICW1ICW4);
     Ports::IoWait();
-    Ports::OutB(PIC::kPic2Data, PIC::kIcw48086);
+    Ports::OutB(PIC::kPICSlaveCommand, PIC::kICW1Init | PIC::kICW1ICW4);
     Ports::IoWait();
 
-    Ports::OutB(PIC::kPic1Data, a1);   // restore saved masks.
-    Ports::OutB(PIC::kPic2Data, a2);
+    // gives the PIC new offsets
+    Ports::OutB(PIC::kPICMasterData, master_offset);
+    Ports::IoWait();
+    Ports::OutB(PIC::kPICSlaveData, slave_offset);
+    Ports::IoWait();
+
+    // tells the PICs that slave/master exists
+    Ports::OutB(PIC::kPICMasterData, 4);
+    Ports::IoWait();
+    Ports::OutB(PIC::kPICSlaveData, 2);
+    Ports::IoWait();
+    
+    // gives additional info about the architecture
+    Ports::OutB(PIC::kPICMasterData, PIC::kICW48086);
+    Ports::IoWait();
+    Ports::OutB(PIC::kPICSlaveData, PIC::kICW48086);
+    Ports::IoWait();
+
+    // restore masks
+    Ports::OutB(PIC::kPICMasterData, master_masks);
+    Ports::OutB(PIC::kPICSlaveData, slave_masks);
 }
 
+/**
+ * Encapsulate the remap function
+ */
 void PIC::Initialize() {
-    PIC::PicRemap(0x20, 0x28);
-    K_LOG("remapped the master and slave PICs");
+    PIC::PICRemap(0x20, 0x28);
+    K_LOG("Remapped the master and slave PICs");
 }
 
