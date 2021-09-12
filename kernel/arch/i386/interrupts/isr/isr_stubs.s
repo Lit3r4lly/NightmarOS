@@ -27,7 +27,9 @@
     irq_\num:
         cli
         push 0 # push fake error code
-        push \num # push interrupt number
+        mov eax, \num
+        add eax, 0x20
+        push eax # push interrupt number (added 32 because the irq is mapped from 32 to 48 in the IDT)
         jmp common_stub
 .endm
 
