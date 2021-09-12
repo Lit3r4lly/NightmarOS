@@ -14,16 +14,20 @@
 
 namespace PIC {
     // IDT offsets
-    constexpr u8int kPICMasterOffset = 0x20;
-    constexpr u8int kPICSlaveOffset = 0x28;
+    constexpr u8int kMasterOffset = 0x20;
+    constexpr u8int kSlaveOffset = 0x28;
 
-    constexpr u8int kPICMaster = 0x20;	// IO base address for master PIC
-    constexpr u8int kPICSlave = 0xA0; // IO base address for slave PIC
-    constexpr u8int kPICMasterCommand = kPICMaster;
-    constexpr u16int kPICMasterData = kPICMaster + 1;
-    constexpr u8int kPICSlaveCommand = kPICSlave;
-    constexpr u16int kPICSlaveData = kPICSlave + 1;
-    constexpr u8int kPICEOI	= 0x20;	// End-of-interrupt command code
+    // I/O base address for master and slave
+    constexpr u8int kMasterAddress = 0x20;
+    constexpr u8int kSlaveAddress = 0xA0;
+
+    // master and slave command & data ports
+    constexpr u8int kMasterCommand = kMasterAddress;
+    constexpr u16int kMasterData = kMasterAddress + 1;
+    constexpr u8int kSlaveCommand = kSlaveAddress;
+    constexpr u16int kSlaveData = kSlaveAddress + 1;
+
+    constexpr u8int kEOI	= 0x20;	// End-of-interrupt command code
     
     constexpr u8int kICW1ICW4	= 0x01;	// ICW4 (not) needed
     constexpr u8int kICW1Single =	0x02; // Single (cascade) mode
