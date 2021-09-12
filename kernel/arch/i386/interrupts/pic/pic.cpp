@@ -72,5 +72,7 @@ void PIC::SendEOI(u8int irq) {
         Ports::OutB(PIC::kSlaveCommand, PIC::kEOI);
 
     Ports::OutB(PIC::kMasterCommand, PIC::kEOI);
+
+    K_LOG("Sent End-Of-Interrupt for irq: %x", irq);
 }
 
