@@ -55,8 +55,11 @@ ISR::Handler interrrupts_handlers[ISR::kNumOfEntries] = { nullptr };
 void ISR::Initialize() {
     K_LOG("Initializing all unique handlers with nullptr");
     // initialize all interrupt handlers as nullptr
-    for (auto& curr : interrrupts_handlers)
-        curr = nullptr;
+    for (auto& curr : interrrupts_handlers) {
+        curr.f = nullptr;
+        curr.is_irq = false;
+        curr.should_iret = false;
+    }
 }
 
 /**
@@ -71,7 +74,7 @@ void ISR::InsertUniqueHandler(u8int int_num, ISR::Handler handler) {
 
 /**
  * interrupts common handler - prints the information of the interrupt
- * If there is interrupt that should be handled uniqely, the common handler would call it
+ * If there is interrupt that should be handled uniquely, the common handler would call it
  */
 C_SCOPE void ISR::InterruptCommonHandler(ISR::StackState stack_state) {
     auto int_num = stack_state.int_num;
@@ -79,7 +82,7 @@ C_SCOPE void ISR::InterruptCommonHandler(ISR::StackState stack_state) {
 
     // checks if the interrupt is exception and if there is unique handler for it
     // if not -> the exception is unhandled
-    if (int_num < ISR::kNumOfExceptions && handler == nullptr) {
+    if (int_num < ISR::kNumOfExceptions && handler.f == nullptr) {
         // unhandled exception -> dump registers -> panic
         auto& current_exception = exceptions[int_num];
 
@@ -89,8 +92,7 @@ C_SCOPE void ISR::InterruptCommonHandler(ISR::StackState stack_state) {
         printf("    EAX: %x, EBX: %x, ECX: %x\n", stack_state.eax, stack_state.ebx, stack_state.ecx);
         printf("    EDX: %x, EDI: %x, ESI: %x\n", stack_state.edx, stack_state.edi, stack_state.esi);
         printf("    EBP: %x, ESP: %x\n", stack_state.ebp, stack_state.esp);
-        printf("    CR0: %x, CR2: %x, CR3: %x\n", I386::ControlRegisters::GetCr0(), I386::ControlRegisters::GetCr2(),
-               I386::ControlRegisters::GetCr3());
+        printf("    CR0: %x, CR2: %x, CR3: %x\n", I386::ControlRegisters::GetCr0(), I386::ControlRegisters::GetCr2(), I386::ControlRegisters::GetCr3());
 
         K_LOG("Unhandled Exception (%x) `#%s - %s` has occurred", int_num, current_exception.mnemonic, current_exception.description)
 
@@ -98,11 +100,20 @@ C_SCOPE void ISR::InterruptCommonHandler(ISR::StackState stack_state) {
             asm volatile ("cli; hlt;");
     }
 
-    if (int_num < ISR::kNumOfExceptions && handler != nullptr) {
+    if (handler.f != nullptr) {
         // found unique handler for the interrupt (e.g. page-fault handler)
-        auto& current_exception = exceptions[int_num];
-        K_LOG("Handled Exception (%x) `#%s - %s` has occurred, handler: %p", int_num, current_exception.mnemonic, current_exception.description, handler)
-
-        handler(int_num, stack_state);
+        K_LOG("Handled interrupt %x handler has been called", int_num);
+        handler.f(int_num, stack_state);
     }
+
+    // if interrupt is IRQ - send End Of Interrupts
+    if (handler.is_irq)
+        // TODO: send EOI
+        int i = 1;
+
+    // if handler shouldn't return and isn't IRQ (IRQ should return at all) - clear interrupts and halt the cpu
+    if (handler.should_iret == false && handler.is_irq == false)
+        asm volatile ("cli;"
+                      "hlt;");
+
 }

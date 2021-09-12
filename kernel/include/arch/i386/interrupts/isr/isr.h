@@ -38,7 +38,11 @@ namespace ISR {
         char* description;
     };
 
-    typedef void (*Handler)(u8int, StackState); // same as `void Handler(u8int int_num, StackState stack_state);`
+    struct Handler {
+        void (*f)(u8int, StackState); // same as `void f(u8int int_num, StackState stack_state);`
+        bool is_irq;
+        bool should_iret;
+    };
 
     void Initialize(); // initialize interrupts ISRs
     void InsertUniqueHandler(u8int int_num, Handler handler); // install custom handler for interrupt (e.g. page-fault for restoring new page)
