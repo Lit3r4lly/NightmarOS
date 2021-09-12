@@ -41,7 +41,7 @@ namespace PIC {
     constexpr u8int kICW4BufMaster = 0x0C; // Buffered mode/master
     constexpr u8int kICW4SFnm	= 0x10;	// Special fully nested (not)
 
-    void Remap(int master_offset, int slave_offset); // Remap the master and slave PIC to new IDT offsets
-    void SendEOI(u8int irq);
     void Initialize(); // Encapsulate the remap function
+    void Remap(int master_offset, int slave_offset); // Remap the master and slave PIC to new IDT offsets
+    void SendEOI(u8int irq); // sends end-of-interrupt to the pic chip when the interrupt routine is done \ end
 }

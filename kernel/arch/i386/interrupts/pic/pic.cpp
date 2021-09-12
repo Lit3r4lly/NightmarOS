@@ -9,6 +9,14 @@
 #include <arch/i386/interrupts/pic/pic.h>
 
 /**
+ * Encapsulate the remap function
+ */
+void PIC::Initialize() {
+    PIC::Remap(PIC::kMasterOffset, PIC::kSlaveOffset);
+    K_LOG("Remapped the master and slave PICs");
+}
+
+/**
  * function to remap the master and slave PICs to new offsets
  * @param master_offset - the new master IDT offset
  * @param slave_offset  - the new slave IDT offset
@@ -51,14 +59,6 @@ void PIC::Remap(int master_offset, int slave_offset) {
     // restore masks
     Ports::OutB(PIC::kMasterData, master_masks);
     Ports::OutB(PIC::kSlaveData, slave_masks);
-}
-
-/**
- * Encapsulate the remap function
- */
-void PIC::Initialize() {
-    PIC::Remap(PIC::kMasterOffset, PIC::kSlaveOffset);
-    K_LOG("Remapped the master and slave PICs");
 }
 
 /**
