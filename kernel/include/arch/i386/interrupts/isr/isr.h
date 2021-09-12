@@ -10,6 +10,7 @@
 
 #include <kernel/common/kuseful.h>
 #include <kernel/logs/logs.h>
+#include <arch/i386/interrupts/pic/pic.h>
 #include <arch/i386/i386.h>
 
 /**

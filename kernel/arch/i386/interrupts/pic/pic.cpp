@@ -13,7 +13,7 @@
  * @param master_offset - the new master IDT offset
  * @param slave_offset  - the new slave IDT offset
  */
-void PIC::PICRemap(int master_offset, int slave_offset) {
+void PIC::Remap(int master_offset, int slave_offset) {
     u8int master_masks, slave_masks = 0;
 
     K_LOG("Remapping PICs");
@@ -57,7 +57,20 @@ void PIC::PICRemap(int master_offset, int slave_offset) {
  * Encapsulate the remap function
  */
 void PIC::Initialize() {
-    PIC::PICRemap(PIC::kPICMasterOffset, PIC::kPICSlaveOffset);
+    PIC::Remap(PIC::kPICMasterOffset, PIC::kPICSlaveOffset);
     K_LOG("Remapped the master and slave PICs");
+}
+
+/**
+ * sends end-of-interrupt to the pic chip when the interrupt routine is done \ end
+ * @param irq - irq number
+ */
+void PIC::SendEOI(u8int irq) {
+    // if the irq came from slave PIC - sends EOI both to slave and both to master
+    // if the irq came from master PIC - sends EOI only to the master
+    if (irq >= PIC::kPICSlaveOffset)
+        Ports::OutB(PIC::kPICSlaveCommand, PIC::kPICEOI);
+
+    Ports::OutB(PIC::kPICMasterCommand, PIC::kPICEOI);
 }
 

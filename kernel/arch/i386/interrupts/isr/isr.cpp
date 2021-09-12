@@ -106,10 +106,9 @@ C_SCOPE void ISR::InterruptCommonHandler(ISR::StackState stack_state) {
         handler.f(int_num, stack_state);
     }
 
-    // if interrupt is IRQ - send End Of Interrupts
+    // if interrupt is IRQ - send End-Of-Interrupt
     if (handler.is_irq)
-        // TODO: send EOI
-        int i = 1;
+        PIC::SendEOI(int_num);
 
     // if handler shouldn't return and isn't IRQ (IRQ should return at all) - clear interrupts and halt the cpu
     if (handler.should_iret == false && handler.is_irq == false)

@@ -17,7 +17,6 @@ namespace PIC {
     constexpr u8int kPICMasterOffset = 0x20;
     constexpr u8int kPICSlaveOffset = 0x28;
 
-
     constexpr u8int kPICMaster = 0x20;	// IO base address for master PIC
     constexpr u8int kPICSlave = 0xA0; // IO base address for slave PIC
     constexpr u8int kPICMasterCommand = kPICMaster;
@@ -38,6 +37,7 @@ namespace PIC {
     constexpr u8int kICW4BufMaster = 0x0C; // Buffered mode/master
     constexpr u8int kICW4SFnm	= 0x10;	// Special fully nested (not)
 
-    void PICRemap(int master_offset, int slave_offset); // Remap the master and slave PIC to new IDT offsets
+    void Remap(int master_offset, int slave_offset); // Remap the master and slave PIC to new IDT offsets
+    void SendEOI(u8int irq);
     void Initialize(); // Encapsulate the remap function
 }
