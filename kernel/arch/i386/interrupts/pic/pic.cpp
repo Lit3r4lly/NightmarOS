@@ -57,7 +57,7 @@ void PIC::PICRemap(int master_offset, int slave_offset) {
  * Encapsulate the remap function
  */
 void PIC::Initialize() {
-    PIC::PICRemap(0x20, 0x28);
+    PIC::PICRemap(PIC::kPICMasterOffset, PIC::kPICSlaveOffset);
     K_LOG("Remapped the master and slave PICs");
 }
 

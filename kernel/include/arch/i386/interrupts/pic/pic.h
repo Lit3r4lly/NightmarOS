@@ -13,6 +13,11 @@
 #include <kernel/ports/ports.h>
 
 namespace PIC {
+    // IDT offsets
+    constexpr u8int kPICMasterOffset = 0x20;
+    constexpr u8int kPICSlaveOffset = 0x28;
+
+
     constexpr u8int kPICMaster = 0x20;	// IO base address for master PIC
     constexpr u8int kPICSlave = 0xA0; // IO base address for slave PIC
     constexpr u8int kPICMasterCommand = kPICMaster;

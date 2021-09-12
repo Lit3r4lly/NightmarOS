@@ -16,6 +16,10 @@
 /* List of intel exceptions can be found at isr.h */
 
 namespace IDT {
+    // IDT offsets for PIC interrupts
+    constexpr u8int kPICMasterOffset = 0x20;
+    constexpr u8int kPICSlaveOffset = 0x28;
+
     constexpr u32int kNumOfEntries = 256;
     constexpr u16int kKernelCodeSelector = 0x8;
 
