@@ -91,20 +91,19 @@ isr 30
 isr 31
 
 # declare IRQ macros
-irq 32
-irq 33
-irq 34
-irq 35
-irq 36
-irq 37
-irq 38
-irq 39
-irq 40
-irq 41
-irq 42
-irq 43
-irq 44
-irq 45
-irq 46
-irq 47
-irq 48
+irq 0
+irq 1
+irq 2
+irq 3
+irq 4
+irq 5
+irq 6
+irq 7
+irq 8
+irq 9
+irq 10
+irq 11
+irq 12
+irq 13
+irq 14
+irq 15
