@@ -41,8 +41,10 @@ void IDT::FlushTable() {
  * @param attributes - attributes of the interrupt (type, dpl, etc...)
  */
 void IDT::InsertDescriptor(u32int index, u32int offset, u16int segment_selector, u8int attributes) {
-    if (index >= kNumOfEntries)
-        K_PANIC("index of descriptor is overflowed");
+    if (index >= kNumOfEntries) {
+        K_LOG("Index %x is not in the idt range", index);
+        return;
+    }
 
     K_LOG("Created interrupt descriptor [%d] - segment selector: %x, offset: %x", index, segment_selector, offset);
 
