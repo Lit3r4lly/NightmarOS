@@ -29,6 +29,7 @@ C_SCOPE NO_RETURN void kernel_main() {
 
     printf("Hello! \nWelcome to NightmareOS kernel ;^)\n");
 
-    // wait (halt) for interrupt
-    asm volatile ("hlt;");
+    // halt the cpu forever and avoid the system to shutdown
+    while (true)
+        asm volatile ("hlt;");
 }

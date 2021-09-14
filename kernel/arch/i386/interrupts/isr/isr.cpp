@@ -112,7 +112,8 @@ C_SCOPE void ISR::InterruptCommonHandler(ISR::StackState stack_state) {
 
     // if handler shouldn't return and isn't IRQ (IRQ should return at all) - clear interrupts and halt the cpu
     if (handler.should_iret == false && handler.is_irq == false) {
-        asm volatile ("cli;"
-                      "hlt;");
+        while (true)
+            asm volatile ("cli;"
+                          "hlt;");
     }
 }
