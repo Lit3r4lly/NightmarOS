@@ -15,7 +15,7 @@
 /**
  * abort the run and gets inside infinite loop
  */
-__attribute__((__noreturn__)) void abort() {
+NO_RETURN void abort() {
 #if defined(__is_libk)
     K_PANIC("Kernel aborted");
 #else
