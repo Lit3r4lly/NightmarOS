@@ -1,4 +1,4 @@
-#Commits
+# Commits
 
 commits should be like this:  
 ``<type>: <message>``  
