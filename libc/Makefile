@@ -38,6 +38,7 @@ LIBK_CPPFLAGS:=$(LIBK_CPPFLAGS) $(KERNEL_ARCH_CPPFLAGS)
 FREEOBJS=\
 $(ARCH_FREEOBJS) \
 libc/stdio/putchar.o \
+libc/stdio/printf.o \
 libc/stdlib/abort.o \
 libc/stdlib/atoi.o \
 libc/string/strlen.o \
@@ -46,6 +47,7 @@ libc/string/memset.o \
 libc/string/strncpy.o \
 libc/string/strcmp.o \
 libc/string/memcpy.o \
+libc/wrappers/fmt/fmt.o \
 # insert here freestanding objects (kernel libc objects)
 
 # hosted objects - standard library enabled with user-space

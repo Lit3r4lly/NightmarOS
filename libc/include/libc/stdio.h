@@ -12,11 +12,14 @@
 #include <arch/i386/tty/tty.h>
 #endif
 
+#include <libc/ldefines.h>
+
 #ifdef __cplusplus
 C_SCOPE {
 #endif
 
-    int putchar(int ich); // print char to the screen using the TTY
+    uint8_t putchar(uint8_t ich); // print char to the screen using the TTY
+    uint32_t printf(const char* format, ...); //print formatted string to the screen
 
 #ifdef __cplusplus
 };

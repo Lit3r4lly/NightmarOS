@@ -10,4 +10,8 @@
 
 #include <arch/i386/tty/tty.h>
 #include <arch/i386/gdt/gdt.h>
-#include <kernel/kdefines.h>
+#include <arch/i386/interrupts/interrupts.h>
+#include <kernel/logs/logs.h>
+#include <kernel/common/kdefines.h>
+#include <libc/stdio.h>
+#include <kernel/common/kuseful.h>

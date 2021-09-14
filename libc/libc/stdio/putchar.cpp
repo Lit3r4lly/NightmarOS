@@ -13,10 +13,10 @@
  * @param ich - desired char
  * @return the char that written to the screen as int, if there is error the function would return EOF
  */
-int putchar(int ich) {
+uint8_t putchar(uint8_t ich) {
 #if defined(__is_libk)
     char c = (char)ich;
-    TTY::WriteString(&c);
+    TTY::PutChar(c);
 #else
     // TODO: implement user-mode stdio syscalls
 #endif

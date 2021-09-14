@@ -9,16 +9,15 @@
 #include <libc/stdlib.h>
 
 #if defined(__is_libk)
-#include <arch/i386/tty/tty.h>
+#include <kernel/common/kuseful.h>
 #endif
 
 /**
  * abort the run and gets inside infinite loop
  */
-__attribute__((__noreturn__)) void abort() {
+NO_RETURN void abort() {
 #if defined(__is_libk)
-    // TODO: Add proper kernel panic and printing
-    TTY::WriteString("[!!] kernel panic");
+    K_PANIC("Kernel aborted");
 #else
     // TODO: Abnormally terminate the process
 #endif

@@ -10,6 +10,8 @@
 *.iso
 *.sym
 .gdb_history
+interrupts.txt
+*.txt
 isodir
 sysroot
 cmake-build-debug

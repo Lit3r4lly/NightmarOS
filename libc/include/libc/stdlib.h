@@ -8,7 +8,9 @@
 
 #pragma once
 
+
 #include <libc/ldefines.h>
+#include <libc/stdio.h>
 
 #ifdef __cplusplus
 C_SCOPE {

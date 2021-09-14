@@ -1,4 +1,4 @@
-#Commits
+# Commits
 
 commits should be like this:  
 ``<type>: <message>``  
@@ -11,3 +11,4 @@ example:
 - Scripts
 - Documentation
 - Makefiles
+- Tests

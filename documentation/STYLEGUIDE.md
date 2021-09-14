@@ -4,7 +4,10 @@
 - Directory name should be lowercase in camel_case (if needed): ``directory_name`` or ``name``
 
 ### Files
-- FIle name should be lowercase in camel_case (if needed): ``file_name`` or ``name``
+- File name should be lowercase in camel_case (if needed): ``file_name`` or ``name``
+
+### Tests
+- File names of tests should be ``t_component``
 
 ### Classes  
 - Each class should contain Initialize method
