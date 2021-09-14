@@ -16,8 +16,8 @@ namespace Ports {
      * @param port - port number
      * @return input from port (with size of byte)
      */
-    inline u8int InB(const u16int port) {
-        u8int input{};
+    inline uint8_t InB(const uint16_t port) {
+        uint8_t input{};
         asm volatile ("in %%dx, %%al;" : "=a"(input) : "d"(port));
         return input;
     }
@@ -27,8 +27,8 @@ namespace Ports {
      * @param port - port number
      * @return input from port (with size of word)
      */
-    inline u16int InW(const u16int port) {
-        u16int input{};
+    inline uint16_t InW(const uint16_t port) {
+        uint16_t input{};
         asm volatile ("in %%dx, %%ax;" : "=a"(input) : "d"(port));
         return input;
     }
@@ -38,8 +38,8 @@ namespace Ports {
      * @param port - port number
      * @return input from port (with size of double word)
      */
-    inline u32int InDw(const u16int port) {
-        u32int input{};
+    inline uint32_t InDw(const uint16_t port) {
+        uint32_t input{};
         asm volatile ("in %%dx, %%eax;" : "=a"(input) : "d"(port));
         return input;
     }
@@ -49,7 +49,7 @@ namespace Ports {
      * @param port - port number
      * @param data - data to be sent (with size of byte)
      */
-    inline void OutB(const u16int port, const u8int data) {
+    inline void OutB(const uint16_t port, const uint8_t data) {
         asm volatile ("out %%al, %%dx;" : : "a"(data), "d"(port));
     }
 
@@ -58,7 +58,7 @@ namespace Ports {
      * @param port - port number
      * @param data - data to be sent (with size of word)
      */
-    inline void OutW(const u16int port, const u16int data) {
+    inline void OutW(const uint16_t port, const uint16_t data) {
         asm volatile ("out %%ax, %%dx;" : : "a"(data), "d"(port));
     }
 
@@ -67,7 +67,7 @@ namespace Ports {
      * @param port - port number
      * @param data - data to be sent (with size of double word)
      */
-    inline void OutDw(const u16int port, const u32int data) {
+    inline void OutDw(const uint16_t port, const uint32_t data) {
         asm volatile ("out %%eax, %%dx;" : : "a"(data), "d"(port));
     }
 

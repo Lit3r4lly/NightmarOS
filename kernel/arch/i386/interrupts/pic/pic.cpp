@@ -22,7 +22,7 @@ void PIC::Initialize() {
  * @param slave_offset  - the new slave IDT offset
  */
 void PIC::Remap(int master_offset, int slave_offset) {
-    u8int master_masks, slave_masks = 0;
+    uint8_t master_masks, slave_masks = 0;
 
     K_LOG("Remapping PICs");
     K_LOG("New master offset: %x", master_offset);
@@ -65,7 +65,7 @@ void PIC::Remap(int master_offset, int slave_offset) {
  * sends end-of-interrupt to the pic chip when the interrupt routine is done \ end
  * @param irq - irq number
  */
-void PIC::SendEOI(u8int irq) {
+void PIC::SendEOI(uint8_t irq) {
     // if the irq came from slave PIC - sends EOI both to slave and both to master
     // if the irq came from master PIC - sends EOI only to the master
     if (irq >= PIC::kSlaveOffset)

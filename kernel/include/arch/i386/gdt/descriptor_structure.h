@@ -24,7 +24,7 @@
 
 
 namespace GDT {
-    enum DescriptorFLags : u32int {
+    enum DescriptorFLags : uint32_t {
         /* ------------------------- Access byte ------------------------- */
 
         // Ac bit
@@ -78,7 +78,7 @@ namespace GDT {
         kPagesBit = 1 << 3 // granularity bit - increment in pages
     };
 
-    enum class SegmentAccessType : u8int {
+    enum class SegmentAccessType : uint8_t {
         // Null-segment access byte
         kNull = 0x0,
 

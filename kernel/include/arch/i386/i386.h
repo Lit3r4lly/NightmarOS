@@ -12,40 +12,40 @@
 
 namespace I386 {
     struct SegmentRegisters {
-        u16int cs;
-        u16int ss;
-        u16int ds;
-        u16int es;
-        u16int fs;
-        u16int gs;
+        uint16_t cs;
+        uint16_t ss;
+        uint16_t ds;
+        uint16_t es;
+        uint16_t fs;
+        uint16_t gs;
     } PACKED;
 
     struct Registers {
-        u32int edi;
-        u32int esi;
-        u32int ebp;
-        u32int esp;
-        u32int ebx;
-        u32int edx;
-        u32int ecx;
-        u32int eax;
+        uint32_t edi;
+        uint32_t esi;
+        uint32_t ebp;
+        uint32_t esp;
+        uint32_t ebx;
+        uint32_t edx;
+        uint32_t ecx;
+        uint32_t eax;
     } PACKED;
 
     struct ControlRegisters {
-        static u32int GetCr0() {
-            u32int cr0;
+        static uint32_t GetCr0() {
+            uint32_t cr0;
             asm volatile ("mov %%cr0, %0" : "=r"(cr0));
             return cr0;
         }
 
-        static u32int GetCr2() {
-            u32int cr2;
+        static uint32_t GetCr2() {
+            uint32_t cr2;
             asm volatile ("mov %%cr2, %0" : "=r"(cr2));
             return cr2;
         }
 
-        static u32int GetCr3() {
-            u32int cr3;
+        static uint32_t GetCr3() {
+            uint32_t cr3;
             asm volatile ("mov %%cr3, %0" : "=r"(cr3));
             return cr3;
         }

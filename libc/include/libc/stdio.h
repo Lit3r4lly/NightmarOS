@@ -18,8 +18,8 @@
 C_SCOPE {
 #endif
 
-    u8int putchar(u8int ich); // print char to the screen using the TTY
-    u32int printf(const char* format,...); //print formatted string to the screen
+    uint8_t putchar(uint8_t ich); // print char to the screen using the TTY
+    uint32_t printf(const char* format, ...); //print formatted string to the screen
 
 #ifdef __cplusplus
 };

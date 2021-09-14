@@ -67,7 +67,7 @@ void ISR::Initialize() {
  * @param int_num - interrupt number
  * @param interrupt_handler - custom interrupt handler
  */
-void ISR::InsertUniqueHandler(u8int int_num, ISR::Handler handler) {
+void ISR::InsertUniqueHandler(uint8_t int_num, ISR::Handler handler) {
     K_LOG("Inserted new unique handler - number: %d, address: %p", int_num, handler);
     interrrupts_handlers[int_num] = handler;
 }

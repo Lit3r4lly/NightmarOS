@@ -23,14 +23,14 @@
  */
 
 namespace ISR {
-    constexpr u32int kNumOfEntries = 256;
-    constexpr u8int kNumOfExceptions = 32;
+    constexpr uint32_t kNumOfEntries = 256;
+    constexpr uint8_t kNumOfExceptions = 32;
 
     struct StackState {
-        u32int ds; // saved data segment
-        u32int edi, esi, ebp, esp, ebx, edx, ecx, eax; // pushad registers
-        u32int int_num, err_code; // interrupt number and error code
-        u32int eip, cs, eflags; // all pushed-by-processor
+        uint32_t ds; // saved data segment
+        uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; // pushad registers
+        uint32_t int_num, err_code; // interrupt number and error code
+        uint32_t eip, cs, eflags; // all pushed-by-processor
     } PACKED;
 
     // struct of intel declared exceptions in the sdm (volume 3)
@@ -40,12 +40,12 @@ namespace ISR {
     };
 
     struct Handler {
-        void (*f)(u8int, StackState); // same as `void f(u8int int_num, StackState stack_state);`
+        void (*f)(uint8_t, StackState); // same as `void f(uint8_t int_num, StackState stack_state);`
         bool is_irq;
         bool should_iret;
     };
 
     void Initialize(); // initialize interrupts ISRs
-    void InsertUniqueHandler(u8int int_num, Handler handler); // install custom handler for interrupt (e.g. page-fault for restoring new page)
+    void InsertUniqueHandler(uint8_t int_num, Handler handler); // install custom handler for interrupt (e.g. page-fault for restoring new page)
     C_SCOPE void InterruptCommonHandler(StackState stack_state); // interrupts common handler - prints the information of the interrupt or call the unique handler
 };

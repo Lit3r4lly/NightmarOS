@@ -43,8 +43,8 @@ void TTY::Clear() {
  * @param bg - background color
  * @return entry of the colors usable for the buffer
  */
-inline u8int TTY::VgaEntryColor(enum VgaColor fg, enum VgaColor bg) {
-    return static_cast<uint>(fg) | static_cast<uint>(bg) << 4;
+inline uint8_t TTY::VgaEntryColor(enum VgaColor fg, enum VgaColor bg) {
+    return static_cast<unsigned int>(fg) | static_cast<unsigned int>(bg) << 4;
 }
 
 /**
@@ -53,8 +53,8 @@ inline u8int TTY::VgaEntryColor(enum VgaColor fg, enum VgaColor bg) {
  * @param color - desired color
  * @return entry of color and character usable for the buffer
  */
-inline u16int TTY::VgaEntry(uchar uc, u8int color) {
-    return (u16int)uc | (u16int)color << 8;
+inline uint16_t TTY::VgaEntry(unsigned char uc, uint8_t color) {
+    return (uint16_t)uc | (uint16_t)color << 8;
 }
 
 /**
@@ -64,7 +64,7 @@ inline u16int TTY::VgaEntry(uchar uc, u8int color) {
  * @param x - x coordinate (row)
  * @param y - y coordinate (line)
  */
-void TTY::PutEntryAt(char c, u8int color, u8int x, u8int y) {
+void TTY::PutEntryAt(char c, uint8_t color, uint8_t x, uint8_t y) {
     const size_t index = y * TTY::kVgaWidth + x; // y * kVGA_WIDTH = goes to the start of the column
                                             // and add the offset to this (x)
     TTY::kTerminalBuffer[index] = TTY::VgaEntry(c, color); // insert the entry to the required place
@@ -76,7 +76,7 @@ void TTY::PutEntryAt(char c, u8int color, u8int x, u8int y) {
  * @param x - x coordinate (row)
  * @param y - y coordinate (line)
  */
-void TTY::PutEntryAt(u16int entry, u8int x, u8int y) {
+void TTY::PutEntryAt(uint16_t entry, uint8_t x, uint8_t y) {
     const size_t index = y * TTY::kVgaWidth + x; // y * kVGA_WIDTH = goes to the start of the column
                                             // and add the offset to this (x)
     TTY::kTerminalBuffer[index] = entry; // insert the entry to the required place
@@ -117,7 +117,7 @@ void TTY::IsOverflowed() {
  * @param size - size of the string (length)
  */
 void TTY::Write(const char* data, size_t size) {
-    for (uint i = 0; i < size; ++i)
+    for (unsigned int i = 0; i < size; ++i)
         TTY::PutChar(data[i]);
 }
 
@@ -133,11 +133,11 @@ void TTY::WriteString(const char* data) {
  * scroll down the terminal by clearing the first line and move all the others once upside
  */
 void TTY::Scroll() {
-    for (uint x = 0; x < TTY::kVgaWidth; ++x)
+    for (unsigned int x = 0; x < TTY::kVgaWidth; ++x)
         TTY::PutEntryAt(' ', TTY::terminal_color, x, 0); // clears the first row in the terminal
 
-    for (uint y = 1; y < TTY::kVgaHeight; ++y) {
-        for (uint x = 0; x < TTY::kVgaWidth; ++x) {
+    for (unsigned int y = 1; y < TTY::kVgaHeight; ++y) {
+        for (unsigned int x = 0; x < TTY::kVgaWidth; ++x) {
             // set all the lines to one upper line
             TTY::PutEntryAt(TTY::kTerminalBuffer[(y * TTY::kVgaWidth) + x], x, y - 1);
         }

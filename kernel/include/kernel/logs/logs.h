@@ -17,9 +17,9 @@
 #define STRINGIZE(x) STRINGIZE_DETAIL(x)
 
 namespace Log {
-    constexpr u16int kHackPort = 0xE9; // special "hack port" used in qemu and bochs for debugging and logging
+    constexpr uint16_t kHackPort = 0xE9; // special "hack port" used in qemu and bochs for debugging and logging
 
-    u8int WriteChar(u8int ch); // writes char to log output (stdout / file)
+    uint8_t WriteChar(uint8_t ch); // writes char to log output (stdout / file)
     void Write(const char* format, ...); // writes string to log output (stdout / file)
 };
 

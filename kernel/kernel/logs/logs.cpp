@@ -13,7 +13,7 @@
  * @param ch - char to be written
  * @return the written char
  */
-u8int Log::WriteChar(u8int ch) {
+uint8_t Log::WriteChar(uint8_t ch) {
     if (ch < 10 and ch > 0)
         ch += '0';
 

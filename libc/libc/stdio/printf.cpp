@@ -15,10 +15,10 @@
  * @param ... - variadic function arguments
  * @return - how many chars have been printed
  * */
-u32int printf(const char* format, ...) {
+uint32_t printf(const char* format, ...) {
     va_list args;
     va_start(args, format);
-    u32int char_count = fmt(format, args, putchar);
+    uint32_t char_count = fmt(format, args, putchar);
 
     va_end(args);
     return char_count;

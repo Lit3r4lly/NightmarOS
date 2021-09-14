@@ -18,16 +18,16 @@ void GDT::Initialize() {
     K_LOG("Initializing GDT");
 
     // set GDT pointer that need to be sent for flushing
-    gdt_ptr.size = (u16int)(sizeof(GDT::SegmentDescriptor) * kNumOfEntries) - 1; // set 16 bit limit address of the table
-    gdt_ptr.base_address = (u32int)gdt_entries; // set 32 bit base address of the GDT
+    gdt_ptr.size = (uint16_t)(sizeof(GDT::SegmentDescriptor) * kNumOfEntries) - 1; // set 16 bit limit address of the table
+    gdt_ptr.base_address = (uint32_t)gdt_entries; // set 32 bit base address of the GDT
     K_LOG("Created GDT pointer struct");
 
     // creates 5 new descriptors
-    GDT::InsertDescriptor(0, 0, 0, (u8int)GDT::SegmentAccessType::kNull, 0); // kNull segment descriptor
-    GDT::InsertDescriptor(1, GDT::kBaseAddress, GDT::kLimit, (u8int)GDT::SegmentAccessType::kKernelCode, GDT::kGranularityFlags); // Kernel code segment descriptor
-    GDT::InsertDescriptor(2, GDT::kBaseAddress, GDT::kLimit, (u8int)GDT::SegmentAccessType::kKernelData, GDT::kGranularityFlags); // Kernel data segment descriptor
-    GDT::InsertDescriptor(3, GDT::kBaseAddress, GDT::kLimit, (u8int)GDT::SegmentAccessType::kUserCode, GDT::kGranularityFlags); // User code segment descriptor
-    GDT::InsertDescriptor(4, GDT::kBaseAddress, GDT::kLimit, (u8int)GDT::SegmentAccessType::kUserData, GDT::kGranularityFlags); // User data segment descriptor
+    GDT::InsertDescriptor(0, 0, 0, (uint8_t)GDT::SegmentAccessType::kNull, 0); // kNull segment descriptor
+    GDT::InsertDescriptor(1, GDT::kBaseAddress, GDT::kLimit, (uint8_t)GDT::SegmentAccessType::kKernelCode, GDT::kGranularityFlags); // Kernel code segment descriptor
+    GDT::InsertDescriptor(2, GDT::kBaseAddress, GDT::kLimit, (uint8_t)GDT::SegmentAccessType::kKernelData, GDT::kGranularityFlags); // Kernel data segment descriptor
+    GDT::InsertDescriptor(3, GDT::kBaseAddress, GDT::kLimit, (uint8_t)GDT::SegmentAccessType::kUserCode, GDT::kGranularityFlags); // User code segment descriptor
+    GDT::InsertDescriptor(4, GDT::kBaseAddress, GDT::kLimit, (uint8_t)GDT::SegmentAccessType::kUserData, GDT::kGranularityFlags); // User data segment descriptor
     K_LOG("Created %d new descriptors", GDT::kNumOfEntries);
 
     // Flush the GDT and insert into the gdtr register the new GDT base address (asm func)
@@ -43,7 +43,7 @@ void GDT::Initialize() {
  * @param access - access byte of the descriptor
  * @param granularity_flags - granularity flags (4 bits)
  */
-void GDT::InsertDescriptor(u32int index, u32int base_address, u32int limit, u8int access, u8int granularity_flags) {
+void GDT::InsertDescriptor(uint32_t index, uint32_t base_address, uint32_t limit, uint8_t access, uint8_t granularity_flags) {
     if (index >= kNumOfEntries)
         K_PANIC("index of descriptor is overflowed");
 

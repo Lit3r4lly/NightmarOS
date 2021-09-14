@@ -13,5 +13,5 @@
 
 namespace Panic {
     // panic and get into infinite loop
-    NO_RETURN void volatile Panic(const char* info, const char* file_name, const char* function_name, const u32int line);
+    NO_RETURN void volatile Panic(const char* info, const char* file_name, const char* function_name, const uint32_t line);
 };

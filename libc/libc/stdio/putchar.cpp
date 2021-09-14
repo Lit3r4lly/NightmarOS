@@ -13,7 +13,7 @@
  * @param ich - desired char
  * @return the char that written to the screen as int, if there is error the function would return EOF
  */
-u8int putchar(u8int ich) {
+uint8_t putchar(uint8_t ich) {
 #if defined(__is_libk)
     char c = (char)ich;
     TTY::PutChar(c);

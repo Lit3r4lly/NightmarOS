@@ -17,34 +17,34 @@
 
 namespace IDT {
     // IDT offsets for PIC interrupts
-    constexpr u8int kPICMasterOffset = 0x20;
-    constexpr u8int kPICSlaveOffset = 0x28;
+    constexpr uint8_t kPICMasterOffset = 0x20;
+    constexpr uint8_t kPICSlaveOffset = 0x28;
 
-    constexpr u32int kNumOfEntries = 256;
-    constexpr u16int kKernelCodeSelector = 0x8;
+    constexpr uint32_t kNumOfEntries = 256;
+    constexpr uint16_t kKernelCodeSelector = 0x8;
 
     // IDT pointer struct used for loading the new idt with the LIDT instruction
     struct IDTPointer {
-        u16int size : 16;
-        u32int base_address : 32;
+        uint16_t size : 16;
+        uint32_t base_address : 32;
     } PACKED;
     using IDTPointer = struct IDTPointer;
 
     // interrupt descriptor (gate) struct
     union IDTDescriptor {
-        u64int raw;
+        uint64_t raw;
         struct {
-            u16int offset_low : 16;
-            u16int segment_selector : 16;
-            u8int unused : 8;
-            u8int attributes : 8;
-            u16int offset_high : 16;
+            uint16_t offset_low : 16;
+            uint16_t segment_selector : 16;
+            uint8_t unused : 8;
+            uint8_t attributes : 8;
+            uint16_t offset_high : 16;
         } PACKED;
     };
 
     void Initialize(); // initializes the IDT with new interrupts descriptors
     void FlushTable(); // flushing the idtr register with the new idt base address and table size
-    void InsertDescriptor(u32int index, u32int offset, u16int segment_selector, u8int attributes); // insert new interrupt descriptor by the required fields - see the full structure in the end of descriptor_structure.h
+    void InsertDescriptor(uint32_t index, uint32_t offset, uint16_t segment_selector, uint8_t attributes); // insert new interrupt descriptor by the required fields - see the full structure in the end of descriptor_structure.h
     void SetupInterrupts(); // inserting to the idt the first 32 interrupts
 };
 

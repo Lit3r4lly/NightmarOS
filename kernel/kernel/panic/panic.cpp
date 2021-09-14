@@ -15,7 +15,7 @@
  * @param function_name - function name where the panic occurs
  * @param line - line number where the panic occurs
  */
-NO_RETURN void volatile Panic::Panic(const char* info, const char* file_name, const char* function_name, const u32int line) {
+NO_RETURN void volatile Panic::Panic(const char* info, const char* file_name, const char* function_name, const uint32_t line) {
     printf("----- Kernel Panic -----\n");
     printf("[^] File name: %s\n", file_name);
     printf("[^] Line number: %d\n", line);

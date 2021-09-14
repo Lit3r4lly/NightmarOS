@@ -13,7 +13,7 @@
 /* See descriptors structures at the end of the document - took from the Intel's manual */
 
 namespace IDT {
-    enum DescriptorFlags : u32int {
+    enum DescriptorFlags : uint32_t {
         // descriptor type, half-byte
         kTaskType = 0b0101, // 32 bit task gate - 0x5
         k16InterruptType = 0b0110, // 16 bit interrupt gate - 0x6
@@ -35,7 +35,7 @@ namespace IDT {
         kNonPresent = 0 << 7, // clear for unused interrupts
     };
 
-    enum DescriptorAttributes : u8int {
+    enum DescriptorAttributes : uint8_t {
         kNonValidTask = IDT::DescriptorFlags::kTaskType |
                         IDT::DescriptorFlags::kTaskStorageSegmentBit |
                         IDT::DescriptorFlags::kKernelBit |
