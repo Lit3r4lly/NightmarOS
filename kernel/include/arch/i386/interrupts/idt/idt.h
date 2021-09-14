@@ -42,13 +42,11 @@ namespace IDT {
         } PACKED;
     };
 
-    void Initialize();
-    void InsertDescriptor(u32int index, u32int offset, u16int segment_selector, u8int attributes);
-    void SetupInterrupts();
+    void Initialize(); // initializes the IDT with new interrupts descriptors
+    void FlushTable(); // flushing the idtr register with the new idt base address and table size
+    void InsertDescriptor(u32int index, u32int offset, u16int segment_selector, u8int attributes); // insert new interrupt descriptor by the required fields - see the full structure in the end of descriptor_structure.h
+    void SetupInterrupts(); // inserting to the idt the first 32 interrupts
 };
-
-/* -- Function imported from idt_flush.s assembly file -- */
-ASM_SCOPE void idt_flush(IDT::IDTPointer* idt_ptr); // flush the IDT table and insert new address into the idtr register
 
 /* -- Function imported from isr/isr_stubs.s assembly file -- */
 // these are all the macros for the first 32 isrs

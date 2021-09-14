@@ -23,7 +23,14 @@ void IDT::Initialize() {
     IDT::SetupInterrupts(); // create the first 32 descriptors in the idt
     K_LOG("Created %d new descriptors", IDT::kNumOfEntries);
 
-    idt_flush(&idt_ptr); // flush the new idt and set the address to the idtr register
+    IDT::FlushTable(); // flush the new idt and set the address to the idtr register
+}
+
+/*
+ * flushing the idtr register with the new idt base address and table size
+ */
+void IDT::FlushTable() {
+    asm volatile ("lidt %0" : : "m"(idt_ptr));
 }
 
 /**
