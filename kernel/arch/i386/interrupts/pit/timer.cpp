@@ -17,7 +17,7 @@ void Timer::Initialize() {
     PIT::Initialize();
 }
 
-void Timer::IncCounter(uint8_t, ISR::StackState) {
+void Timer::IncCounter(uint8_t irq_num, ISR::StackState stack_state) {
     Timer::counter++;
 }
 

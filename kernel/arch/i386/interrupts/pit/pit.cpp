@@ -22,7 +22,7 @@ void PIT::Initialize() {
  * function to set the PIT to new frequency
  * @param freq - the wanted frequency
  */
-void PIT::SetPITCount(uint8_t freq) {
+void PIT::SetPITCount(uint32_t freq) {
     Ports::OutB(PIT::kPITChannel0,freq & 0xFF);
     Ports::OutB(PIT::kPITChannel0, freq >> 8);
 }
