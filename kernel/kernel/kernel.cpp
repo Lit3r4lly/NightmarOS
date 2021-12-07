@@ -26,7 +26,7 @@ C_SCOPE NO_RETURN void kernel_main() {
     TTY::Initialize();
     GDT::Initialize();
     Interrupts::Initialize();
-    asm volatile ("sti");
+
     printf("Hello! \nWelcome to NightmareOS kernel ;^)\n");
 
     // halt the cpu forever and avoid the system to shutdown
