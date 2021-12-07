@@ -67,7 +67,7 @@ irq_common:
 	pushad
 
 	mov ax, ds
-	push eax
+    push eax
 
 	mov ax, KERNEL_DATA_SELECTOR
 	mov ds, ax
@@ -78,6 +78,8 @@ irq_common:
 	call IrqForwardHandler
 
 	pop ebx
+
+	mov bx, KERNEL_DATA_SELECTOR
 	mov ds, bx
 	mov es, bx
 	mov fs, bx
