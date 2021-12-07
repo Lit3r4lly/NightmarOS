@@ -19,7 +19,7 @@ void Timer::IncCounter(uint8_t, ISR::StackState) {
     Timer::counter++;
 }
 
-void Timer::sleep(uint64_t time)
+void Timer::Sleep(uint64_t time)
 {
     uint64_t wait_time = Timer::counter;
     while((Timer::counter - wait_time) < time)

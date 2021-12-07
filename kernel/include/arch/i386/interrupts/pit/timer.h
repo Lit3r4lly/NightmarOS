@@ -16,7 +16,7 @@
 namespace Timer {
     extern uint64_t counter;
     void Initialize();
-    void sleep(uint64_t time);
+    void Sleep(uint64_t time);
     void IncCounter(uint8_t, ISR::StackState);
 
 }

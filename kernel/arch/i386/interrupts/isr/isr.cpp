@@ -112,7 +112,6 @@ C_SCOPE void ISR::InterruptCommonHandler(ISR::StackState stack_state) {
 
     if (unique_handler.f != nullptr) {
         // found unique handler for the interrupt (e.g. page-fault handler)
-        K_LOG("Handled interrupt %x handler has been called", int_num);
         unique_handler.f(int_num, stack_state);
     }
 

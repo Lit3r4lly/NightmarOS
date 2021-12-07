@@ -16,4 +16,5 @@ void Interrupts::Initialize() {
     ISR::Initialize();
     PIC::Initialize();
     PIT::Initialize();
+    asm volatile ("sti");
 }
