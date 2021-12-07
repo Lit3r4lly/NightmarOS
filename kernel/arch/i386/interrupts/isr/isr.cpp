@@ -73,8 +73,8 @@ void ISR::InsertUniqueHandler(uint8_t int_num, ISR::Handler handler) {
 }
 
 /**
- *
- * @param stack_state
+ * Calls common handler and then send EOI for ending IRQ routine
+ * @param stack_state - struct which contains the current stack state (registers and so on)
  */
 void ISR::IrqForwardHandler(ISR::StackState stack_state) {
     InterruptCommonHandler(stack_state);
