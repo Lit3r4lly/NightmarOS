@@ -15,5 +15,5 @@ void Interrupts::Initialize() {
     IDT::Initialize();
     ISR::Initialize();
     PIC::Initialize();
-    Timer::Initialize();
+    PIT::Initialize();
 }
