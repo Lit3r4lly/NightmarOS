@@ -14,9 +14,9 @@
 #include <arch/i386/interrupts/isr/isr.h>
 
 namespace Timer {
-    extern uint64_t counter;
-    void Initialize();
-    void Sleep(uint64_t time);
-    void IncCounter(uint8_t, ISR::StackState);
+    extern uint64_t counter; //the internal counter
 
+    void Initialize(); //function to init the timer
+    void Sleep(uint64_t time); //function that make the sys sleep
+    void IncCounter(uint8_t, ISR::StackState); //the handler function for the pit
 }
