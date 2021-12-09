@@ -23,7 +23,7 @@ void Timer::Sleep(uint64_t time)
 {
     // FIXME: this shit is making some troubles...
     uint64_t wait_time = Timer::counter;
-    while((Timer::counter - wait_time) < time)
+    while((Timer::counter - wait_time) < (time / 10))
     {
         asm volatile("hlt");
     }
