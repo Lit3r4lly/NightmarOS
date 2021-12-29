@@ -37,8 +37,12 @@ namespace Paging {
     };
 
     struct PageDirectory {
-        //PageTable entries[kPageDirectorySize];
+        PageTable* entries[kPageDirectorySize]; //pointers to page tables
+        uint32_t physical_table_addresses[kPageDirectorySize]; //pointers to physical addresses of tables
+        uint32_t physical_addresses; //physical addresses of the array above
     };
+
+    void  Initialize();
 };
 
 ASM_SCOPE void enable_paging();
