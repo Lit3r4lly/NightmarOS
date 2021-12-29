@@ -23,7 +23,7 @@ namespace MemoryManager {
     extern uint32_t* KernelDir; //the directory of the kernel
     extern uint32_t kBaseAddress; //the current available address
 
-    uint32_t pageAlloc(uint32_t size, int aligned, uint32_t* physical_address);
+    uint32_t AllocateMemory(uint32_t size, int aligned, uint32_t* physical_address);
 
 
 }
