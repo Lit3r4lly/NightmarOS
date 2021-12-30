@@ -51,26 +51,34 @@ void MemoryManager::AllocateTable(uint32_t table_index, Paging::PageDirectory* d
  * @param frame_address - the page frame to set its data
  */
 void MemoryManager::SetFrameFlags(uint32_t frame_address) {
-    uint32_t frame_id = frame_address / SIZE64B;
-    MemoryManager::kHeap[frame_id / 4] |= (0x01 << (frame_id % 4));
+    MemoryManager::kHeap[frame_address / 4] |= (0x01 << (frame_address % 4));
 }
 
-
+/***
+ * function to allocate a new page
+ * @param page - the page to allocate
+ * @param is_read_write - can you read and write to page (the opposite is only read)
+ * @param is_user - is the page is user or system
+ */
 void MemoryManager::AllocatePage(Paging::Page *page, int32_t is_read_write, int32_t is_user) {
-    if (page->frame_addr != 0)
+    if (page->frame_addr != (uint32_t)0)
         return ;// the page has already allocated
 
 
-    uint32_t frame_id; //TODO (init with a proper frame from heap
+    uint32_t frame_id = MemoryManager::GetFreeFrame();
     if (frame_id == (uint32_t)(-1)) {
         return ;//there is no memory left
     }
 
-    MemoryManager::SetFrameFlags(frame_id * SIZE64B);
+    MemoryManager::SetFrameFlags(frame_id);
 
     page->frame_addr = frame_id;
     page->is_present = 1;
-    page->rw = is_read_write;
-    page->is_user = is_user;
+    page->rw = (uint32_t)is_read_write;
+    page->is_user = (uint32_t)is_user;
 
+}
+
+uint32_t MemoryManager::GetFreeFrame() {
+    //TODO (implement searching algo to get the first free frame)
 }
