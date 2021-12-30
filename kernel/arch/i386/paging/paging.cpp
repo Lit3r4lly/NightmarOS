@@ -15,16 +15,44 @@ uint32_t  MemoryManager::kBaseAddress;
 
 void Paging::Initialize() {
 
-    //allocating heap
-    MemoryManager::kHeap = (uint32_t*)MemoryManager::AllocateMemory(MemoryManager::kNumFrames / 32, 1,0);
-
     //allocating the kernel memory
     MemoryManager::KernelDir = (PageDirectory*)MemoryManager::AllocateMemory(sizeof(PageDirectory),1,0 );
 
+    //allocating heap
+    MemoryManager::kHeap = (uint32_t*)MemoryManager::AllocateMemory(MemoryManager::kNumFrames / 32, 1,0);
+
+
     /*
-     * TODO (allocate the frames for the kernel dir)
+     * TODO (allocate the frames for the kernel dir and reset the trash memory of the heap and kernel)
      * */
 
     load_page_directory(MemoryManager::KernelDir->physical_addresses);
     enable_paging();
+}
+
+/***
+ * function to get a page
+ * @param address - the address of the page
+ * @param make - do you want to create a new table in case it is not allocated
+ * @param directory - the directory to get the page from
+ * @return the wanted page
+ */
+Paging::Page* Paging::GetPage(uint32_t address, int make, Paging::PageDirectory* directory) {
+    address /= SIZE64B;
+    uint32_t table_index = address / SIZE32B;
+    if (directory->entries[table_index]) {
+        return &directory->entries[table_index]->entries[address%SIZE32B];
+
+    } else if(make) {
+
+        uint32_t temp_physical_address;
+        directory->entries[table_index] = (PageTable*)MemoryManager::AllocateMemory(sizeof(PageTable),1, &temp_physical_address);
+        //TODO(erase trash memory with memset)
+
+        directory->physical_table_addresses[table_index] = temp_physical_address | 0x07;
+        return &directory->entries[table_index]->entries[address%SIZE32B];
+    } else {
+        return nullptr;
+    }
+
 }

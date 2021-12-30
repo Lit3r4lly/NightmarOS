@@ -41,7 +41,8 @@ namespace Paging {
         uint32_t physical_addresses; //physical addresses of the array above
     };
 
-    void  Initialize();
+    void  Initialize(); //function to init the paging
+    Paging::Page* GetPage(uint32_t address, int make, PageDirectory* directory); // function to get a page
 };
 
 ASM_SCOPE void enable_paging();
