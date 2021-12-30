@@ -1,7 +1,7 @@
 /**
 * @file memory_management.h
 * @author Oshri Taub
-* @brief <insert here file brief>
+* @brief <definition of a memory manager>
 * @date 29/12/2021
 * @copyright Copyright (c) 2021
 */
@@ -22,7 +22,9 @@ namespace MemoryManager {
     extern Paging::PageDirectory* KernelDir; //the directory of the kernel
     extern uint32_t kBaseAddress; //the current available address
 
-    uint32_t AllocateMemory(uint32_t size, int aligned, uint32_t* physical_address);
-
+    uint32_t AllocateMemory(uint32_t size, int aligned, uint32_t* physical_address); //function to allocate memory
+    void AllocateTable(uint32_t table_index, Paging::PageDirectory* directory); // function to allocate page table
+    void SetFrameFlags(uint32_t frame_address); //function to set the flags of a given frame
+    void AllocatePage(Paging::Page *page, int32_t is_read_write, int32_t is_user);
 
 }
