@@ -21,7 +21,7 @@ uint32_t MemoryManager::AllocateMemory(uint32_t size, int aligned, uint32_t* phy
     if(aligned == 1 && (MemoryManager::kBaseAddress & 0x00000FFF))
     {
         MemoryManager::kBaseAddress &= 0x00000FFF;
-        MemoryManager::kBaseAddress += 0x1000;
+        MemoryManager::kBaseAddress += SIZE64B;
     }
 
     if (physical_address)
