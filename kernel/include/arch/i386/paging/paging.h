@@ -1,7 +1,7 @@
 /**
 * @file paging.h
 * @author Oshri Taub
-* @brief <insert here file brief>
+* @brief <definition of the paging mechanism>
 * @date 23/12/2021
 * @copyright Copyright (c) 2021
 */

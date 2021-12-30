@@ -1,7 +1,7 @@
 /**
 * @file paging.cpp
 * @author Ori Feldman
-* @brief <insert here file brief>
+* @brief <implementation of the paging mechanism>
 * @date 12/23/21
 * @copyright Copyright (c) 2021
 */
@@ -11,15 +11,15 @@
 
 uint32_t* MemoryManager::kHeap; // the available frames
 Paging::PageDirectory* MemoryManager::KernelDir; //the directory of the kernel
-uint32_t  MemoryManager::kBaseAddress;
+uint32_t MemoryManager::kBaseAddress;
 
 void Paging::Initialize() {
 
     //allocating the kernel memory
-    MemoryManager::KernelDir = (PageDirectory*)MemoryManager::AllocateMemory(sizeof(PageDirectory),1,0 );
+    MemoryManager::KernelDir = (PageDirectory*) MemoryManager::AllocateMemory(sizeof(PageDirectory), 1, 0);
 
     //allocating heap
-    MemoryManager::kHeap = (uint32_t*)MemoryManager::AllocateMemory(MemoryManager::kNumFrames / 32, 1,0);
+    MemoryManager::kHeap = (uint32_t*) MemoryManager::AllocateMemory(MemoryManager::kNumFrames / 32, 1, 0);
 
 
     /*
@@ -44,15 +44,10 @@ Paging::Page* Paging::GetPage(uint32_t address, int make, Paging::PageDirectory*
         return &directory->entries[table_index]->entries[address%SIZE32B];
 
     } else if(make) {
-
-        uint32_t temp_physical_address;
-        directory->entries[table_index] = (PageTable*)MemoryManager::AllocateMemory(sizeof(PageTable),1, &temp_physical_address);
-        //TODO(erase trash memory with memset)
-
-        directory->physical_table_addresses[table_index] = temp_physical_address | 0x07;
+        MemoryManager::AllocateTable(table_index, directory);
         return &directory->entries[table_index]->entries[address%SIZE32B];
+
     } else {
         return nullptr;
     }
-
 }
