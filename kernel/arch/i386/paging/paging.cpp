@@ -23,8 +23,12 @@ void Paging::Initialize() {
 
 
     /*
-     * TODO (allocate the frames for the kernel dir and reset the trash memory of the heap and kernel)
+     * TODO (reset the trash memory of the heap and kernel)
      * */
+
+    for (uint32_t i {}; i < MemoryManager::kBaseAddress; i += SIZE64B) {
+        MemoryManager::AllocatePage(Paging::GetPage(i, 1,MemoryManager::KernelDir), 0, 0);
+    }
 
     load_page_directory(MemoryManager::KernelDir->physical_addresses);
     enable_paging();

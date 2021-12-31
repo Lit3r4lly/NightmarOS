@@ -79,6 +79,19 @@ void MemoryManager::AllocatePage(Paging::Page *page, int32_t is_read_write, int3
 
 }
 
+/***
+ * function to get the first free frame in the available frames
+ * @return - the first free frame
+ */
 uint32_t MemoryManager::GetFreeFrame() {
-    //TODO (implement searching algo to get the first free frame)
+    for (uint32_t i {}; i < MemoryManager::kNumFrames; i++) {
+        if (MemoryManager::kHeap[i] != 0xFFFF) {
+            for (uint32_t j {}; j < 32; j++) {
+                if (!(MemoryManager::kHeap[i] & (0x01 << j)))
+                    return i*32 +j;
+
+            }
+        }
+    }
+    return (uint32_t)(-1);
 }
