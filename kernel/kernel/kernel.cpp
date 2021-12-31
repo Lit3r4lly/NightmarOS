@@ -23,8 +23,10 @@ C_SCOPE NO_RETURN void kernel_main() {
      * 3. Interrupts (IDT, PIC, etc.)
      * ...
      */
+
     TTY::Initialize();
     GDT::Initialize();
+    Paging::Initialize();
     Interrupts::Initialize();
 
     printf("Hello! \nWelcome to NightmareOS kernel ;^)\n");

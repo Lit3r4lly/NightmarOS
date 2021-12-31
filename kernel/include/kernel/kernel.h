@@ -15,3 +15,4 @@
 #include <kernel/common/kdefines.h>
 #include <libc/stdio.h>
 #include <kernel/common/kuseful.h>
+#include <arch/i386/paging/paging.h>
