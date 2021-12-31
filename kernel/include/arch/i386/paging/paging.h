@@ -46,4 +46,4 @@ namespace Paging {
 };
 
 ASM_SCOPE void enable_paging();
-ASM_SCOPE void load_page_directory(uint32_t page_directory_addr);
+ASM_SCOPE void load_page_directory(uint32_t* page_directory_addr);

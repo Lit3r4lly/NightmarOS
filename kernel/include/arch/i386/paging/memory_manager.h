@@ -11,6 +11,7 @@
 #include <kernel/logs/logs.h>
 #include <arch/i386/i386.h>
 #include <arch/i386/paging/paging.h>
+#include <libc/string.h>
 
 /**
  * name space to manage the paging allocation of memory

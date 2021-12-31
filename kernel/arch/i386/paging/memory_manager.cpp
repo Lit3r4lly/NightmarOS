@@ -41,7 +41,7 @@ void MemoryManager::AllocateTable(uint32_t table_index, Paging::PageDirectory* d
     uint32_t temp_physical_address;
     directory->entries[table_index] = (Paging::PageTable*) MemoryManager::AllocateMemory(sizeof(Paging::PageTable), 1,
                                                                                          &temp_physical_address);
-    //TODO(erase trash memory with memset)
+    memset(directory->entries[table_index], 0, SIZE64B);
 
     directory->physical_table_addresses[table_index] = temp_physical_address | 0x07;
 }
