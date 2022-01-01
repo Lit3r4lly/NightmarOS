@@ -26,6 +26,6 @@ namespace MemoryManager {
     uint32_t AllocateMemory(uint32_t size, int aligned, uint32_t* physical_address); //function to allocate memory
     void AllocateTable(uint32_t table_index, Paging::PageDirectory* directory); // function to allocate page table
     void SetFrameFlags(uint32_t frame_address); //function to set the flags of a given frame
-    void AllocatePage(Paging::Page *page, int32_t is_read_write, int32_t is_user); //allocate a page
+    void AllocatePage(Paging::Page *page, int32_t is_user, int32_t is_read_write); //allocate a page
     uint32_t GetFreeFrame(); //get the address of the first free frame
 }

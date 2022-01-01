@@ -51,7 +51,7 @@ void MemoryManager::AllocateTable(uint32_t table_index, Paging::PageDirectory* d
  * @param frame_address - the page frame to set its data
  */
 void MemoryManager::SetFrameFlags(uint32_t frame_address) {
-    MemoryManager::kHeap[frame_address / 4] |= (0x01 << (frame_address % 4));
+    MemoryManager::kHeap[frame_address / 32] |= (0x01 << (frame_address % 32));
 }
 
 /***
@@ -60,7 +60,7 @@ void MemoryManager::SetFrameFlags(uint32_t frame_address) {
  * @param is_read_write - can you read and write to page (the opposite is only read)
  * @param is_user - is the page is user or system
  */
-void MemoryManager::AllocatePage(Paging::Page *page, int32_t is_read_write, int32_t is_user) {
+void MemoryManager::AllocatePage(Paging::Page *page, int32_t is_user, int32_t is_read_write) {
     if (page->frame_addr != (uint32_t)0)
         return ;// the page has already allocated
 
@@ -84,7 +84,7 @@ void MemoryManager::AllocatePage(Paging::Page *page, int32_t is_read_write, int3
  * @return - the first free frame
  */
 uint32_t MemoryManager::GetFreeFrame() {
-    for (uint32_t i {}; i < MemoryManager::kNumFrames; i++) {
+    for (uint32_t i {}; i < MemoryManager::kNumFrames / 32; i++) {
         if (MemoryManager::kHeap[i] != 0xFFFF) {
             for (uint32_t j {}; j < 32; j++) {
                 if (!(MemoryManager::kHeap[i] & (0x01 << j)))

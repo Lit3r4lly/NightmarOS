@@ -16,8 +16,8 @@ uint32_t MemoryManager::kBaseAddress;
 void Paging::Initialize() {
 
     //allocating heap
-    MemoryManager::kHeap = (uint32_t*) MemoryManager::AllocateMemory(MemoryManager::kNumFrames / 4, 1, 0);
-    memset(MemoryManager::kHeap, 0, MemoryManager::kNumFrames / 4);
+    MemoryManager::kHeap = (uint32_t*) MemoryManager::AllocateMemory(MemoryManager::kNumFrames / 32, 1, 0);
+    memset(MemoryManager::kHeap, 0, MemoryManager::kNumFrames / 32);
 
     //allocating the kernel memory
     MemoryManager::KernelDir = (PageDirectory*) MemoryManager::AllocateMemory(sizeof(PageDirectory), 1, 0);
@@ -25,7 +25,7 @@ void Paging::Initialize() {
 
 
     for (uint32_t i {}; i < MemoryManager::kBaseAddress; i += SIZE64B) {
-        MemoryManager::AllocatePage(Paging::GetPage(i, 1,MemoryManager::KernelDir), 0, 0);
+        MemoryManager::AllocatePage(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0);
     }
 
     load_page_directory((uint32_t*)MemoryManager::KernelDir->physical_addresses);
