@@ -16,15 +16,15 @@ uint32_t MemoryManager::kBaseAddress;
 void Paging::Initialize() {
 
     //allocating heap
-    MemoryManager::kHeap = (uint32_t*) MemoryManager::AllocateMemory(MemoryManager::kNumFrames / 32, 1, 0);
-    memset(MemoryManager::kHeap, 0, MemoryManager::kNumFrames / 32);
+    MemoryManager::kHeap = (uint32_t*) MemoryManager::AllocateMemory(MemoryManager::kNumFrames / kSize4b, 1, 0);
+    memset(MemoryManager::kHeap, 0, MemoryManager::kNumFrames / kSize4b);
 
     //allocating the kernel memory
     MemoryManager::KernelDir = (PageDirectory*) MemoryManager::AllocateMemory(sizeof(PageDirectory), 1, 0);
     memset(MemoryManager::KernelDir, 0, sizeof(Paging::PageDirectory));
 
 
-    for (uint32_t i {}; i < MemoryManager::kBaseAddress; i += SIZE64B) {
+    for (uint32_t i {}; i < MemoryManager::kBaseAddress; i += kSize64b) {
         MemoryManager::AllocatePage(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0);
     }
 
@@ -40,14 +40,14 @@ void Paging::Initialize() {
  * @return the wanted page
  */
 Paging::Page* Paging::GetPage(uint32_t address, int make, Paging::PageDirectory* directory) {
-    address /= SIZE64B;
-    uint32_t table_index = address / SIZE32B;
+    address /= kSize64b;
+    uint32_t table_index = address / kSize32b;
     if (directory->entries[table_index]) {
-        return &directory->entries[table_index]->entries[address%SIZE32B];
+        return &directory->entries[table_index]->entries[address % kSize32b];
 
     } else if(make) {
         MemoryManager::AllocateTable(table_index, directory);
-        return &directory->entries[table_index]->entries[address%SIZE32B];
+        return &directory->entries[table_index]->entries[address % kSize32b];
 
     } else {
         return nullptr;

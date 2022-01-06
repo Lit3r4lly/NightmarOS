@@ -18,7 +18,7 @@
  */
 namespace MemoryManager {
 
-    constexpr uint32_t kNumFrames = SIZE16MB / SIZE64B; //the number of frames
+    constexpr uint32_t kNumFrames = kSize16mb / kSize64b; //the number of frames
     extern uint32_t* kHeap; // the available frames (Heap)
     extern Paging::PageDirectory* KernelDir; //the directory of the kernel
     extern uint32_t kBaseAddress; //the current available address

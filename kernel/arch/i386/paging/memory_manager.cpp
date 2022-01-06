@@ -21,7 +21,7 @@ uint32_t MemoryManager::AllocateMemory(uint32_t size, int aligned, uint32_t* phy
     if(aligned == 1 && (MemoryManager::kBaseAddress & 0x00000FFF))
     {
         MemoryManager::kBaseAddress &= 0x00000FFF;
-        MemoryManager::kBaseAddress += SIZE64B;
+        MemoryManager::kBaseAddress += kSize64b;
     }
 
     if (physical_address)
@@ -41,7 +41,7 @@ void MemoryManager::AllocateTable(uint32_t table_index, Paging::PageDirectory* d
     uint32_t temp_physical_address;
     directory->entries[table_index] = (Paging::PageTable*) MemoryManager::AllocateMemory(sizeof(Paging::PageTable), 1,
                                                                                          &temp_physical_address);
-    memset(directory->entries[table_index], 0, SIZE64B);
+    memset(directory->entries[table_index], 0, kSize64b);
 
     directory->physical_table_addresses[table_index] = temp_physical_address | 0x07;
 }
@@ -51,7 +51,7 @@ void MemoryManager::AllocateTable(uint32_t table_index, Paging::PageDirectory* d
  * @param frame_address - the page frame to set its data
  */
 void MemoryManager::SetFrameFlags(uint32_t frame_address) {
-    MemoryManager::kHeap[frame_address / 32] |= (0x01 << (frame_address % 32));
+    MemoryManager::kHeap[frame_address / kSize4b] |= (0x01 << (frame_address % kSize4b));
 }
 
 /***
@@ -84,9 +84,9 @@ void MemoryManager::AllocatePage(Paging::Page *page, int32_t is_user, int32_t is
  * @return - the first free frame
  */
 uint32_t MemoryManager::GetFreeFrame() {
-    for (uint32_t i {}; i < MemoryManager::kNumFrames / 32; i++) {
+    for (uint32_t i {}; i < MemoryManager::kNumFrames / kSize4b; i++) {
         if (MemoryManager::kHeap[i] != 0xFFFF) {
-            for (uint32_t j {}; j < 32; j++) {
+            for (uint32_t j {}; j < kSize4b; j++) {
                 if (!(MemoryManager::kHeap[i] & (0x01 << j)))
                     return i*32 +j;
 
