@@ -29,6 +29,8 @@ C_SCOPE NO_RETURN void kernel_main() {
     Keyboard::Initialize(PS2Keyboard::KeyboardSource);
 
     printf("Hello! \nWelcome to NightmareOS kernel ;^)\n");
+    printf("Enter whatever you would like: ");
+
 
     // halt the cpu forever and avoid the system to shutdown
     while (true)
