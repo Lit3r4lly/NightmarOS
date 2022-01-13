@@ -23,12 +23,13 @@ void Paging::Initialize() {
     MemoryManager::KernelDir = (PageDirectory*) MemoryManager::AllocateMemory(sizeof(PageDirectory), 1, 0);
     memset(MemoryManager::KernelDir, 0, sizeof(Paging::PageDirectory));
 
-
-    for (uint32_t i {}; i < MemoryManager::kBaseAddress; i += kSize64b) {
+    for (auto i = (uint32_t)Paging::kernelStart; i < (uint32_t)Paging::kernelEnd; i += kSize64b) {
         MemoryManager::AllocatePage(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0);
     }
 
-    load_page_directory((uint32_t*)MemoryManager::KernelDir->physical_addresses);
+
+    ISR::InsertUniqueHandler(0xe, ISR::Handler {Paging::PFHandler,false,false});
+    load_page_directory((uint32_t*)&MemoryManager::KernelDir->physical_addresses);
     enable_paging();
 }
 
@@ -52,4 +53,8 @@ Paging::Page* Paging::GetPage(uint32_t address, int make, Paging::PageDirectory*
     } else {
         return nullptr;
     }
+}
+
+void Paging::PFHandler(uint8_t, ISR::StackState) {
+    printf("page fault has happened");
 }
