@@ -8,6 +8,7 @@
 
 #include <kernel/keyboard/ps2/ps2_keyboard.h>
 
+// keys descriptors array for mnemonics
 PS2Keyboard::KeyDescriptor keys_descriptors[] = {
         {'`', "Excape Pressed", PS2Keyboard::KeyStatus::kPressed, PS2Keyboard::SpecialCharacterType::kEscape},
         {'1', "1 Pressed", PS2Keyboard::KeyStatus::kPressed},
@@ -80,6 +81,11 @@ PS2Keyboard::KeyDescriptor keys_descriptors[] = {
         {'-', "F11 Pressed", PS2Keyboard::KeyStatus::kPressed, PS2Keyboard::SpecialCharacterType::kFKey}
 };
 
+/**
+ * Handles the receiving of the input key
+ * @param args - optional arguments (for future implementation of other drivers)
+ * @return struct with mnemonics of the key
+ */
 Keyboard::InputKeyType PS2Keyboard::KeyboardSource(void* args) {
     Keyboard::InputKeyType output_key;
 
@@ -108,7 +114,6 @@ Keyboard::InputKeyType PS2Keyboard::KeyboardSource(void* args) {
     } else {
         output_key.is_error = true;
     }
-
 
     return output_key;
 }

@@ -45,5 +45,5 @@ namespace PS2Keyboard {
         SpecialCharacterType special_type = SpecialCharacterType::kNormal;
     };
 
-    Keyboard::InputKeyType KeyboardSource(void* args);
+    Keyboard::InputKeyType KeyboardSource(void* args); // Handles the receiving of the input key
 };

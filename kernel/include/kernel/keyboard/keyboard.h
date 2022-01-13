@@ -23,6 +23,6 @@ namespace Keyboard {
 
     using KeyboardCallback = InputKeyType (*)(void*);
 
-    void Initialize(KeyboardCallback source_callback);
-    void KeyboardHandler(uint8_t int_num, ISR::StackState stack_state);
+    void Initialize(KeyboardCallback source_callback); // Initialize the keyboard usage (driver specification etc.)
+    void KeyboardHandler(uint8_t int_num, ISR::StackState stack_state); // Keyboard interrupt handler (ISR)
 };
