@@ -18,10 +18,10 @@
 uint32_t MemoryManager::AllocateMemory(uint32_t size, int aligned, uint32_t* physical_address) {
 
     // aligning the address
-    if(aligned == 1 && (MemoryManager::kBaseAddress & 0x00000FFF))
+    if(aligned == 1 && (MemoryManager::kBaseAddress & 0xFFFFF000))
     {
-        MemoryManager::kBaseAddress &= 0x00000FFF;
-        MemoryManager::kBaseAddress += kSize64b;
+        MemoryManager::kBaseAddress &= 0xFFFFF000;
+        MemoryManager::kBaseAddress += kSize4kb;
     }
 
     if (physical_address)
@@ -41,18 +41,45 @@ void MemoryManager::AllocateTable(uint32_t table_index, Paging::PageDirectory* d
     uint32_t temp_physical_address;
     directory->entries[table_index] = (Paging::PageTable*) MemoryManager::AllocateMemory(sizeof(Paging::PageTable), 1,
                                                                                          &temp_physical_address);
-    memset(directory->entries[table_index], 0, sizeof(Paging::PageTable));
+    memset(directory->entries[table_index], 0, kSize4kb);
 
-    directory->physical_table_addresses[table_index] = temp_physical_address | 0x07;
+    directory->physical_table_addresses[table_index] = temp_physical_address | 0x7;
 }
 
 /***
  * function to set the flags of a frame to announce the frame is in use
- * @param frame_address - the page frame to set its data
+ * @param frame_address - the frame to set its flags
  */
 void MemoryManager::SetFrameFlags(uint32_t frame_address) {
-    MemoryManager::kHeap[frame_address / kSize4b] |= (0x01 << (frame_address % kSize4b));
+    uint32_t frame = frame_address / 0x1000;
+    uint32_t idx = K_FRAME_INDEX(frame);
+    uint32_t offset = K_FRAME_OFFSET(frame);
+    MemoryManager::kFrames[idx] |= (0x1 << (offset));
 }
+
+/***
+ * function clear the flags of a frame
+ * @param frame_address - the frame to clear its flags
+ */
+void MemoryManager::ClearFrameFlags(uint32_t frame_address) {
+    uint32_t frame = frame_address / 0x1000;
+    uint32_t idx = K_FRAME_INDEX(frame);
+    uint32_t offset = K_FRAME_OFFSET(frame);
+    MemoryManager::kFrames[idx] &= ~(0x1 << offset);
+}
+
+/***
+ * function to check if page flags are already sets
+ * @param frame_address - the frame to test
+ * @return - is the frame is already taken bool
+ */
+uint32_t MemoryManager::TestFrameFlags(uint32_t frame_address) {
+    uint32_t frame = frame_address / 0x1000;
+    uint32_t idx = K_FRAME_INDEX(frame);
+    uint32_t offset = K_FRAME_OFFSET(frame);
+    return (MemoryManager::kFrames[idx] & (0x1 << offset));
+}
+
 
 /***
  * function to allocate a new page
@@ -70,7 +97,7 @@ void MemoryManager::AllocatePage(Paging::Page *page, int32_t is_user, int32_t is
         return ;//there is no memory left
     }
 
-    MemoryManager::SetFrameFlags(frame_id);
+    MemoryManager::SetFrameFlags(frame_id*0x1000);
 
     page->frame_addr = frame_id;
     page->is_present = 1;
@@ -79,19 +106,42 @@ void MemoryManager::AllocatePage(Paging::Page *page, int32_t is_user, int32_t is
 
 }
 
+/**
+ * function to deallocate a page
+ * @param page - the page to de allocate
+ */
+void MemoryManager::DeallocatePage(Paging::Page *page) {
+    uint32_t frame = page->frame_addr;
+    if(!frame) {
+        return; //the page isnt allocated
+    }
+    MemoryManager::ClearFrameFlags(frame);
+    page->frame_addr = 0x0;
+}
+
 /***
  * function to get the first free frame in the available frames
  * @return - the first free frame
  */
 uint32_t MemoryManager::GetFreeFrame() {
-    for (uint32_t i {}; i < MemoryManager::kNumFrames / kSize4b; i++) {
-        if (MemoryManager::kHeap[i] != 0xFFFF) {
+    for (uint32_t i {}; i < K_FRAME_INDEX(MemoryManager::kNumFrames); i++) {
+        if (MemoryManager::kFrames[i] != 0xFFFFFFFF) {
             for (uint32_t j {}; j < kSize4b; j++) {
-                if (!(MemoryManager::kHeap[i] & (0x01 << j)))
+                if (!(MemoryManager::kFrames[i] & (0x01 << j)))
                     return i*32 +j;
 
             }
         }
     }
     return (uint32_t)(-1);
+}
+
+
+void MemoryManager::ForceFrame(Paging::Page* page, int32_t is_user, int32_t is_read_write, uint32_t address) {
+    SetFrameFlags(address*0x1000);
+
+    page->is_present = 1;
+    page->rw = (uint32_t)is_read_write;
+    page->is_user = (uint32_t)is_user;
+    page->frame_addr = address >> 12;
 }

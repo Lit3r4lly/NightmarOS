@@ -7,10 +7,14 @@
 */
 #pragma once
 
+
 #include <kernel/common/kuseful.h>
 #include <kernel/logs/logs.h>
 #include <arch/i386/i386.h>
 #include "arch/i386/interrupts/isr/isr.h"
+
+#define K_FRAME_INDEX(a) (a / 32)
+#define K_FRAME_OFFSET(a) (a % 32)
 
 /*
  * 1. Normal memory is firstly and once mapped in the initialization of the OS -> kernel memory region is from 0x0 to 0xXXXXXXX and no need to mess with it all along
@@ -45,10 +49,10 @@ namespace Paging {
     void  Initialize(); //function to init the paging
     Paging::Page* GetPage(uint32_t address, int make, PageDirectory* directory); // function to get a page
 
-    extern "C" unsigned int kernelStart;
-    extern "C" unsigned int kernelEnd;
+    extern "C" unsigned int code;
+    extern "C" unsigned int CodeEnd;
 
-    void PFHandler(uint8_t, ISR::StackState);
+    void PFHandler(uint8_t, ISR::StackState regs);
 };
 
 ASM_SCOPE void enable_paging();
