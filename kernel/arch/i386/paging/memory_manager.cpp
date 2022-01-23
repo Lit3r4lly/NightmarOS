@@ -51,10 +51,10 @@ void MemoryManager::AllocateTable(uint32_t table_index, Paging::PageDirectory* d
  * @param frame_address - the frame to set its flags
  */
 void MemoryManager::SetFrameFlags(uint32_t frame_address) {
-    uint32_t frame = frame_address / 0x1000;
+    uint32_t frame = frame_address / kSize4kb;
     uint32_t idx = K_FRAME_INDEX(frame);
     uint32_t offset = K_FRAME_OFFSET(frame);
-    MemoryManager::kFrames[idx] |= (0x1 << (offset));
+    MemoryManager::kFrames[idx] |= (0x1 << offset);
 }
 
 /***
@@ -62,7 +62,7 @@ void MemoryManager::SetFrameFlags(uint32_t frame_address) {
  * @param frame_address - the frame to clear its flags
  */
 void MemoryManager::ClearFrameFlags(uint32_t frame_address) {
-    uint32_t frame = frame_address / 0x1000;
+    uint32_t frame = frame_address / kSize4kb;
     uint32_t idx = K_FRAME_INDEX(frame);
     uint32_t offset = K_FRAME_OFFSET(frame);
     MemoryManager::kFrames[idx] &= ~(0x1 << offset);
@@ -74,7 +74,7 @@ void MemoryManager::ClearFrameFlags(uint32_t frame_address) {
  * @return - is the frame is already taken bool
  */
 uint32_t MemoryManager::TestFrameFlags(uint32_t frame_address) {
-    uint32_t frame = frame_address / 0x1000;
+    uint32_t frame = frame_address / kSize4kb;
     uint32_t idx = K_FRAME_INDEX(frame);
     uint32_t offset = K_FRAME_OFFSET(frame);
     return (MemoryManager::kFrames[idx] & (0x1 << offset));
@@ -97,7 +97,7 @@ void MemoryManager::AllocatePage(Paging::Page *page, int32_t is_user, int32_t is
         return ;//there is no memory left
     }
 
-    MemoryManager::SetFrameFlags(frame_id*0x1000);
+    MemoryManager::SetFrameFlags(frame_id*kSize4kb);
 
     page->frame_addr = frame_id;
     page->is_present = 1;
@@ -113,7 +113,7 @@ void MemoryManager::AllocatePage(Paging::Page *page, int32_t is_user, int32_t is
 void MemoryManager::DeallocatePage(Paging::Page *page) {
     uint32_t frame = page->frame_addr;
     if(!frame) {
-        return; //the page isnt allocated
+        return; //the page isn't allocated
     }
     MemoryManager::ClearFrameFlags(frame);
     page->frame_addr = 0x0;
@@ -128,7 +128,7 @@ uint32_t MemoryManager::GetFreeFrame() {
         if (MemoryManager::kFrames[i] != 0xFFFFFFFF) {
             for (uint32_t j {}; j < kSize4b; j++) {
                 if (!(MemoryManager::kFrames[i] & (0x01 << j)))
-                    return i*32 +j;
+                    return i*kSize4b +j;
 
             }
         }

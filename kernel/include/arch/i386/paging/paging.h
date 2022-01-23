@@ -22,6 +22,10 @@
  */
 
 namespace Paging {
+
+    extern "C" uint32_t CodeStart;
+    extern "C" uint32_t CodeEnd;
+
     constexpr uint32_t kPageDirectorySize = 1024;
     constexpr uint32_t kPageTableSize = 1024;
 
@@ -48,9 +52,7 @@ namespace Paging {
 
     void  Initialize(); //function to init the paging
     Paging::Page* GetPage(uint32_t address, int make, PageDirectory* directory); // function to get a page
-
-    extern "C" unsigned int code;
-    extern "C" unsigned int CodeEnd;
+    void SwitchDirectory(Paging::PageDirectory* dir);
 
     void PFHandler(uint8_t, ISR::StackState regs);
 };

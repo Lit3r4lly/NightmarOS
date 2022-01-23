@@ -17,9 +17,9 @@ uint32_t MemoryManager::kBaseAddress;
 
 void Paging::Initialize() {
 
-    K_LOG("kernel start: %x, kernel end: %x", Paging::code, Paging::CodeEnd);
+    K_LOG("kernel start: %x, kernel end: %x", &Paging::CodeStart, &Paging::CodeEnd);
     //allocating heap
-    MemoryManager::kFrames = (uint32_t*) MemoryManager::AllocateMemory(K_FRAME_INDEX(MemoryManager::kNumFrames), 1, 0);
+    MemoryManager::kFrames = (uint32_t*) MemoryManager::AllocateMemory(K_FRAME_INDEX(MemoryManager::kNumFrames), 0, 0);
     memset(MemoryManager::kFrames, 0, K_FRAME_INDEX(MemoryManager::kNumFrames));
 
     //allocating the kernel memory
@@ -31,21 +31,26 @@ void Paging::Initialize() {
     uint32_t i {};
     while ( i < MemoryManager::kBaseAddress) {
         MemoryManager::AllocatePage(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0);
-        i +=kSize4kb;
+        i += kSize4kb;
     }
+    printf("mapped the kernel base");
+    uint32_t start = reinterpret_cast<uintptr_t>(&Paging::CodeStart);
+    uint32_t end = reinterpret_cast<uintptr_t>(&Paging::CodeEnd);
 
-//    uint64_t j = (uint32_t)Paging::code;
-//    while (j < (uint32_t)Paging::CodeEnd) {
-//        MemoryManager::ForceFrame(Paging::GetPage(j, 1, MemoryManager::KernelDir), 0, 0,j);
-//        j+=kSize4kb;
-//    }
+    while (start < end) {
+        MemoryManager::ForceFrame(Paging::GetPage(start, 1, MemoryManager::KernelDir), 0, 0,start);
+        start += kSize4kb;
+        printf("%x", start);
+    }
+    printf("mapped the kernel code");
 
     printf("mapping is done");
     K_LOG("Mapped the kernel memory");
 
     ISR::InsertUniqueHandler(0xe, ISR::Handler {Paging::PFHandler,false,false});
-    load_page_directory((uint32_t*)&MemoryManager::KernelDir->physical_table_addresses);
-    enable_paging();
+    Paging::SwitchDirectory(MemoryManager::KernelDir);
+//    load_page_directory((uint32_t*)&MemoryManager::KernelDir->physical_table_addresses);
+//    enable_paging();
 }
 
 /***
@@ -62,13 +67,30 @@ Paging::Page* Paging::GetPage(uint32_t address, int make, Paging::PageDirectory*
         return &directory->entries[table_index]->entries[address % kSize1kb];
 
     } else if(make) {
-        MemoryManager::AllocateTable(table_index, directory);
+//        MemoryManager::AllocateTable(table_index, directory);
+        uint32_t temp_physical_address;
+        directory->entries[table_index] = (Paging::PageTable*) MemoryManager::AllocateMemory(sizeof(Paging::PageTable), 1,
+                                                                                             &temp_physical_address);
+        memset(directory->entries[table_index], 0, kSize4kb);
+
+        directory->physical_table_addresses[table_index] = temp_physical_address | 0x7;
         return &directory->entries[table_index]->entries[address % kSize1kb];
 
     } else {
         return nullptr;
     }
 }
+
+
+void Paging::SwitchDirectory(Paging::PageDirectory* dir){
+    MemoryManager::CurrentDir = dir;
+    asm volatile("mov %0, %%cr3":: "r"(&dir->physical_table_addresses));
+    uint32_t cr0;
+    asm volatile("mov %%cr0, %0": "=r"(cr0));
+    cr0 |= 0x80000000; // Enable paging!
+    asm volatile("mov %0, %%cr0":: "r"(cr0));
+}
+
 
 void Paging::PFHandler(uint8_t, ISR::StackState regs) {
 
