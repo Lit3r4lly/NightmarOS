@@ -104,5 +104,5 @@ void OrderedArray::Remove(uint32_t index, Array *array) {
  * @param array the array to free its memory
  */
 void OrderedArray::DestroyOrderedArray(Array *array) {
-    MemoryManager::DeallocatePage(Paging::GetPage(reinterpret_cast<uintptr_t>(*array->array), 0, MemoryManager::CurrentDir))
+    MemoryManager::DeallocatePage(Paging::GetPage(reinterpret_cast<uintptr_t>(*array->array), 0, MemoryManager::CurrentDir));
 }
