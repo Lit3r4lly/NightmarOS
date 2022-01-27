@@ -33,24 +33,24 @@ void Paging::Initialize() {
         MemoryManager::AllocatePage(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0);
         i += kSize4kb;
     }
+
     printf("mapped the kernel base");
     uint32_t start = reinterpret_cast<uintptr_t>(&Paging::CodeStart);
     uint32_t end = reinterpret_cast<uintptr_t>(&Paging::CodeEnd);
 
     while (start < end) {
-        MemoryManager::ForceFrame(Paging::GetPage(start, 1, MemoryManager::KernelDir), 0, 0,start);
+        //MemoryManager::ForceFrame(Paging::GetPage(start, 1, MemoryManager::KernelDir), 0, 0,start);
+        MemoryManager::AllocatePage(Paging::GetPage(start, 1, MemoryManager::KernelDir), 0, 0);
         start += kSize4kb;
-        printf("%x", start);
     }
+
     printf("mapped the kernel code");
 
     printf("mapping is done");
     K_LOG("Mapped the kernel memory");
 
     ISR::InsertUniqueHandler(0xe, ISR::Handler {Paging::PFHandler,false,false});
-    Paging::SwitchDirectory(MemoryManager::KernelDir);
-//    load_page_directory((uint32_t*)&MemoryManager::KernelDir->physical_table_addresses);
-//    enable_paging();
+    //Paging::SwitchDirectory(MemoryManager::KernelDir);
 }
 
 /***
@@ -62,7 +62,7 @@ void Paging::Initialize() {
  */
 Paging::Page* Paging::GetPage(uint32_t address, int make, Paging::PageDirectory* directory) {
     address /= kSize4kb;
-    uint32_t table_index = address / kSize1kb;
+    volatile uint32_t table_index = address / kSize1kb;
     if (directory->entries[table_index]) {
         return &directory->entries[table_index]->entries[address % kSize1kb];
 
