@@ -16,10 +16,8 @@ constexpr uint32_t kSize1kb = 1024;
 constexpr uint32_t kSize4kb = 0x1000;
 constexpr uint32_t kSize16mb = 0x1000000;
 constexpr uint32_t kSize4b = 4 * 8;
-//constexpr uint32_t kSize4kb = 4000;
 
-
-
+typedef void* type_t;
 
 #ifdef __cplusplus
 #define assert(expr) (static_cast<bool>(expr) \

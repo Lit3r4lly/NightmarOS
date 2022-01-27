@@ -34,7 +34,7 @@ void Paging::Initialize() {
         i += kSize4kb;
     }
 
-    printf("mapped the kernel base");
+    printf("mapped the kernel base\n");
     uint32_t start = reinterpret_cast<uintptr_t>(&Paging::CodeStart);
     uint32_t end = reinterpret_cast<uintptr_t>(&Paging::CodeEnd);
 
@@ -44,9 +44,9 @@ void Paging::Initialize() {
         start += kSize4kb;
     }
 
-    printf("mapped the kernel code");
+    printf("mapped the kernel code\n");
 
-    printf("mapping is done");
+    printf("mapping is done\n");
     K_LOG("Mapped the kernel memory");
 
     ISR::InsertUniqueHandler(0xe, ISR::Handler {Paging::PFHandler,false,false});
