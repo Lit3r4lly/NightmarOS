@@ -22,7 +22,7 @@ namespace Heap {
     struct Header {
         uint32_t magic;
         uint8_t is_hole;
-        uint32_t Size;
+        uint32_t size;
     };
 
     struct Footer {
@@ -43,8 +43,14 @@ namespace Heap {
     Heap::HeapT* CreateHeap(uint32_t start, uint32_t end, uint32_t max, uint8_t supervise, uint8_t read_only);
 
     //function to allocate new memory
-    void* alloc(uint32_t size, uint8_t page_align, Heap::HeapT heap);
+    type_t alloc(uint32_t size, uint8_t page_align, Heap::HeapT* heap);
 
     //function to free the memory allocated with alloc
-    void free(void* p, Heap::HeapT heap);
+    void free(type_t p, Heap::HeapT* heap);
+
+    //function to find the smallest available memory address
+    uint32_t FindSmallestHole(uint32_t size, uint8_t align, Heap::HeapT* heap);
+
+    //function needed by the ordered array for the heap
+    int8_t HeapLessThan(type_t a, type_t b);
 };

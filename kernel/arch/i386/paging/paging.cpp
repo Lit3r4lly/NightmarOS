@@ -16,8 +16,9 @@ uint32_t MemoryManager::kBaseAddress;
 
 
 void Paging::Initialize() {
-
-    K_LOG("kernel start: %x, kernel end: %x", &Paging::CodeStart, &Paging::CodeEnd);
+    uint32_t start = (uint32_t)&Paging::CodeStart;
+    uint32_t end = (uint32_t)&Paging::CodeEnd;
+    K_LOG("kernel start: %x, kernel end: %x", start, end);
     //allocating heap
     MemoryManager::kFrames = (uint32_t*) MemoryManager::AllocateMemory(K_FRAME_INDEX(MemoryManager::kNumFrames), 0, 0);
     memset(MemoryManager::kFrames, 0, K_FRAME_INDEX(MemoryManager::kNumFrames));
@@ -35,8 +36,6 @@ void Paging::Initialize() {
     }
 
     printf("mapped the kernel base\n");
-    uint32_t start = reinterpret_cast<uintptr_t>(&Paging::CodeStart);
-    uint32_t end = reinterpret_cast<uintptr_t>(&Paging::CodeEnd);
 
     while (start < end) {
         //MemoryManager::ForceFrame(Paging::GetPage(start, 1, MemoryManager::KernelDir), 0, 0,start);
