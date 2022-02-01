@@ -36,7 +36,7 @@ OrderedArray::Array OrderedArray::CreateOrderedArray(uint32_t max_size, lessThan
  * @param less_than - the function to base the sort upon
  * @return the array
  */
-OrderedArray::Array OrderedArray::PlaceOrderedArray(void* address, uint32_t max_size, lessThanPredicate_t less_than) {
+OrderedArray::Array OrderedArray::PlaceOrderedArray(type_t address, uint32_t max_size, lessThanPredicate_t less_than) {
     OrderedArray::Array array;
 
     array.array = (type_t*)address;
@@ -104,5 +104,5 @@ void OrderedArray::Remove(uint32_t index, Array *array) {
  * @param array the array to free its memory
  */
 void OrderedArray::DestroyOrderedArray(Array *array) {
-    MemoryManager::DeallocatePage(Paging::GetPage(reinterpret_cast<uintptr_t>(*array->array), 0, MemoryManager::CurrentDir));
+    MemoryManager::DeallocatePage(Paging::GetPage((uint32_t)&array->array, 0, MemoryManager::CurrentDir));
 }

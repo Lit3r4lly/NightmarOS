@@ -25,7 +25,7 @@ namespace OrderedArray {
 
     //create the array
     Array CreateOrderedArray(uint32_t max_size, lessThanPredicate_t less_then = OrderedArray::LessThan); //create using kmalloc
-    Array PlaceOrderedArray(void* address, uint32_t max_size, lessThanPredicate_t less_than = OrderedArray::LessThan); //creating at index
+    Array PlaceOrderedArray(type_t address, uint32_t max_size, lessThanPredicate_t less_than = OrderedArray::LessThan); //creating at index
 
     //destroy the array
     void DestroyOrderedArray(Array* array);
