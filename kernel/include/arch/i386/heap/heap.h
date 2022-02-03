@@ -53,4 +53,7 @@ namespace Heap {
 
     //function needed by the ordered array for the heap
     int8_t HeapLessThan(type_t a, type_t b);
+
+    void Expend(uint32_t new_size, Heap::HeapT* heap);
+    uint32_t Contract(uint32_t new_size, Heap::HeapT* heap);
 };
