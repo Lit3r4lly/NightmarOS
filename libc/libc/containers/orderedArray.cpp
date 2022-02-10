@@ -53,7 +53,7 @@ OrderedArray::Array OrderedArray::PlaceOrderedArray(type_t address, uint32_t max
  * @param item the element to insert
  * @param array the array to insert into
  */
-void OrderedArray::InsertToArray(type_t* item, OrderedArray::Array* array) {
+void OrderedArray::InsertToArray(type_t item, OrderedArray::Array* array) {
     uint32_t iter {};
     while (iter < array->size && array->less_than(array->array[iter], item))
         iter++;

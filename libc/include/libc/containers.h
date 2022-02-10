@@ -31,7 +31,7 @@ namespace OrderedArray {
     void DestroyOrderedArray(Array* array);
 
     //insert element
-    void InsertToArray(type_t* item, Array* array);
+    void InsertToArray(type_t item, Array* array);
 
     //find element at index
     type_t Find(uint32_t index, Array* array);

@@ -218,10 +218,9 @@ type_t Heap::alloc(uint32_t size, uint8_t align, Heap::HeapT* heap) {
                 hole_footer->header = hole_header;
             }
 
-            OrderedArray::InsertToArray((type_t)hole_header, &heap->index);
+            OrderedArray::InsertToArray(hole_header, &heap->index);
         }
 
         return (type_t) ((uint32_t)block_header + sizeof (Heap::Header));
     }
-
 }
