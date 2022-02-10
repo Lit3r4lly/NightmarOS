@@ -14,7 +14,7 @@
  * @param heap - the heap to find the hole
  * @return the index of the hole
  */
-uint32_t Heap::FindSmallestHole(uint32_t size, uint8_t align, Heap::HeapT* heap) {
+int32_t Heap::FindSmallestHole(uint32_t size, uint8_t align, Heap::HeapT* heap) {
 
     uint32_t iter {};
     while (iter < heap->index.size) {
@@ -156,3 +156,72 @@ uint32_t Heap::Contract(uint32_t new_size, Heap::HeapT* heap) {
     return new_size;
 }
 
+/***
+ * function to allocate new memory to the heap
+ * @param size - the wanted size of the memory
+ * @param align - is it needed to be page aligned
+ * @param heap - the heap to allocate on
+ * @return - the address of the memory
+ */
+type_t Heap::alloc(uint32_t size, uint8_t align, Heap::HeapT* heap) {
+
+    uint32_t new_size = size + sizeof(Heap::Footer) + sizeof(Heap::Header);
+    int32_t iter = Heap::FindSmallestHole(new_size, align, heap);
+
+    if (iter == -1) {
+
+    } else {
+        Heap::Header* original_hole_header = (Heap::Header*) OrderedArray::Find(iter, &heap->index);
+        uint32_t original_hole_pos = (uint32_t)original_hole_header;
+        uint32_t original_hole_size = original_hole_header->size;
+
+        if (original_hole_size - new_size < sizeof(Heap::Footer) + sizeof (Heap::Header)) {
+            size += original_hole_size - new_size;
+            new_size = original_hole_size;
+        }
+
+        if (align && original_hole_pos & 0xFFFFF000) {
+            uint32_t new_location = original_hole_pos + kSize4kb;
+            Heap::Header* hole_header = (Heap::Header*)new_location;
+            hole_header->size = kSize4kb - (original_hole_pos&0xFFF) - sizeof (Heap::Header);
+            hole_header->magic = Heap::kHeapMagic;
+            hole_header->is_hole = 1;
+
+            Heap::Footer* hole_footer = (Heap::Footer*) ((uint32_t)new_location - sizeof (Heap::Footer));
+            hole_footer->magic = Heap::kHeapMagic;
+            hole_footer->header = hole_header;
+            original_hole_pos = new_location;
+            original_hole_size = original_hole_size - hole_header->size;
+        } else {
+            OrderedArray::Remove(iter, &heap->index);
+        }
+
+        Heap::Header* block_header = (Heap::Header*)original_hole_pos;
+        block_header->magic = Heap::kHeapMagic;
+        block_header->is_hole = 0;
+        block_header->size = new_size;
+
+        Heap::Footer* block_footer = (Heap::Footer*)(original_hole_pos + sizeof (Heap::Header) + size);
+        block_footer->magic = Heap::kHeapMagic;
+        block_footer->header = block_header;
+
+        if(original_hole_size - size > 0) {
+            Heap::Header* hole_header = (Heap::Header*)(original_hole_pos + sizeof (Heap::Header) + size +sizeof(Heap::Footer));
+            hole_header->magic = Heap::kHeapMagic;
+            hole_header->is_hole = 1;
+            hole_header->size = original_hole_size - new_size;
+
+            Heap::Footer* hole_footer = (Heap::Footer*)((uint32_t)hole_header + original_hole_size - new_size - sizeof (Heap::Footer));
+
+            if((uint32_t)hole_footer < heap->end_address) {
+                hole_footer->magic = Heap::kHeapMagic;
+                hole_footer->header = hole_header;
+            }
+
+            OrderedArray::InsertToArray((type_t)hole_header, &heap->index);
+        }
+
+        return (type_t) ((uint32_t)block_header + sizeof (Heap::Header));
+    }
+
+}
