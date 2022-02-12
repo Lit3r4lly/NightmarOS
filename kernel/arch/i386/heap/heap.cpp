@@ -168,7 +168,51 @@ type_t Heap::alloc(uint32_t size, uint8_t align, Heap::HeapT* heap) {
     uint32_t new_size = size + sizeof(Heap::Footer) + sizeof(Heap::Header);
     int32_t iter = Heap::FindSmallestHole(new_size, align, heap);
 
+    //if we didn't find hole lets create one
     if (iter == -1) {
+
+        uint32_t old_length = heap->end_address - heap->start_address;
+        uint32_t old_end_addr = heap->end_address;
+
+        Heap::Expend(old_length + new_size, heap);
+        uint32_t new_length = heap->end_address - heap->start_address;
+
+        iter = 0;
+        uint32_t idx = -1;
+        uint32_t value = 0x0;
+
+        while (iter < heap->index.size) {
+            uint32_t tmp = (uint32_t)OrderedArray::Find(iter, &heap->index);
+            if (tmp > value) {
+                value = tmp;
+                idx = iter;
+            }
+            iter++;
+        }
+
+        //lets make one
+        if (idx == -1) {
+            Heap::Header* header = (Heap::Header*) old_end_addr;
+            header->magic = Heap::kHeapMagic;
+            header->size = new_length - old_length;
+            header->is_hole = 1;
+
+            Heap::Footer* footer = (Heap::Footer*)(old_end_addr + header->size - sizeof (Heap::Footer));
+            footer->magic = Heap::kHeapMagic;
+            footer->header = header;
+
+            OrderedArray::InsertToArray((type_t)header, &heap->index);
+        }
+        else {
+            Heap::Header* header = (Heap::Header*)OrderedArray::Find(idx, &heap->index);
+            header->size = new_length - old_length;
+
+            Heap::Footer* footer = (Heap::Footer*) ((uint32_t)header + header-> size +sizeof (Heap::Footer));
+            footer->header = header;
+            footer->magic = Heap::kHeapMagic;
+        }
+        //now that we created new available header we can just call the function again
+        return Heap::alloc(size, align, heap);
 
     } else {
         Heap::Header* original_hole_header = (Heap::Header*) OrderedArray::Find(iter, &heap->index);
@@ -223,4 +267,77 @@ type_t Heap::alloc(uint32_t size, uint8_t align, Heap::HeapT* heap) {
 
         return (type_t) ((uint32_t)block_header + sizeof (Heap::Header));
     }
+}
+
+/**
+ * function to free the data from the heap
+ * @param p - the address to free
+ * @param heap - the heap to remove from
+ */
+void Heap::free(type_t p, Heap::HeapT* heap){
+
+    if (!p)
+        return;
+
+    Heap::Header* header = (Heap::Header*)((uint32_t)p - sizeof(Heap::Header));
+    Heap::Footer* footer = (Heap::Footer*)((uint32_t)header + header->size - sizeof(Heap::Footer));
+
+    if (footer->magic != Heap::kHeapMagic || header->magic != Heap::kHeapMagic)
+        return;
+
+    header->is_hole = 1;
+    uint8_t do_add = 1;
+
+    Heap::Footer* test_footer = (Heap::Footer*)((uint32_t)header - sizeof(Heap::Footer));
+    if (test_footer->magic == Heap::kHeapMagic && test_footer->header->is_hole) {
+        uint32_t cache_size = header->size;
+        header = test_footer->header;
+        footer->header = header;
+        header->size += cache_size;
+        do_add = 0;
+    }
+
+
+    Heap::Header* test_header = (Heap::Header*)(footer + sizeof(Heap::Footer));
+    if (test_header->magic == kHeapMagic && test_header->is_hole) {
+        header->size += test_header->size;
+        test_footer = (Heap::Footer*) ((uint32_t)test_header + test_header->size - sizeof (Heap::Footer));
+        footer = test_footer;
+
+        uint32_t iter = 0;
+        while ((iter < heap->index.size) && (OrderedArray::Find(iter, &heap->index) != (void*)test_header))
+            iter++;
+
+        if (iter >= heap->index.size) {
+            return;
+        }
+
+        OrderedArray::Remove(iter, &heap->index);
+    }
+
+    if (((uint32_t)footer + sizeof (Heap::Footer)) == heap->end_address) {
+
+        uint32_t old_length = heap->end_address - heap->start_address;
+        uint32_t new_length = Heap::Contract((uint32_t)header - heap->start_address, heap);
+
+        if (header->size - (old_length-new_length) > 0) {
+
+            header->size -= old_length - new_length;
+            footer = (Heap::Footer *) ((uint32_t) header + header->size - sizeof(Heap::Footer));
+
+            footer->magic = Heap::kHeapMagic;
+            footer->header = header;
+        } else {
+            uint32_t iter = 0;
+            while ((iter < heap->index.size) && (OrderedArray::Find(iter, &heap->index) != (type_t)test_header))
+                iter++;
+
+            if (iter < heap->index.size)
+                OrderedArray::Remove(iter, &heap->index);
+
+        }
+    }
+
+    if (do_add)
+        OrderedArray::InsertToArray((type_t)header, &heap->index);
 }
