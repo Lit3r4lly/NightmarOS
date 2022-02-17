@@ -6,7 +6,7 @@
 * @copyright Copyright (c) 2022
 */
 
-#include <libc/containers.h>
+#include <arch/i386/paging/memory_manager.h>
 
 int8_t OrderedArray::LessThan(type_t first, type_t second) {
     return (first < second)?1:0;

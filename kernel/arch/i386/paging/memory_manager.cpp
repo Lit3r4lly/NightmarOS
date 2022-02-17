@@ -32,28 +32,14 @@ uint32_t MemoryManager::AllocateMemory(uint32_t size, int aligned, uint32_t* phy
     return temp_address;
 }
 
-/**
- * create a new page table for a given directory
- * @param table_index - the index of the table to create
- * @param directory  - the directory to append
- */
-void MemoryManager::AllocateTable(uint32_t table_index, Paging::PageDirectory* directory) {
-    uint32_t temp_physical_address;
-    directory->entries[table_index] = (Paging::PageTable*) MemoryManager::AllocateMemory(sizeof(Paging::PageTable), 1,
-                                                                                         &temp_physical_address);
-    memset(directory->entries[table_index], 0, kSize4kb);
-
-    directory->physical_table_addresses[table_index] = temp_physical_address | 0x7;
-}
-
 /***
  * function to set the flags of a frame to announce the frame is in use
  * @param frame_address - the frame to set its flags
  */
 void MemoryManager::SetFrameFlags(uint32_t frame_address) {
     uint32_t frame = frame_address / kSize4kb;
-    uint32_t idx = K_FRAME_INDEX(frame);
-    uint32_t offset = K_FRAME_OFFSET(frame);
+    uint32_t idx = K_BIT_INDEX(frame);
+    uint32_t offset = K_BIT_OFFSET(frame);
     MemoryManager::kFrames[idx] |= (0x1 << offset);
 }
 
@@ -63,8 +49,8 @@ void MemoryManager::SetFrameFlags(uint32_t frame_address) {
  */
 void MemoryManager::ClearFrameFlags(uint32_t frame_address) {
     uint32_t frame = frame_address / kSize4kb;
-    uint32_t idx = K_FRAME_INDEX(frame);
-    uint32_t offset = K_FRAME_OFFSET(frame);
+    uint32_t idx = K_BIT_INDEX(frame);
+    uint32_t offset = K_BIT_OFFSET(frame);
     MemoryManager::kFrames[idx] &= ~(0x1 << offset);
 }
 
@@ -75,8 +61,8 @@ void MemoryManager::ClearFrameFlags(uint32_t frame_address) {
  */
 uint32_t MemoryManager::TestFrameFlags(uint32_t frame_address) {
     uint32_t frame = frame_address / kSize4kb;
-    uint32_t idx = K_FRAME_INDEX(frame);
-    uint32_t offset = K_FRAME_OFFSET(frame);
+    uint32_t idx = K_BIT_INDEX(frame);
+    uint32_t offset = K_BIT_OFFSET(frame);
     return (MemoryManager::kFrames[idx] & (0x1 << offset));
 }
 
@@ -124,7 +110,7 @@ void MemoryManager::DeallocatePage(Paging::Page *page) {
  * @return - the first free frame
  */
 uint32_t MemoryManager::GetFreeFrame() {
-    for (uint32_t i {}; i < K_FRAME_INDEX(MemoryManager::kNumFrames); i++) {
+    for (uint32_t i {}; i < K_BIT_INDEX(MemoryManager::kNumFrames); i++) {
         if (MemoryManager::kFrames[i] != 0xFFFFFFFF) {
             for (uint32_t j {}; j < kSize4b; j++) {
                 if (!(MemoryManager::kFrames[i] & (0x01 << j)))

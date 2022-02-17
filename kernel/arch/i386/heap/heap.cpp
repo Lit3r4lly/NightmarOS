@@ -5,7 +5,9 @@
 * @date 31/01/2022
 * @copyright Copyright (c) 2022
 */
-#include <arch/i386/heap/heap.h>
+//#include <arch/i386/heap/heap.h>
+#include <arch/i386/paging/memory_manager.h>
+
 
 /**
  * function to find the smallest hole to fit new data

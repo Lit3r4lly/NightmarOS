@@ -48,7 +48,6 @@ libc/string/strncpy.o \
 libc/string/strcmp.o \
 libc/string/memcpy.o \
 libc/wrappers/fmt/fmt.o \
-libc/containers/orderedArray.o \
 # insert here freestanding objects (kernel libc objects)
 
 # hosted objects - standard library enabled with user-space

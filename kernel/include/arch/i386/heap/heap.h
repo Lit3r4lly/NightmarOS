@@ -7,12 +7,15 @@
 */
 #pragma once
 #include <kernel/common/kuseful.h>
-#include <arch/i386/paging/memory_manager.h>
-#include <libc/containers.h>
+#include <kernel/logs/logs.h>
+#include <arch/i386/i386.h>
+//#include <arch/i386/paging/memory_manager.h>
+#include <arch/i386/heap/orderedArray.h>
+
 
 namespace Heap {
     constexpr uint32_t kHeapStart = 0xC0000000;
-    constexpr uint32_t kHeadSize = 0x100000;
+    constexpr uint32_t kHeapSize = 0x100000;
     constexpr uint32_t kHeapIndexSize = 0x20000;
     constexpr uint32_t kHeapMagic = 0x123890AB;
     constexpr uint32_t kHeapMinSize = 0x70000;

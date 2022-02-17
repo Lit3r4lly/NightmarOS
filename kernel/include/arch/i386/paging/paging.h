@@ -13,8 +13,8 @@
 #include <arch/i386/i386.h>
 #include "arch/i386/interrupts/isr/isr.h"
 
-#define K_FRAME_INDEX(a) (a / 32)
-#define K_FRAME_OFFSET(a) (a % 32)
+#define K_BIT_INDEX(a) (a / 32)
+#define K_BIT_OFFSET(a) (a % 32)
 
 /*
  * 1. Normal memory is firstly and once mapped in the initialization of the OS -> kernel memory region is from 0x0 to 0xXXXXXXX and no need to mess with it all along

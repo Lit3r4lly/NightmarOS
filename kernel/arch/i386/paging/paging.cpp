@@ -13,43 +13,52 @@ uint32_t* MemoryManager::kFrames; // the available frames
 Paging::PageDirectory* MemoryManager::KernelDir; //the directory of the kernel
 Paging::PageDirectory* MemoryManager::CurrentDir; //the directory of the kernel
 uint32_t MemoryManager::kBaseAddress;
+Heap::HeapT* MemoryManager::kHeap;
 
 
 void Paging::Initialize() {
     uint32_t start = (uint32_t)&Paging::CodeStart;
     uint32_t end = (uint32_t)&Paging::CodeEnd;
     K_LOG("kernel start: %x, kernel end: %x", start, end);
-    //allocating heap
-    MemoryManager::kFrames = (uint32_t*) MemoryManager::AllocateMemory(K_FRAME_INDEX(MemoryManager::kNumFrames), 0, 0);
-    memset(MemoryManager::kFrames, 0, K_FRAME_INDEX(MemoryManager::kNumFrames));
+
+    //allocating frame data set
+    MemoryManager::kFrames = (uint32_t*) MemoryManager::AllocateMemory(K_BIT_INDEX(MemoryManager::kNumFrames), 0, 0);
+    memset(MemoryManager::kFrames, 0, K_BIT_INDEX(MemoryManager::kNumFrames));
 
     //allocating the kernel memory
     MemoryManager::KernelDir = (PageDirectory*) MemoryManager::AllocateMemory(sizeof(PageDirectory), 1, 0);
     memset(MemoryManager::KernelDir, 0, sizeof(Paging::PageDirectory));
     MemoryManager::CurrentDir = MemoryManager::KernelDir;
 
+
+    for (uint32_t i = Heap::kHeapStart; i < Heap::kHeapStart + Heap::kHeapSize;i += kSize4kb)
+        Paging::GetPage(i,1,MemoryManager::KernelDir);
+
+
     printf("starting to map");
     uint32_t i {};
-    while ( i < MemoryManager::kBaseAddress) {
+    while ( i < MemoryManager::kBaseAddress + kSize4kb) {
         MemoryManager::AllocatePage(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0);
+        i += kSize4kb;
+    }
+
+    i = Heap::kHeapStart;
+    while (i < Heap::kHeapStart + Heap::kHeapSize) {
+        MemoryManager::AllocatePage(Paging::GetPage(i,1,MemoryManager::KernelDir),0,0);
         i += kSize4kb;
     }
 
     printf("mapped the kernel base\n");
 
-    while (start < end) {
-        //MemoryManager::ForceFrame(Paging::GetPage(start, 1, MemoryManager::KernelDir), 0, 0,start);
-        MemoryManager::AllocatePage(Paging::GetPage(start, 1, MemoryManager::KernelDir), 0, 0);
-        start += kSize4kb;
-    }
+    //printf("mapped the kernel code\n");
 
-    printf("mapped the kernel code\n");
-
-    printf("mapping is done\n");
+    //printf("mapping is done\n");
     K_LOG("Mapped the kernel memory");
 
     ISR::InsertUniqueHandler(0xe, ISR::Handler {Paging::PFHandler,false,false});
-    //Paging::SwitchDirectory(MemoryManager::KernelDir);
+    Paging::SwitchDirectory(MemoryManager::KernelDir);
+
+    MemoryManager::kHeap = Heap::CreateHeap(Heap::kHeapStart, Heap::kHeapStart + Heap::kHeapSize, 0xCFFFF000, 0,0);
 }
 
 /***
@@ -62,6 +71,7 @@ void Paging::Initialize() {
 Paging::Page* Paging::GetPage(uint32_t address, int make, Paging::PageDirectory* directory) {
     address /= kSize4kb;
     volatile uint32_t table_index = address / kSize1kb;
+
     if (directory->entries[table_index]) {
         return &directory->entries[table_index]->entries[address % kSize1kb];
 

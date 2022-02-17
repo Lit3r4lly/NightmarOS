@@ -7,7 +7,7 @@
 */
 #pragma once
 #include <kernel/common/kuseful.h>
-#include <arch/i386/paging/memory_manager.h>
+
 
 //array that keeps the items ordered
 namespace OrderedArray {
