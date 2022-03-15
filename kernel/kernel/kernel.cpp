@@ -24,11 +24,14 @@ C_SCOPE NO_RETURN void kernel_main() {
      * ...
      */
 
-    TTY::Initialize();
     GDT::Initialize();
     Interrupts::Initialize();
     Paging::Initialize();
+    TTY::Initialize();
+
     Keyboard::Initialize(PS2Keyboard::KeyboardSource);
+
+    K_LOG("set up is complete");
 
     printf("Hello! \nWelcome to NightmareOS kernel ;^)\n");
     printf("Enter whatever you would like: ");

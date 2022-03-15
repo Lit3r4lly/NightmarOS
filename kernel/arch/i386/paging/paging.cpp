@@ -41,7 +41,7 @@ void Paging::Initialize() {
 
     K_LOG("allocate the memory for the heap");
 
-    printf("starting to map\n");
+    //printf("starting to map\n");
     uint32_t i {};
     while ( i < MemoryManager::kBaseAddress + kSize4kb) {
         MemoryManager::AllocatePage(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0);
@@ -56,18 +56,13 @@ void Paging::Initialize() {
 
     i = 0xB8000;
     while (i < 0xB800 + 80 * 25 + kSize4kb) {
-        MemoryManager::AllocatePage(Paging::GetPage(i,1,MemoryManager::KernelDir),0,0);
+        MemoryManager::AllocatePage(Paging::GetPage(i,1,MemoryManager::KernelDir),0,1);
         i += kSize4kb;
     }
 
-    printf("mapped the kernel base\n");
-
-    //printf("mapped the kernel code\n");
-
-    //printf("mapping is done\n");
     K_LOG("Mapped the kernel memory");
 
-    ISR::InsertUniqueHandler(0xe, ISR::Handler {Paging::PFHandler,false,false});
+    ISR::InsertUniqueHandler(0xe, ISR::Handler {Paging::PFHandler,false,true});
     Paging::SwitchDirectory(MemoryManager::KernelDir);
     K_LOG("enabled paging :)")
 
