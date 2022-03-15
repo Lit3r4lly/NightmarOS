@@ -26,7 +26,7 @@ namespace Paging {
     extern "C" uint32_t CodeStart;
     extern "C" uint32_t CodeEnd;
 
-    constexpr uint32_t kPageDirectorySize = 1024;
+    constexpr uint32_t kPageDirectorySize = 2048;
     constexpr uint32_t kPageTableSize = 1024;
 
     struct Page {
@@ -55,6 +55,8 @@ namespace Paging {
     void SwitchDirectory(Paging::PageDirectory* dir);
 
     void PFHandler(uint8_t, ISR::StackState regs);
+
+    void map_stuff();
 };
 
 ASM_SCOPE void enable_paging();

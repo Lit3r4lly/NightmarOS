@@ -12,7 +12,7 @@
 uint32_t* MemoryManager::kFrames; // the available frames
 Paging::PageDirectory* MemoryManager::KernelDir; //the directory of the kernel
 Paging::PageDirectory* MemoryManager::CurrentDir; //the directory of the kernel
-uint32_t MemoryManager::kBaseAddress;
+uint32_t MemoryManager::kBaseAddress = (uint32_t)&Paging::CodeEnd;
 Heap::HeapT* MemoryManager::kHeap;
 
 
@@ -30,20 +30,32 @@ void Paging::Initialize() {
     memset(MemoryManager::KernelDir, 0, sizeof(Paging::PageDirectory));
     MemoryManager::CurrentDir = MemoryManager::KernelDir;
 
+    K_LOG("heap");
 
-    for (uint32_t i = Heap::kHeapStart; i < Heap::kHeapStart + Heap::kHeapSize;i += kSize4kb)
+//    for (uint32_t i = Heap::kHeapStart; i < Heap::kHeapStart + Heap::kHeapSize;i += kSize4kb)
+//        Paging::GetPage(i,1,MemoryManager::KernelDir);
+
+    for (uint32_t i = 0xB8000; i < 0xB800 + 80 * 25 + kSize4kb; i += kSize4kb)
         Paging::GetPage(i,1,MemoryManager::KernelDir);
 
 
-    printf("starting to map");
+    K_LOG("allocate the memory for the heap");
+
+    printf("starting to map\n");
     uint32_t i {};
     while ( i < MemoryManager::kBaseAddress + kSize4kb) {
         MemoryManager::AllocatePage(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0);
         i += kSize4kb;
     }
 
-    i = Heap::kHeapStart;
-    while (i < Heap::kHeapStart + Heap::kHeapSize) {
+//    i = Heap::kHeapStart;
+//    while (i < Heap::kHeapStart + Heap::kHeapSize) {
+//        MemoryManager::AllocatePage(Paging::GetPage(i,1,MemoryManager::KernelDir),0,0);
+//        i += kSize4kb;
+//    }
+
+    i = 0xB8000;
+    while (i < 0xB800 + 80 * 25 + kSize4kb) {
         MemoryManager::AllocatePage(Paging::GetPage(i,1,MemoryManager::KernelDir),0,0);
         i += kSize4kb;
     }
@@ -57,8 +69,9 @@ void Paging::Initialize() {
 
     ISR::InsertUniqueHandler(0xe, ISR::Handler {Paging::PFHandler,false,false});
     Paging::SwitchDirectory(MemoryManager::KernelDir);
+    K_LOG("enabled paging :)")
 
-    MemoryManager::kHeap = Heap::CreateHeap(Heap::kHeapStart, Heap::kHeapStart + Heap::kHeapSize, 0xCFFFF000, 0,0);
+    //MemoryManager::kHeap = Heap::CreateHeap(Heap::kHeapStart, Heap::kHeapStart + Heap::kHeapSize, 0xCFFFF000, 0,0);
 }
 
 /***
@@ -116,6 +129,19 @@ void Paging::PFHandler(uint8_t, ISR::StackState regs) {
             MemoryManager::AllocatePage(Paging::GetPage(i, 1, MemoryManager::CurrentDir), 0, 0);
             i +=kSize4kb;
         }
+    }
+
+}
+
+
+void Paging::map_stuff() {
+
+    uint32_t i = 0xB8000;
+    uint32_t end = i + 80 * 25;
+
+    while (i < end) {
+        MemoryManager::AllocatePage(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0);
+        i += kSize4kb;
     }
 
 }

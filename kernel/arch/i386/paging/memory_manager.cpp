@@ -124,7 +124,7 @@ uint32_t MemoryManager::GetFreeFrame() {
 
 
 void MemoryManager::ForceFrame(Paging::Page* page, int32_t is_user, int32_t is_read_write, uint32_t address) {
-    SetFrameFlags(address*0x1000);
+    SetFrameFlags(address*kSize4kb);
 
     page->is_present = 1;
     page->rw = (uint32_t)is_read_write;
