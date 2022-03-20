@@ -55,8 +55,6 @@ namespace Paging {
     void SwitchDirectory(Paging::PageDirectory* dir);
 
     void PFHandler(uint8_t, ISR::StackState regs);
-
-    void map_stuff();
 };
 
 ASM_SCOPE void enable_paging();

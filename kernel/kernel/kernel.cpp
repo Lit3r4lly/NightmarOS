@@ -30,10 +30,11 @@ C_SCOPE NO_RETURN void kernel_main() {
     Paging::Initialize();
     TTY::Initialize();
 
+
     Keyboard::Initialize(PS2Keyboard::KeyboardSource);
 
     K_LOG("set up is complete");
-    //heap_demon();
+    heap_demon();
 
     printf("Hello! \nWelcome to NightmareOS kernel ;^)\n");
     printf("Enter whatever you would like: ");
@@ -45,16 +46,17 @@ C_SCOPE NO_RETURN void kernel_main() {
 
 
 void heap_demon (){
-        volatile uint32_t b = (uint32_t)Heap::alloc(8,0, MemoryManager::kHeap);
-        volatile uint32_t c = (uint32_t)Heap::alloc(8,0, MemoryManager::kHeap);
+    uint32_t* b = (uint32_t*)malloc(8);
+    uint32_t* c = (uint32_t*) malloc(8);
 
-        K_LOG("b: %x, c:%x",b,c);
+    printf("b: %x, c:%x\n",b,c);
+    *c = 12;
 
-        Heap::free((type_t)c, MemoryManager::kHeap);
-        Heap::free((type_t)b, MemoryManager::kHeap);
+    free((void*)c);
+    free((void*)b);
 
-        volatile uint32_t d = (uint32_t)Heap::alloc(12,0, MemoryManager::kHeap);
+    uint32_t d = (uint32_t)malloc(12);
 
-        K_LOG("d: %x",d);
+    printf("d: %x\n",d);
 
 };

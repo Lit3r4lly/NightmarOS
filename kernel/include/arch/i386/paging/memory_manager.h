@@ -28,6 +28,7 @@ namespace MemoryManager {
     extern uint32_t kBaseAddress; //the current available address
     extern Paging::PageDirectory* CurrentDir;
     extern Heap::HeapT* kHeap;
+    extern Heap::HeapT* Currheap;
 
 
     uint32_t AllocateMemory(uint32_t size, int aligned, uint32_t* physical_address); //function to allocate memory

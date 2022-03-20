@@ -14,6 +14,7 @@ Paging::PageDirectory* MemoryManager::KernelDir; //the directory of the kernel
 Paging::PageDirectory* MemoryManager::CurrentDir; //the directory of the kernel
 uint32_t MemoryManager::kBaseAddress = (uint32_t)&Paging::CodeEnd;
 Heap::HeapT* MemoryManager::kHeap;
+Heap::HeapT* MemoryManager::Currheap;
 
 
 void Paging::Initialize() {
@@ -62,6 +63,7 @@ void Paging::Initialize() {
     K_LOG("enabled paging :)")
 
     MemoryManager::kHeap = Heap::CreateHeap(Heap::kHeapStart, Heap::kHeapStart + Heap::kHeapSize, 0xCFFFF000, 0,0);
+    MemoryManager::Currheap = MemoryManager::kHeap;
 }
 
 /***
@@ -121,19 +123,6 @@ void Paging::PFHandler(uint8_t, ISR::StackState regs) {
             MemoryManager::AllocatePage(Paging::GetPage(i, 1, MemoryManager::CurrentDir), 0, 0);
             i +=kSize4kb;
         }
-    }
-
-}
-
-
-void Paging::map_stuff() {
-
-    uint32_t i = 0xB8000;
-    uint32_t end = i + 80 * 25;
-
-    while (i < end) {
-        MemoryManager::AllocatePage(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0);
-        i += kSize4kb;
     }
 
 }

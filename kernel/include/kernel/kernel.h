@@ -16,5 +16,6 @@
 #include <kernel/logs/logs.h>
 #include <kernel/common/kdefines.h>
 #include <libc/stdio.h>
+#include <libc/stdlib.h>
 #include <kernel/common/kuseful.h>
 #include <arch/i386/paging/paging.h>

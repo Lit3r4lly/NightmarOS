@@ -251,7 +251,7 @@ type_t Heap::alloc(uint32_t size, uint8_t align, Heap::HeapT* heap) {
         block_footer->magic = Heap::kHeapMagic;
         block_footer->header = block_header;
 
-        if(original_hole_size - size > 0) {
+        if(original_hole_size - new_size > 0) {
             Heap::Header* hole_header = (Heap::Header*)(original_hole_pos + sizeof (Heap::Header) + size +sizeof(Heap::Footer));
             hole_header->magic = Heap::kHeapMagic;
             hole_header->is_hole = 1;
@@ -291,7 +291,7 @@ void Heap::free(type_t p, Heap::HeapT* heap){
     uint8_t do_add = 1;
 
     Heap::Footer* test_footer = (Heap::Footer*)((uint32_t)header - sizeof(Heap::Footer));
-    if (test_footer->magic == Heap::kHeapMagic && test_footer->header->is_hole) {
+    if (test_footer->magic == Heap::kHeapMagic && test_footer->header->is_hole == 1) {
         uint32_t cache_size = header->size;
         header = test_footer->header;
         footer->header = header;
