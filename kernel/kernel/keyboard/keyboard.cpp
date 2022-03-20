@@ -10,6 +10,8 @@
 
 // holds the current specific keyboard driver callback
 Keyboard::KeyboardCallback key_source;
+Keyboard::Buffer Keyboard::input = {{},0, 0, false};
+
 
 /**
  * Initialize the keyboard usage (driver specification etc.)
@@ -34,7 +36,25 @@ void Keyboard::KeyboardHandler(uint8_t int_num, ISR::StackState stack_state) {
     if (key.is_error)
         return;
 
-    printf("%c", (char)key.character);
+    if(input.readMode)
+        printf("%c", (char)key.character);
 
-    // TODO: save input key to some buffer
+    input.insert(key);
+}
+
+void Keyboard::read(uint8_t* p, size_t size) {
+    if (!p)
+        return;
+
+    input.readMode = true;
+
+    while (input.pos - input.readPos < size) {
+        asm volatile ("hlt");
+    }
+
+    memcpy(p, (input.kinputBuffer + input.readPos), size);
+
+    input.readPos += size;
+
+    input.readMode = false;
 }
