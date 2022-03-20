@@ -31,11 +31,9 @@ void Paging::Initialize() {
     memset(MemoryManager::KernelDir, 0, sizeof(Paging::PageDirectory));
     MemoryManager::CurrentDir = MemoryManager::KernelDir;
 
-    K_LOG("heap");
 
     for (uint32_t i = Heap::kHeapStart; i < Heap::kHeapStart + Heap::kHeapSize;i += kSize4kb)
         Paging::GetPage(i,1,MemoryManager::KernelDir);
-
 
 
     uint32_t i {};

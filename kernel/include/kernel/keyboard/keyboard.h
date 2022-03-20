@@ -9,6 +9,7 @@
 #pragma once
 
 #include <libc/stdio.h>
+#include <libc/string.h>
 #include <kernel/common/kdefines.h>
 #include <kernel/common/kuseful.h>
 #include <kernel/logs/logs.h>
@@ -21,8 +22,25 @@ namespace Keyboard {
         bool is_error = false;
     };
 
+    struct Buffer{
+        uint8_t kinputBuffer[kSize1kb] = {};
+        uint32_t pos;
+        uint32_t readPos;
+        bool readMode;
+
+        void insert(InputKeyType key) {
+            if (this->pos >= kSize1kb)
+                this->pos = 0;
+            this->kinputBuffer[this->pos] = key.character;
+            this->pos++;
+        }
+    };
+
+    extern Buffer input;
+
     using KeyboardCallback = InputKeyType (*)(void*);
 
     void Initialize(KeyboardCallback source_callback); // Initialize the keyboard usage (driver specification etc.)
     void KeyboardHandler(uint8_t int_num, ISR::StackState stack_state); // Keyboard interrupt handler (ISR)
+    void read(uint8_t* p, size_t size);
 };
