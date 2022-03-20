@@ -22,7 +22,7 @@ int32_t Heap::FindSmallestHole(uint32_t size, uint8_t align, Heap::HeapT* heap) 
     while (iter < heap->index.size) {
         Heap::Header* header = (Heap::Header*)OrderedArray::Find(iter, &heap->index);
 
-        if (align > 0) {
+        if (align) {
             uint32_t location = (uint32_t)header;
             int32_t offset = 0;
 
@@ -73,7 +73,7 @@ Heap::HeapT* Heap::CreateHeap(uint32_t start, uint32_t end, uint32_t max, uint8_
     if (!start%kSize4kb || !end%kSize4kb)
         return nullptr;
 
-    heap->index = OrderedArray::PlaceOrderedArray((type_t)start, max, Heap::HeapLessThan);
+    heap->index = OrderedArray::PlaceOrderedArray((type_t)start, Heap::kHeapIndexSize, &Heap::HeapLessThan);
 
     start += sizeof(type_t)*Heap::kHeapIndexSize;//now we can start putting data
 
@@ -227,8 +227,8 @@ type_t Heap::alloc(uint32_t size, uint8_t align, Heap::HeapT* heap) {
         }
 
         if (align && original_hole_pos & 0xFFFFF000) {
-            uint32_t new_location = original_hole_pos + kSize4kb;
-            Heap::Header* hole_header = (Heap::Header*)new_location;
+            uint32_t new_location = original_hole_pos + kSize4kb - (original_hole_pos&0xFFF) - sizeof (Heap::Header);
+            Heap::Header* hole_header = (Heap::Header*)original_hole_pos;
             hole_header->size = kSize4kb - (original_hole_pos&0xFFF) - sizeof (Heap::Header);
             hole_header->magic = Heap::kHeapMagic;
             hole_header->is_hole = 1;

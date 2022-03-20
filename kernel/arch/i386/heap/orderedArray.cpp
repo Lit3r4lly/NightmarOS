@@ -40,7 +40,7 @@ OrderedArray::Array OrderedArray::PlaceOrderedArray(type_t address, uint32_t max
     OrderedArray::Array array;
 
     array.array = (type_t*)address;
-    memset(array.array, 0, max_size* sizeof (max_size));
+    memset(array.array, 0, max_size* sizeof (type_t));
     array.max_size = max_size;
     array.size = 0;
     array.less_than = less_than;

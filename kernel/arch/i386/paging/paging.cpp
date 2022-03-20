@@ -32,41 +32,36 @@ void Paging::Initialize() {
 
     K_LOG("heap");
 
-//    for (uint32_t i = Heap::kHeapStart; i < Heap::kHeapStart + Heap::kHeapSize;i += kSize4kb)
-//        Paging::GetPage(i,1,MemoryManager::KernelDir);
-
-    for (uint32_t i = 0xB8000; i < 0xB800 + 80 * 25 + kSize4kb; i += kSize4kb)
+    for (uint32_t i = Heap::kHeapStart; i < Heap::kHeapStart + Heap::kHeapSize;i += kSize4kb)
         Paging::GetPage(i,1,MemoryManager::KernelDir);
 
 
-    K_LOG("allocate the memory for the heap");
 
-    //printf("starting to map\n");
     uint32_t i {};
     while ( i < MemoryManager::kBaseAddress + kSize4kb) {
         MemoryManager::AllocatePage(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0);
         i += kSize4kb;
     }
 
-//    i = Heap::kHeapStart;
-//    while (i < Heap::kHeapStart + Heap::kHeapSize) {
-//        MemoryManager::AllocatePage(Paging::GetPage(i,1,MemoryManager::KernelDir),0,0);
-//        i += kSize4kb;
-//    }
-
-    i = 0xB8000;
-    while (i < 0xB800 + 80 * 25 + kSize4kb) {
-        MemoryManager::AllocatePage(Paging::GetPage(i,1,MemoryManager::KernelDir),0,1);
+    i = Heap::kHeapStart;
+    while (i < Heap::kHeapStart + Heap::kHeapSize) {
+        MemoryManager::AllocatePage(Paging::GetPage(i,1,MemoryManager::KernelDir),0,0);
         i += kSize4kb;
     }
+
+//    i = 0xB8000;
+//    while(i < 0xB800 + 80 * 25 + kSize4kb) {
+//        MemoryManager::ForceFrame(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0,i);
+//        i += kSize4kb;
+//    }
 
     K_LOG("Mapped the kernel memory");
 
     ISR::InsertUniqueHandler(0xe, ISR::Handler {Paging::PFHandler,false,true});
-    Paging::SwitchDirectory(MemoryManager::KernelDir);
+    //Paging::SwitchDirectory(MemoryManager::KernelDir);
     K_LOG("enabled paging :)")
 
-    //MemoryManager::kHeap = Heap::CreateHeap(Heap::kHeapStart, Heap::kHeapStart + Heap::kHeapSize, 0xCFFFF000, 0,0);
+    MemoryManager::kHeap = Heap::CreateHeap(Heap::kHeapStart, Heap::kHeapStart + Heap::kHeapSize, 0xCFFFF000, 0,0);
 }
 
 /***
@@ -100,12 +95,14 @@ Paging::Page* Paging::GetPage(uint32_t address, int make, Paging::PageDirectory*
 
 
 void Paging::SwitchDirectory(Paging::PageDirectory* dir){
+    asm volatile ("cli");
     MemoryManager::CurrentDir = dir;
     asm volatile("mov %0, %%cr3":: "r"(&dir->physical_table_addresses));
     uint32_t cr0;
     asm volatile("mov %%cr0, %0": "=r"(cr0));
     cr0 |= 0x80000000; // Enable paging!
     asm volatile("mov %0, %%cr0":: "r"(cr0));
+    asm volatile ("sti");
 }
 
 

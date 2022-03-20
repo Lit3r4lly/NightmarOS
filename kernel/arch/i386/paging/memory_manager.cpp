@@ -129,5 +129,5 @@ void MemoryManager::ForceFrame(Paging::Page* page, int32_t is_user, int32_t is_r
     page->is_present = 1;
     page->rw = (uint32_t)is_read_write;
     page->is_user = (uint32_t)is_user;
-    page->frame_addr = address >> 12;
+    page->frame_addr = address;
 }
