@@ -49,16 +49,16 @@ void Paging::Initialize() {
         i += kSize4kb;
     }
 
-//    i = 0xB8000;
-//    while(i < 0xB800 + 80 * 25 + kSize4kb) {
-//        MemoryManager::ForceFrame(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0,i);
-//        i += kSize4kb;
-//    }
+    i = 0xB8000;
+    while(i < 0xB800 + 80 * 25 + kSize4kb) {
+        MemoryManager::ForceFrame(Paging::GetPage(i, 1, MemoryManager::KernelDir), 0, 0,i);
+        i += kSize4kb;
+    }
 
     K_LOG("Mapped the kernel memory");
 
     ISR::InsertUniqueHandler(0xe, ISR::Handler {Paging::PFHandler,false,true});
-    //Paging::SwitchDirectory(MemoryManager::KernelDir);
+    Paging::SwitchDirectory(MemoryManager::KernelDir);
     K_LOG("enabled paging :)")
 
     MemoryManager::kHeap = Heap::CreateHeap(Heap::kHeapStart, Heap::kHeapStart + Heap::kHeapSize, 0xCFFFF000, 0,0);
