@@ -14,7 +14,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdarg.h>
-#include <stddef.h>
+
 
 #define C_SCOPE extern "C"
 #define ASM_SCOPE extern "C"

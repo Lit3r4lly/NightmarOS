@@ -35,7 +35,7 @@
     jmp irq_common
 .endm
 
-.globl isr_common
+.global isr_common
 .type isr_common, @function
 isr_common:
     pushad
@@ -61,7 +61,7 @@ isr_common:
     sti
     iret
 
-.globl irq_common
+.global irq_common
 .type irq_common, @function
 irq_common:
 	pushad
