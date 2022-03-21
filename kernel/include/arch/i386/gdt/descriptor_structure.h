@@ -32,11 +32,11 @@ namespace GDT {
 
         // Rw bit
         // code segment:
-        kNonRcBit = 0 << 1, // read bit for code segment - only execute (cleared)
-        kRcBit = 1 << 1, // read bit for code segment - execute & read (set)
+        kNonRcBit = 0 << 1, // readS bit for code segment - only execute (cleared)
+        kRcBit = 1 << 1, // read bit for code segment - execute & readS (set)
         // data segment:
-        kNonWdBit = 0 << 1, // write bit for data segment - only read (cleared)
-        kWdBit = 1 << 1, // write bit for data segment - write & read (set)
+        kNonWdBit = 0 << 1, // write bit for data segment - only readS (cleared)
+        kWdBit = 1 << 1, // write bit for data segment - write & readS (set)
 
         // Dc bit
         // code segment:

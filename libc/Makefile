@@ -39,8 +39,14 @@ FREEOBJS=\
 $(ARCH_FREEOBJS) \
 libc/stdio/putchar.o \
 libc/stdio/printf.o \
+libc/stdio/getc.o \
+libc/stdio/gets.o \
+libc/stdio/geti.o \
 libc/stdlib/abort.o \
 libc/stdlib/atoi.o \
+libc/stdlib/malloc.o \
+libc/stdlib/calloc.o \
+libc/stdlib/free.o \
 libc/string/strlen.o \
 libc/string/strcpy.o \
 libc/string/memset.o \

@@ -24,7 +24,7 @@ For now this project is mainly introduced as study, research and hobby project w
 ## Userland features
 - May god will be with us, and we will get this far
 
-## How do I read the documentation?
+## How do I readS the documentation?
 The documentation files available at the ``documentation/`` directory
 
 ## How do I build and run this?

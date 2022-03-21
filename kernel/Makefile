@@ -52,6 +52,9 @@ kernel/kernel.o \
 kernel/ports/ports.o \
 kernel/logs/logs.o \
 kernel/panic/panic.o \
+kernel/keyboard/keyboard.o \
+kernel/keyboard/ps2/ps2_keyboard.o \
+kernel/cpp_support.o \
 #  ---- insert here all kernel objects ----
 
 # all of the objects for the build

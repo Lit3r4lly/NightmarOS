@@ -7,6 +7,8 @@
 */
 
 #include <kernel/kernel.h>
+void heap_demon();
+void input_demon();
 
 /**
  * Entry point for the run of the kernel
@@ -23,13 +25,46 @@ C_SCOPE NO_RETURN void kernel_main() {
      * 3. Interrupts (IDT, PIC, etc.)
      * ...
      */
-    TTY::Initialize();
+
     GDT::Initialize();
     Interrupts::Initialize();
+    Paging::Initialize();
+    TTY::Initialize();
+    Keyboard::Initialize(PS2Keyboard::KeyboardSource);
 
+    K_LOG("set up is complete");
     printf("Hello! \nWelcome to NightmareOS kernel ;^)\n");
+    Timer::Sleep(20000);
+    printf("after sleep !!!\n");
+
+    heap_demon();
+    input_demon();
+
 
     // halt the cpu forever and avoid the system to shutdown
     while (true)
         asm volatile ("hlt;");
+}
+
+
+void heap_demon (){
+    uint32_t* b = new uint32_t;
+    uint32_t* c = new uint32_t;
+
+    printf("b: %x, c:%x\n",b,c);
+    *c = 12;
+    printf("c: %d\n", *c);
+
+    delete b;
+    delete c;
+};
+
+
+void input_demon() {
+    char* str = new char[4];
+
+    gets(str);
+    printf("%s\n",str);
+
+    delete []str;
 }

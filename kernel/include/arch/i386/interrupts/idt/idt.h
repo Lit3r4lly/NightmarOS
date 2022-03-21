@@ -50,17 +50,17 @@ namespace IDT {
 
 /* -- Function imported from isr/isr_stubs.s assembly file -- */
 // these are all the macros for the first 32 isrs
-ASM_SCOPE void isr_0(), isr_1(), isr_2(), isr_3(),
-                isr_4(), isr_5(), isr_6(), isr_7(),
-                isr_8(), isr_9(), isr_10(), isr_11(),
-                isr_12(), isr_13(), isr_14(), isr_15(),
-                isr_16(), isr_17(), isr_18(), isr_19(),
-                isr_20(), isr_21(), isr_22(), isr_23(),
-                isr_24(), isr_25(), isr_26(), isr_27(),
-                isr_28(), isr_29(), isr_30(), isr_31();
+ASM_SCOPE void isr_0(); ASM_SCOPE void isr_1(); ASM_SCOPE void isr_2(); ASM_SCOPE void isr_3();
+ASM_SCOPE void isr_4(); ASM_SCOPE void isr_5(); ASM_SCOPE void isr_6(); ASM_SCOPE void isr_7();
+ASM_SCOPE void isr_8(); ASM_SCOPE void isr_9(); ASM_SCOPE void isr_10(); ASM_SCOPE void isr_11();
+ASM_SCOPE void isr_12(); ASM_SCOPE void isr_13(); ASM_SCOPE void isr_14(); ASM_SCOPE void isr_15();
+ASM_SCOPE void isr_16(); ASM_SCOPE void isr_17(); ASM_SCOPE void isr_18(); ASM_SCOPE void isr_19();
+ASM_SCOPE void isr_20(); ASM_SCOPE void isr_21(); ASM_SCOPE void isr_22(); ASM_SCOPE void isr_23();
+ASM_SCOPE void isr_24(); ASM_SCOPE void isr_25(); ASM_SCOPE void isr_26(); ASM_SCOPE void isr_27();
+ASM_SCOPE void isr_28(); ASM_SCOPE void isr_29(); ASM_SCOPE void isr_30(); ASM_SCOPE void isr_31();
 
 // these are all the 16 irq stubs
-ASM_SCOPE void irq_0(), irq_1(), irq_2(), irq_3(),
-                irq_4(), irq_5(), irq_6(), irq_7(),
-                irq_8(), irq_9(), irq_10(), irq_11(),
-                irq_12(), irq_13(), irq_14(), irq_15();
+ASM_SCOPE void irq_0(); ASM_SCOPE void irq_1(); ASM_SCOPE void irq_2(); ASM_SCOPE void irq_3();
+ASM_SCOPE void irq_4(); ASM_SCOPE void irq_5(); ASM_SCOPE void irq_6(); ASM_SCOPE void irq_7();
+ASM_SCOPE void irq_8(); ASM_SCOPE void irq_9(); ASM_SCOPE void irq_10(); ASM_SCOPE void irq_11();
+ASM_SCOPE void irq_12(); ASM_SCOPE void irq_13(); ASM_SCOPE void irq_14(); ASM_SCOPE void irq_15();

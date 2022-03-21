@@ -1,111 +1,140 @@
 .intel_syntax noprefix
 
 .extern InterruptCommonHandler
+.extern IrqForwardHandler
 
-.macro isr_err num # interrupt with error code (pushed to the stack)
-    .global isr_\num
-    .type isr_\num, @function
-    isr_\num:
-        cli
-        push \num # push interrupt number
-        jmp common_stub
+.equ KERNEL_CODE_SELECTOR, 0x08
+.equ KERNEL_DATA_SELECTOR, 0x10
+
+.macro isr_noerr isr_no
+  .globl isr_\isr_no
+  .type isr_\isr_no, @function
+  isr_\isr_no:
+    cli
+    push 0x0 # fake error code
+    push \isr_no
+    jmp isr_common
 .endm
 
-.macro isr num # interrupt without error code
-    .global isr_\num
-    .type isr_\num, @function
-    isr_\num:
-        cli
-        push 0 # push fake error code
-        push \num # push interrupt number
-        jmp common_stub
+.macro isr_err isr_no
+  .globl isr_\isr_no
+  .type isr_\isr_no, @function
+  isr_\isr_no:
+    cli
+    push \isr_no
+    jmp isr_common
 .endm
 
-.macro irq num # hardware interrupt without error code
-    .global irq_\num
-    .type irq_\num, @function
-    irq_\num:
-        cli
-        push 0 # push fake error code
-        mov eax, \num
-        add eax, 0x20
-        push eax # push interrupt number (added 32 because the irq is mapped from 32 to 48 in the IDT)
-        jmp common_stub
+.macro irq irq_no, isr_no
+  .globl irq_\irq_no
+  .type irq_\irq_no, @function
+  irq_\irq_no:
+    cli
+    push 0x0 # fake error code
+    push \isr_no
+    jmp irq_common
 .endm
 
+.global isr_common
+.type isr_common, @function
+isr_common:
+    pushad
+    mov ax, ds
+    push eax
+    mov ax, KERNEL_DATA_SELECTOR
 
-.global common_stub
-.type common_stub, @function
-common_stub:
-    # the common stub save cpu state (registers)
-    # then call to the common handler (cpp function)
-    # and in the return it cleans the stack and restore it to what it was before the whole ISR
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
 
-    pushad # save general registers
-
-    mov eax, ds
-    push eax # push current data segment selector
-
-    call InterruptCommonHandler # call the common handler at isr/isr.cpp
+    call InterruptCommonHandler
 
     pop eax
-    mov ds, eax # restore data segment selector
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
 
-    popad # restore general registers
+    popad
+    add esp, 8
+    sti
+    iret
 
-    add esp, 8 # clear interrupt number and error code from the stack
+.global irq_common
+.type irq_common, @function
+irq_common:
+	pushad
 
-    sti # enable again interrupts
-    iret # pops cs, eip eflags and error code
+	mov ax, ds
+    push eax
 
-# declare ISR macros
-isr 0
-isr 1
-isr 2
-isr 3
-isr 4
-isr 5
-isr 6
-isr 7
-isr_err 8
-isr 9
-isr_err 10
-isr_err 11
-isr_err 12
-isr_err 13
-isr_err 14
-isr 15
-isr 16
-isr_err 17
-isr 18
-isr 19
-isr 20
-isr 21
-isr 22
-isr 23
-isr 24
-isr 25
-isr 26
-isr 27
-isr 28
-isr 29
-isr 30
-isr 31
+	mov ax, KERNEL_DATA_SELECTOR
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
 
-# declare IRQ macros
-irq 0
-irq 1
-irq 2
-irq 3
-irq 4
-irq 5
-irq 6
-irq 7
-irq 8
-irq 9
-irq 10
-irq 11
-irq 12
-irq 13
-irq 14
-irq 15
+	call IrqForwardHandler
+
+	pop ebx
+
+	mov bx, KERNEL_DATA_SELECTOR
+	mov ds, bx
+	mov es, bx
+	mov fs, bx
+	mov gs, bx
+
+	popad
+	add esp, 8
+	sti
+	iret
+
+isr_noerr 0
+isr_noerr 1
+isr_noerr 2
+isr_noerr 3
+isr_noerr 4
+isr_noerr 5
+isr_noerr 6
+isr_noerr 7
+isr_err   8
+isr_noerr 9
+isr_err   10
+isr_err   11
+isr_err   12
+isr_err   13
+isr_err   14
+isr_noerr 15
+isr_noerr 16
+isr_err   17
+isr_noerr 18
+isr_noerr 19
+isr_noerr 20
+isr_noerr 21
+isr_noerr 22
+isr_noerr 23
+isr_noerr 24
+isr_noerr 25
+isr_noerr 26
+isr_noerr 27
+isr_noerr 28
+isr_noerr 29
+isr_err   30
+isr_noerr 31
+irq       0,  32
+irq       1,  33
+irq       2,  34
+irq       3,  35
+irq       4,  36
+irq       5,  37
+irq       6,  38
+irq       7,  39
+irq       8,  40
+irq       9,  41
+irq       10, 42
+irq       11, 43
+irq       12, 44
+irq       13, 45
+irq       14, 46
+irq       15, 47
