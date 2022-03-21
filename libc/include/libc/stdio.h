@@ -20,6 +20,9 @@ C_SCOPE {
 
     uint8_t putchar(uint8_t ich); // print char to the screen using the TTY
     uint32_t printf(const char* format, ...); //print formatted string to the screen
+    void getc(char* p);
+    void gets(char* p);
+    void geti(int32_t* p);
 
 #ifdef __cplusplus
 };

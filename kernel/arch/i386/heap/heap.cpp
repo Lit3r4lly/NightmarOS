@@ -63,7 +63,7 @@ int8_t Heap::HeapLessThan(type_t a, type_t b) {
  * @param end - the initial end of the heap
  * @param max - the max address the heap can expand to
  * @param supervise - is it system or user
- * @param read_only - is it read or read and write
+ * @param read_only - is it read or readS and write
  * @return - the new heap
  */
 Heap::HeapT* Heap::CreateHeap(uint32_t start, uint32_t end, uint32_t max, uint8_t supervise, uint8_t read_only) {

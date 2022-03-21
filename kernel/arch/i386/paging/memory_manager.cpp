@@ -70,7 +70,7 @@ uint32_t MemoryManager::TestFrameFlags(uint32_t frame_address) {
 /***
  * function to allocate a new page
  * @param page - the page to allocate
- * @param is_read_write - can you read and write to page (the opposite is only read)
+ * @param is_read_write - can you read and write to page (the opposite is only readS)
  * @param is_user - is the page is user or system
  */
 void MemoryManager::AllocatePage(Paging::Page *page, int32_t is_user, int32_t is_read_write) {

@@ -10,5 +10,7 @@
 #include <arch/i386/paging/memory_manager.h>
 
 void* malloc(size_t size) {
-    return Heap::alloc(size, 0, MemoryManager::Currheap);
+    void* p = Heap::alloc(size, 0, MemoryManager::Currheap);
+    memset(p, '\0',size);
+    return p;
 };

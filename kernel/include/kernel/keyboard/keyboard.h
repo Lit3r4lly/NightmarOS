@@ -42,5 +42,6 @@ namespace Keyboard {
 
     void Initialize(KeyboardCallback source_callback); // Initialize the keyboard usage (driver specification etc.)
     void KeyboardHandler(uint8_t int_num, ISR::StackState stack_state); // Keyboard interrupt handler (ISR)
-    void read(uint8_t* p, size_t size);
+    void readS(void* p, size_t size); //red with size
+    void read(void* p); //red till /n
 };

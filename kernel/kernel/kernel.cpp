@@ -7,8 +7,7 @@
 */
 
 #include <kernel/kernel.h>
-#include <arch/i386/paging/memory_manager.h>
-void heap_demon ();
+void heap_demon();
 void input_demon();
 
 /**
@@ -35,6 +34,8 @@ C_SCOPE NO_RETURN void kernel_main() {
 
     K_LOG("set up is complete");
     printf("Hello! \nWelcome to NightmareOS kernel ;^)\n");
+    Timer::Sleep(20000);
+    printf("after sleep !!!\n");
 
     heap_demon();
     input_demon();
@@ -52,13 +53,21 @@ void heap_demon (){
 
     printf("b: %x, c:%x\n",b,c);
     *c = 12;
+    printf("c: %d\n", *c);
 
     free((void*)c);
     free((void*)b);
 };
 
+
 void input_demon() {
-    char str[3] = {};
-    Keyboard::read((uint8_t*)str, 3);
-    printf("\n%s\n",str);
+    char* str = (char*)malloc(sizeof(char) * 4);
+    //   int i = 0;
+
+    gets(str);
+    printf("%s\n",str);
+
+//    geti((int32_t*)&i);
+//    i+=5;
+//    printf("%d",i);
 }

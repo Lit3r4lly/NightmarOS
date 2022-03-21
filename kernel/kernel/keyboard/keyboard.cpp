@@ -42,9 +42,16 @@ void Keyboard::KeyboardHandler(uint8_t int_num, ISR::StackState stack_state) {
     input.insert(key);
 }
 
-void Keyboard::read(uint8_t* p, size_t size) {
+
+void Keyboard::readS(void* p, size_t size) {
     if (!p)
         return;
+
+    if ((input.readPos != input.pos) && !input.readMode) {
+        for (uint32_t i {} ; i < size; i++)
+            printf("%c", input.kinputBuffer[input.readPos+i]);
+
+    }
 
     input.readMode = true;
 
@@ -57,4 +64,16 @@ void Keyboard::read(uint8_t* p, size_t size) {
     input.readPos += size;
 
     input.readMode = false;
+}
+
+
+void Keyboard::read(void* p) {
+
+    input.readMode = true;
+    while (input.kinputBuffer[input.pos - 1] != '\n') {
+        asm volatile ("hlt");
+    }
+
+    Keyboard::readS(p, input.pos - input.readPos - 1);
+    input.readPos++;
 }
