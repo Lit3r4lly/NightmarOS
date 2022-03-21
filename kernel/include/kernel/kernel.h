@@ -20,3 +20,4 @@
 #include <kernel/common/kuseful.h>
 #include <arch/i386/paging/paging.h>
 #include <arch/i386/interrupts/pit/timer.h>
+#include <kernel/cpp_support.h>

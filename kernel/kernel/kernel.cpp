@@ -48,26 +48,23 @@ C_SCOPE NO_RETURN void kernel_main() {
 
 
 void heap_demon (){
-    uint32_t* b = (uint32_t*)malloc(8);
-    uint32_t* c = (uint32_t*)malloc(8);
+    uint32_t* b = new uint32_t;
+    uint32_t* c = new uint32_t;
 
     printf("b: %x, c:%x\n",b,c);
     *c = 12;
     printf("c: %d\n", *c);
 
-    free((void*)c);
-    free((void*)b);
+    delete b;
+    delete c;
 };
 
 
 void input_demon() {
-    char* str = (char*)malloc(sizeof(char) * 4);
-    //   int i = 0;
+    char* str = new char[4];
 
     gets(str);
     printf("%s\n",str);
 
-//    geti((int32_t*)&i);
-//    i+=5;
-//    printf("%d",i);
+    delete []str;
 }
