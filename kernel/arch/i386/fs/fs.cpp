@@ -70,7 +70,7 @@ void FileSystem::close_fs(FileSystem::FSNode* node) {
  * @param index - the child to return
  * @return - the index pos child
  */
-FileSystem::Dirent* readdir_fs(FileSystem::FSNode* node, uint32_t index) {
+FileSystem::Dirent* FileSystem::readdir_fs(FileSystem::FSNode* node, uint32_t index) {
 
     if ((node->flags&0x7) == FileSystem::FLags::kFSDirectory && node->readdir)
         return node->readdir(node,index);
@@ -84,7 +84,7 @@ FileSystem::Dirent* readdir_fs(FileSystem::FSNode* node, uint32_t index) {
  * @param name -the name of the dir
  * @return - the node
  */
-FileSystem::FSNode* finddir_fs(FileSystem::FSNode* node, char* name) {
+FileSystem::FSNode* FileSystem::finddir_fs(FileSystem::FSNode* node, char* name) {
 
     if ((node->flags&0x7) == FileSystem::FLags::kFSDirectory && node->finddir)
         return node->finddir(node, name);
